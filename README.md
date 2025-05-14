@@ -57,7 +57,6 @@ Plataforma web para facilitar la adopción responsable de mascotas, conectando c
 ```bash
 git clone https://github.com/adopcion-de-mascotas/adopcion-mascotas.git
 cd adopcion-mascotas
-git checkout dev
 ```
 
 2. **Instalar dependencias**
