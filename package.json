@@ -1,0 +1,39 @@
+{
+  "name": "adopcion-mascotas",
+  "version": "1.0.0",
+  "description": "*Adopcion de mascotas*  \r Breve descripción de lo que hace el producto o cuál es su objetivo.",
+  "main": "./src/app.js",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "dev": "nodemon ./src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "database": "npx sequelize-cli db:create",
+    "migrate": "npx sequelize-cli db:migrate",
+    "seed" : "npx sequelize-cli db:seed:all"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adopcion-de-mascotas/adopcion-mascotas.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adopcion-de-mascotas/adopcion-mascotas/issues"
+  },
+  "homepage": "https://github.com/adopcion-de-mascotas/adopcion-mascotas#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "method-override": "^3.0.0",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.14.1",
+    "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "sequelize-cli": "^6.6.3"
+  }
+}
