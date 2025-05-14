@@ -1,13 +1,11 @@
-# Proyecto MVP - Cohorte 2025
+# 🐾 Proyecto MVP - Adopción de Mascotas | Cohorte 2025
 
-## 🚀 Nombre del Proyecto
-*Adopcion de mascotas*  
-Breve descripción de lo que hace el producto o cuál es su objetivo.
+## 📌 Descripción
+Plataforma web para facilitar la adopción responsable de mascotas, conectando con adoptantes potenciales.
 
-## 👥 Equipo de Desarrollo
-Mentor asignado: **Wilson Ariza Zambran**
-
-Equipo:
+## 👥 Equipo
+**Mentor:** Wilson Ariza Zambrano  
+**Desarrolladores:**
 - Ayelén Elisabet Cayuqueo
 - Luciano Melgar
 - Hernán Parma
@@ -18,16 +16,74 @@ Equipo:
 - Laura Yachelini
 - Andrés Corvalán
 
-## 📅 Fechas Clave
-- **22/04/2025**: Lanzamiento, Presentación de Mentores y Equipos  
-- **24/04/2025**: Selección del Proyecto/Producto (por e-mail)  
-- **23/06/2025**: Entrega Final del Producto MVP  
-- **Semana del 30/06**: Presentación y Evaluación Final
+## 🗓️ Cronograma
+| Fecha           | Hito |
+|-----------------|------|
+| 22/04/2025     | Kickoff del proyecto |
+| 24/04/2025     | Selección definitiva del proyecto |
+| 23/06/2025     | Entrega del MVP |
+| 30/06/2025     | Presentación final |
 
-## 🛠️ Tecnologías Utilizadas
-- Lenguaje/s de programación: (Ej. JavaScript, Python, etc.)
-- Frameworks/Librerías: (Ej. React, Node.js, Flask, etc.)
-- Base de datos: (Ej. MySQL, MongoDB, etc.)
-- Herramientas de colaboración: GitHub, Trello, Slack, etc.
+## 💻 Stack Tecnológico
+### Frontend
+- HTML
+- CSS
+- Javascript
+- Plantillas EJS
 
-## 📦 Contenido del Repositorio
+### Backend
+- Node.js
+- Express
+
+### Base de Datos
+- MySQL
+- Sequelize (ORM)
+
+### Herramientas
+- GitHub (control de versiones)
+
+---
+
+## 🛠️ Configuración Inicial
+
+### 📋 Requisitos Previos
+- Node.js
+- MySql
+- Git
+
+### 🔧 Pasos de Instalación
+
+1. **Clonar repositorio**
+```bash
+git clone https://github.com/adopcion-de-mascotas/adopcion-mascotas.git
+cd adopcion-mascotas
+git checkout dev
+```
+
+2. **Instalar dependencias**
+```bash
+npm install
+```
+
+3. **Clonar repositorio**
+- Copiar el archivo .env.example y crear el archivo .env
+- Completar las variables segun corresponda:
+```env
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+DB_HOST=
+DB_PORT=
+```
+
+4. **Clonar repositorio**
+```bash
+npm run database    # Crear la base de datos
+npm run migrate    # Ejecutar migraciones
+npm run seed       # Poblar datos iniciales (opcional)
+```
+
+5. **Iniciar proyecto**
+```bash
+npm run dev
+```
