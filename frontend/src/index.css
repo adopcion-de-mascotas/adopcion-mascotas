@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+.modal {
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Estilos por defecto (modo claro) */
+
+
+/* Modo oscuro */
+body.dark {
+  background-color: #121212;
+  color: #eee;
+}
+
+/* Ejemplo: header cambia en modo oscuro */
+body.dark header,
+body.dark footer{
+  background-color: #1e1e1e !important;
+  box-shadow: 0 2px 4px rgba(255 255 255 / 0.1)  !important;
+}
+
+body.dark #home,
+body.dark #pets,
+body.dark #about,
+body.dark #contact,
+body.dark #blog,{
+  background-color: #1e1e1e !important;
+  box-shadow: 0 2px 4px rgba(255 255 255 / 0.1)  !important;
+}
+
+body.dark .proceso_adopcion{
+  background-color: #1e1e1e !important;
+  box-shadow: 0 2px 4px rgba(255 255 255 / 0.1)  !important;
+}
+
+/* Enlaces en modo oscuro */
+body.dark a {
+  color: #bb86fc;
+}
+
+body.dark a:hover {
+  color: #fff;
+}
+
+/* Botones */
+body.dark button {
+  background-color: #333;
+  color: #eee;
+}
+
+body.dark button:hover {
+  background-color: #555;
+}
+
+/* Y demás elementos que quieras personalizar */
