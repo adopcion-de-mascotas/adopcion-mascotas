@@ -29,7 +29,7 @@ body.dark #home,
 body.dark #pets,
 body.dark #about,
 body.dark #contact,
-body.dark #blog,{
+body.dark #blog{
   background-color: #1e1e1e !important;
   box-shadow: 0 2px 4px rgba(255 255 255 / 0.1)  !important;
 }
