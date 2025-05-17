@@ -1,31 +1,15 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('usuarios', {
+    await queryInterface.createTable('contactos', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      nombre: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      apellido: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      dni: {
-        type: Sequelize.INTEGER,
-        allowNull: true
-      },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      password: {
+      nombres: {
         type: Sequelize.STRING,
         allowNull: false
       },
@@ -33,24 +17,37 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
       },
-      rol_id: {
+      celular: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      red_social: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      tipo_id: {
         type: Sequelize.INTEGER,
+        allowNull: true,
         references: {
-          model: 'roles',
+          model: 'tipo_contactos',
           key: 'id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL'
       },
-      direccion_id: {
+      mascota_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
-          model: 'direcciones',
+          model: 'mascotas',
           key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
-        allowNull: true
+        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,
@@ -64,7 +61,8 @@ module.exports = {
       }
     });
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('usuarios');
+    await queryInterface.dropTable('contactos');
   }
 };

@@ -1,38 +1,39 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('solicitudes_adopcion', {
+    await queryInterface.createTable('noticias', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      usuario_id: {
+      titulo: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      texto: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
+      fecha: {
+        type: Sequelize.DATE,
+        allowNull: true
+      },
+      foto: {
+        type: Sequelize.STRING(500),
+        allowNull: true
+      },
+      admin_id: {
         type: Sequelize.INTEGER,
+        allowNull: true,
         references: {
-          model: 'usuarios',
+          model: 'admins',
           key: 'id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL'
-      },
-      mascota_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'mascotas',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
-      },
-      fecha_solicitud: {
-        type: Sequelize.DATE
-      },
-      estado: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true
       },
       createdAt: {
         allowNull: false,
@@ -46,7 +47,8 @@ module.exports = {
       }
     });
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('solicitudes_adopcion');
+    await queryInterface.dropTable('noticias');
   }
 };

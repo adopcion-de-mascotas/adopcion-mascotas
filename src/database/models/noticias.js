@@ -1,38 +1,39 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('mascotas', {
+    await queryInterface.createTable('noticias', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      nombre: {
-        type: Sequelize.STRING
-      },
-      edad: {
-        type: Sequelize.INTEGER
-      },
-      tipo: {
-        type: Sequelize.STRING
-      },
-      raza: {
-        type: Sequelize.STRING
-      },
-      tamaño: {
-        type: Sequelize.STRING
-      },
-      descripcion: {
-        type: Sequelize.TEXT
-      },
-      foto: {
+      titulo: {
         type: Sequelize.STRING,
+        allowNull: false
+      },
+      texto: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
+      fecha: {
+        type: Sequelize.DATE,
         allowNull: true
       },
-      estado: {
-        type: Sequelize.BOOLEAN
+      foto: {
+        type: Sequelize.STRING(500),
+        allowNull: true
+      },
+      admin_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'admins',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
       },
       createdAt: {
         allowNull: false,
@@ -46,7 +47,8 @@ module.exports = {
       }
     });
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('mascotas');
+    await queryInterface.dropTable('noticias');
   }
 };

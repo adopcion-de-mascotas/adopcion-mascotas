@@ -1,21 +1,25 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Mascotas extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      Mascotas.hasMany(models.Solicitudes_adopcion, {
+      Mascotas.belongsTo(models.Direcciones, {
+        foreignKey: 'direccion_id',
+        as: 'direccion'
+      });
+      Mascotas.hasOne(models.Contactos, {
         foreignKey: 'mascota_id',
-        as: 'solicitudes'
+        as: 'contacto'
+      });
+
+      Mascotas.hasMany(models.Testimonio, {
+        foreignKey: 'mascota_id',
+        as: 'testimonios'
       });
     }
   }
+
   Mascotas.init({
     nombre: DataTypes.STRING,
     edad: DataTypes.INTEGER,
@@ -27,12 +31,21 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true
     },
-    estado: DataTypes.BOOLEAN
+    estado: DataTypes.STRING,
+    direccion_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: "direcciones",
+        key: "id"
+      }
+    }
   }, {
     sequelize,
     modelName: 'Mascotas',
     tableName: "mascotas",
     freezeTableName: true
   });
+
   return Mascotas;
 };

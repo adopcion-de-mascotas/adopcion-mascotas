@@ -2,44 +2,50 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('testimonios', {
+    await queryInterface.createTable('mascotas', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      comentario: {
-        type: Sequelize.TEXT,
-        allowNull: true
+      nombre: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      autor: {
+      edad: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      tipo: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      raza: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      tamaño: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      descripcion: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
+      foto: {
         type: Sequelize.STRING,
         allowNull: true
       },
-      fecha: {
-        type: Sequelize.DATE,
-        allowNull: true
+      estado: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      foto: {
-        type: Sequelize.STRING(500),
-        allowNull: true
-      },
-      mascota_id: {
+      direccion_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
-          model: 'mascotas',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
-      },
-      admin_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'admins',
+          model: 'direcciones',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -59,6 +65,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('testimonios');
+    await queryInterface.dropTable('mascotas');
   }
 };
