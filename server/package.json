@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "database": "npx sequelize-cli db:create",
     "migrate": "npx sequelize-cli db:migrate",
-    "seed" : "npx sequelize-cli db:seed:all"
+    "seed": "npx sequelize-cli db:seed:all"
   },
   "repository": {
     "type": "git",
@@ -23,10 +23,11 @@
   "homepage": "https://github.com/adopcion-de-mascotas/adopcion-mascotas#readme",
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
-    "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
+    "http-errors": "^2.0.0",
     "method-override": "^3.0.0",
     "morgan": "^1.10.0",
     "mysql2": "^3.14.1",
