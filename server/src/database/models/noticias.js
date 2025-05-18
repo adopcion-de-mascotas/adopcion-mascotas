@@ -1,54 +1,48 @@
 'use strict';
+const { Model } = require('sequelize');
 
-module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('noticias', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      titulo: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      texto: {
-        type: Sequelize.TEXT,
-        allowNull: false
-      },
-      fecha: {
-        type: Sequelize.DATE,
-        allowNull: true
-      },
-      foto: {
-        type: Sequelize.STRING(500),
-        allowNull: true
-      },
-      admin_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'admins',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-      }
-    });
-  },
-
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('noticias');
+module.exports = (sequelize, DataTypes) => {
+  class Noticias extends Model {
+    static associate(models) {
+      // Asociación con Admins
+      Noticias.belongsTo(models.Admins, {
+        foreignKey: 'admin_id',
+        as: 'admin'
+      });
+    }
   }
+
+  Noticias.init({
+    titulo: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    texto: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    fecha: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    foto: {
+      type: DataTypes.STRING(500),
+      allowNull: true
+    },
+    admin_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'admins',
+        key: 'id'
+      }
+    }
+  }, {
+    sequelize,
+    modelName: 'Noticias',
+    tableName: 'noticias',
+    freezeTableName: true
+  });
+
+  return Noticias;
 };
