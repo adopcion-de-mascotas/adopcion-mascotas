@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 .modal {
   transition: opacity 0.3s ease, visibility 0.3s ease;

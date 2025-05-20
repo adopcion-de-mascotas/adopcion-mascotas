@@ -22,7 +22,10 @@ export default function Navbar() {
   };
 */
   }
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    const storedMode = localStorage.getItem("darkMode");
+    return storedMode === "true";
+  });
 
   useEffect(() => {
     if (darkMode) {
@@ -30,6 +33,7 @@ export default function Navbar() {
     } else {
       document.body.classList.remove("dark");
     }
+    localStorage.setItem("darkMode", darkMode);
   }, [darkMode]);
 
   const toggleDarkMode = () => {
@@ -48,16 +52,20 @@ export default function Navbar() {
             </a>
           </div>
           <nav className="hidden md:flex space-x-8">
-            <label className="switch">
+            <label class="switch">
               <input
                 type="checkbox"
                 id="modo-desktop"
-                htmlFor="modo-desktop"
                 checked={darkMode}
                 onChange={toggleDarkMode}
               />
-              <span className="slider"></span>
+              <span class="slider">
+                <span class="icon sun">☀️</span>
+
+                <span class="icon moon">🌙</span>
+              </span>
             </label>
+
             <a
               href="#home"
               className="text-gray-700 hover:text-indigo-600 font-medium"
