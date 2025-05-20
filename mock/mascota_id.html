@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Paw - Detalle de Mascota</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <i class="fas fa-paw text-3xl text-indigo-600 mr-2"></i>
+                <h1 class="text-2xl font-bold text-indigo-600">Happy Paws</h1>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="text-gray-700 hover:text-indigo-600 font-medium">Inicio</a>
+                <a href="#pets" class="text-gray-700 hover:text-indigo-600 font-medium">Mascotas</a>
+                <a href="#about" class="text-gray-700 hover:text-indigo-600 font-medium">Nosotros</a>
+                <a href="#blog" class="text-gray-700 hover:text-indigo-600 font-medium">Blog</a>
+                <a href="#contact" class="text-gray-700 hover:text-indigo-600 font-medium">Contacto</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button id="loginBtn" class="px-4 py-2 text-indigo-600 font-medium hover:bg-indigo-50 rounded-lg">Iniciar Sesión</button>
+                <button id="registerBtn" class="px-4 py-2 bg-indigo-600 text-white font-medium hover:bg-indigo-700 rounded-lg">Registrarse</button>
+                <button id="mobileMenuBtn" class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+                <a href="#home" class="text-gray-700 hover:text-indigo-600 font-medium py-2">Inicio</a>
+                <a href="#pets" class="text-gray-700 hover:text-indigo-600 font-medium py-2">Mascotas</a>
+                <a href="#about" class="text-gray-700 hover:text-indigo-600 font-medium py-2">Nosotros</a>
+                <a href="#blog" class="text-gray-700 hover:text-indigo-600 font-medium py-2">Blog</a>
+                <a href="#contact" class="text-gray-700 hover:text-indigo-600 font-medium py-2">Contacto</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Back Button -->
+        <div class="mb-6">
+            <a href="ver-mas-mascotas.html" class="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium">
+                <i class="fas fa-arrow-left mr-2"></i> Volver a mascotas
+            </a>
+        </div>
+
+        <!-- Pet Details Section -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Pet Images -->
+                <div class="p-4">
+                    <!-- Main Image -->
+                    <div class="rounded-xl overflow-hidden mb-4">
+                        <img id="mainImage" src="https://images.unsplash.com/photo-1583511655826-05700d52f4d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
+                             alt="Max" class="w-full h-96 object-cover pet-image">
+                    </div>
+                    
+                    <!-- Image Gallery -->
+                    <div class="grid grid-cols-4 gap-2">
+                        <div class="gallery-thumbnail active rounded-lg overflow-hidden cursor-pointer" onclick="changeMainImage('https://images.unsplash.com/photo-1583511655826-05700d52f4d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80')">
+                            <img src="https://images.unsplash.com/photo-1583511655826-05700d52f4d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" 
+                                 alt="Max" class="w-full h-20 object-cover">
+                        </div>
+                        <div class="gallery-thumbnail rounded-lg overflow-hidden cursor-pointer" onclick="changeMainImage('https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80')">
+                            <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" 
+                                 alt="Max jugando" class="w-full h-20 object-cover">
+                        </div>
+                        <div class="gallery-thumbnail rounded-lg overflow-hidden cursor-pointer" onclick="changeMainImage('https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80')">
+                            <img src="https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" 
+                                 alt="Max en el parque" class="w-full h-20 object-cover">
+                        </div>
+                        <div class="gallery-thumbnail rounded-lg overflow-hidden cursor-pointer" onclick="changeMainImage('https://images.unsplash.com/photo-1588943211346-0905a1b7637c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80')">
+                            <img src="https://images.unsplash.com/photo-1588943211346-0905a1b7637c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" 
+                                 alt="Max descansando" class="w-full h-20 object-cover">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pet Info -->
+                <div class="p-6">
+                    <!-- Name and Favorite -->
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-800">Max</h2>
+                            <div class="flex items-center text-gray-600 mt-1">
+                                <i class="fas fa-map-marker-alt mr-1"></i>
+                                <span>Madrid, España</span>
+                            </div>
+                        </div>
+                        <button id="favoriteBtn" class="text-2xl text-gray-400 hover:text-red-500 transition duration-300">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+
+                    <!-- Status Badge -->
+                    <div class="mb-6">
+                        <span class="bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full">
+                            <i class="fas fa-home mr-1"></i> Disponible para adopción
+                        </span>
+                    </div>
+
+                    <!-- Quick Info -->
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <div class="text-gray-500 text-sm mb-1">Raza</div>
+                            <div class="font-medium text-gray-800">Golden Retriever</div>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <div class="text-gray-500 text-sm mb-1">Edad</div>
+                            <div class="font-medium text-gray-800">2 años</div>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <div class="text-gray-500 text-sm mb-1">Género</div>
+                            <div class="font-medium text-gray-800">Hembra</div>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <div class="text-gray-500 text-sm mb-1">Tamaño</div>
+                            <div class="font-medium text-gray-800">Grande</div>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <div class="text-gray-500 text-sm mb-1">Peso</div>
+                            <div class="font-medium text-gray-800">28 kg</div>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg">
+                            <div class="text-gray-500 text-sm mb-1">Esterilizado</div>
+                            <div class="font-medium text-gray-800">Sí</div>
+                        </div>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="border-b border-gray-200 mb-6">
+                        <div class="flex space-x-8">
+                            <button class="tab-button pb-3 active" onclick="changeTab('about')">Sobre Max</button>
+                            <button class="tab-button pb-3" onclick="changeTab('health')">Salud</button>
+                            <button class="tab-button pb-3" onclick="changeTab('requirements')">Requisitos</button>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div id="aboutTab" class="tab-content">
+                        <p class="text-gray-700 mb-4">Max es un Golden Retriever encantador de 2 años que fue rescatado de un refugio superpoblado. Es extremadamente cariñoso y le encanta estar rodeado de personas. Max tiene una energía equilibrada: disfruta de largos paseos pero también es feliz relajándose en casa.</p>
+                        
+                        <h3 class="font-bold text-gray-800 mb-2">Personalidad</h3>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">Amigable</span>
+                            <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">Juguetón</span>
+                            <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">Inteligente</span>
+                            <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">Sociable</span>
+                        </div>
+                        
+                        <h3 class="font-bold text-gray-800 mb-2">Comportamiento con</h3>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-child feature-icon text-gray-600 mr-2"></i>
+                                <div>
+                                    <div class="text-sm text-gray-500">Niños</div>
+                                    <div class="font-medium text-gray-800">Excelente</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-dog feature-icon text-gray-600 mr-2"></i>
+                                <div>
+                                    <div class="text-sm text-gray-500">Otros perros</div>
+                                    <div class="font-medium text-gray-800">Bueno</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-cat feature-icon text-gray-600 mr-2"></i>
+                                <div>
+                                    <div class="text-sm text-gray-500">Gatos</div>
+                                    <div class="font-medium text-gray-800">No probado</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-home feature-icon text-gray-600 mr-2"></i>
+                                <div>
+                                    <div class="text-sm text-gray-500">Apartamento</div>
+                                    <div class="font-medium text-gray-800">Posible con ejercicio</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 class="font-bold text-gray-800 mb-2">Historia</h3>
+                        <p class="text-gray-700">Max fue encontrado abandonado en un parque cuando tenía aproximadamente 1 año. Fue rescatado por una protectora local donde recibió todas sus vacunas y fue esterilizado. Lleva 6 meses en cuidado temporal esperando una familia permanente.</p>
+                    </div>
+
+                    <div id="healthTab" class="tab-content hidden">
+                        <div class="mb-4">
+                            <h3 class="font-bold text-gray-800 mb-2">Estado de salud</h3>
+                            <p class="text-gray-700">Max goza de buena salud. Todos sus controles veterinarios están al día y no presenta problemas médicos.</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="font-bold text-gray-800 mb-2">Vacunas</h3>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1">
+                                <li>Rabia (actualizada)</li>
+                                <li>Moquillo (actualizada)</li>
+                                <li>Parvovirus (actualizada)</li>
+                                <li>Leptospirosis (actualizada)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="font-bold text-gray-800 mb-2">Tratamientos</h3>
+                            <p class="text-gray-700">Max está desparasitado internamente y externamente. Recibe tratamiento preventivo contra pulgas y garrapatas mensualmente.</p>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-bold text-gray-800 mb-2">Información veterinaria</h3>
+                            <p class="text-gray-700">Max ha sido evaluado por nuestro veterinario asociado, Dr. Martínez, quien confirma que está listo para la adopción. Se entregará su historial médico completo al adoptante.</p>
+                        </div>
+                    </div>
+
+                    <div id="requirementsTab" class="tab-content hidden">
+                        <div class="mb-4">
+                            <h3 class="font-bold text-gray-800 mb-2">Requisitos para adoptar</h3>
+                            <p class="text-gray-700">Para asegurar que Max tenga el mejor hogar posible, buscamos adoptantes que cumplan con los siguientes requisitos:</p>
+                        </div>
+                        
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li>Compromiso de esterilización si no está ya esterilizado</li>
+                            <li>Disponibilidad para proporcionar ejercicio diario (al menos 2 paseos al día)</li>
+                            <li>Entorno familiar con tiempo para dedicarle</li>
+                            <li>Presupuesto para cubrir sus necesidades (alimentación, veterinario, etc.)</li>
+                            <li>No dejarlo solo por más de 6 horas seguidas</li>
+                            <li>Permiso de la comunidad si vive en apartamento</li>
+                        </ul>
+                        
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-info-circle text-yellow-400"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-yellow-700">
+                                        Todos los adoptantes deben firmar un contrato de adopción y permitir visitas de seguimiento para verificar el bienestar de Max.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Adoption Button -->
+                    <div class="mt-8">
+                        <button class="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+                            <i class="fas fa-home mr-2"></i> Solicitar adopción
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shelter Info -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mt-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Sobre el refugio</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-2">
+                    <div class="flex items-start mb-4">
+                        <img src="https://images.unsplash.com/photo-1601758003122-53c40e686a19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" 
+                             alt="Patitas Felices" class="w-16 h-16 rounded-lg object-cover mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-800">Patitas Felices</h4>
+                            <p class="text-gray-600 text-sm">Refugio sin ánimo de lucro dedicado al rescate y rehabilitación de perros abandonados desde 2010.</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700">Nuestro refugio se especializa en perros de razas grandes que han sido abandonados o maltratados. Contamos con instalaciones amplias y personal dedicado que trabaja para rehabilitar a cada animal y encontrarles el hogar perfecto. Todos nuestros animales reciben atención veterinaria completa, entrenamiento básico y mucho amor antes de ser puestos en adopción.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800 mb-3">Contacto</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt text-gray-500 mr-3"></i>
+                            <span class="text-gray-700">Calle Rescate 45, Madrid</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone text-gray-500 mr-3"></i>
+                            <span class="text-gray-700">+34 911 234 567</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope text-gray-500 mr-3"></i>
+                            <span class="text-gray-700">info@patitasfelices.org</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-globe text-gray-500 mr-3"></i>
+                            <a href="#" class="text-yellow-500 hover:underline">www.patitasfelices.org</a>
+                        </li>
+                    </ul>
+                    <div class="flex space-x-3 mt-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 hover:bg-yellow-400 hover:text-white transition duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 hover:bg-yellow-400 hover:text-white transition duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 hover:bg-yellow-400 hover:text-white transition duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Similar Pets -->
+        <div class="mt-12">
+            <h3 class="text-xl font-bold text-gray-800 mb-6">Otras mascotas que te pueden gustar</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Similar Pet 1 -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden transition duration-300 hover:shadow-md">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1586671267731-da2cf3ceeb80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                             alt="Golden Retriever" class="w-full h-48 object-cover">
+                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md">
+                            <i class="far fa-heart text-gray-400 text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-gray-800 mb-1">Luna</h3>
+                        <div class="flex items-center text-gray-600 text-sm mb-2">
+                            <i class="fas fa-dog mr-1"></i>
+                            <span class="mr-3">Golden Retriever</span>
+                            <span>1 año</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-gray-700"><i class="fas fa-map-marker-alt mr-1"></i> Madrid</span>
+                            <a href="detalle-mascota.html" class="text-yellow-500 hover:text-yellow-600 text-sm font-medium">
+                                Ver más
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Similar Pet 2 -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden transition duration-300 hover:shadow-md">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1561037404-61cd46aa615b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                             alt="Labrador" class="w-full h-48 object-cover">
+                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md">
+                            <i class="far fa-heart text-gray-400 text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-gray-800 mb-1">Rocky</h3>
+                        <div class="flex items-center text-gray-600 text-sm mb-2">
+                            <i class="fas fa-dog mr-1"></i>
+                            <span class="mr-3">Labrador</span>
+                            <span>3 años</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-gray-700"><i class="fas fa-map-marker-alt mr-1"></i> Barcelona</span>
+                            <a href="detalle-mascota.html" class="text-yellow-500 hover:text-yellow-600 text-sm font-medium">
+                                Ver más
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Similar Pet 3 -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden transition duration-300 hover:shadow-md">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1544568100-847a948585b9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                             alt="Pastor Alemán" class="w-full h-48 object-cover">
+                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md">
+                            <i class="far fa-heart text-gray-400 text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-gray-800 mb-1">Thor</h3>
+                        <div class="flex items-center text-gray-600 text-sm mb-2">
+                            <i class="fas fa-dog mr-1"></i>
+                            <span class="mr-3">Pastor Alemán</span>
+                            <span>4 años</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-gray-700"><i class="fas fa-map-marker-alt mr-1"></i> Valencia</span>
+                            <a href="detalle-mascota.html" class="text-yellow-500 hover:text-yellow-600 text-sm font-medium">
+                                Ver más
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Similar Pet 4 -->
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden transition duration-300 hover:shadow-md">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                             alt="Beagle" class="w-full h-48 object-cover">
+                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md">
+                            <i class="far fa-heart text-gray-400 text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-gray-800 mb-1">Daisy</h3>
+                        <div class="flex items-center text-gray-600 text-sm mb-2">
+                            <i class="fas fa-dog mr-1"></i>
+                            <span class="mr-3">Beagle</span>
+                            <span>2 años</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-gray-700"><i class="fas fa-map-marker-alt mr-1"></i> Sevilla</span>
+                            <a href="detalle-mascota.html" class="text-yellow-500 hover:text-yellow-600 text-sm font-medium">
+                                Ver más
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-paw text-3xl text-indigo-400 mr-2"></i>
+                        <h3 class="text-2xl font-bold text-indigo-400">Happy Paws</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Dedicados a encontrar hogares amorosos para mascotas abandonadas y promover la adopción responsable.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Enlaces Rápidos</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white">Inicio</a></li>
+                        <li><a href="#pets" class="text-gray-400 hover:text-white">Mascotas</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white">Nosotros</a></li>
+                        <li><a href="#blog" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Adopción</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Proceso de Adopción</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Preguntas Frecuentes</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Requisitos</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Historias de Éxito</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Hogares Temporales</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Boletín</h4>
+                    <p class="text-gray-400 mb-4">Suscríbete para recibir noticias sobre mascotas disponibles y eventos de adopción.</p>
+                    <form class="flex">
+                        <input type="email" placeholder="Tu email" class="px-4 py-2 rounded-l-lg focus:outline-none text-gray-800 w-full">
+                        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-r-lg hover:bg-indigo-700">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 mb-4 md:mb-0">© 2023 Happy Paws. Todos los derechos reservados.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white">Política de Privacidad</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Términos de Servicio</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./mascota_id.js">
+        
+    </script>
+</body>
+</html>

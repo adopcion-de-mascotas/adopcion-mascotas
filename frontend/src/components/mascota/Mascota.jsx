@@ -1,6 +1,6 @@
 import React from 'react'
-import './Mascotas.css'
-export default function Mascotas() {
+import './Mascota.css'
+export default function Mascota() {
   return (
     <>
      <section id="pets" class="py-16 ">

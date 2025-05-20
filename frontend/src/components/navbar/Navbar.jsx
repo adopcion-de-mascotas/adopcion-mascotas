@@ -4,7 +4,7 @@ import LoginModal from "../loginModal/LoginModal";
 import RegisterModal from "../registerModal/RegisterModal";
 
 export default function Navbar() {
-  const [showLoginModal, setShowLoginModal] = useState(false);
+ {/* const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   const handleOpenLogin = () => setShowLoginModal(true);
@@ -19,7 +19,7 @@ export default function Navbar() {
     setShowLoginModal(false);
     setShowRegisterModal(true);
   };
-
+*/}
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -86,7 +86,7 @@ export default function Navbar() {
               Contacto
             </a>
           </nav>
-          <div class="flex items-center space-x-4">
+          {/*<div class="flex items-center space-x-4">
             <button
               onClick={handleOpenLogin}
               id="loginBtn"
@@ -104,7 +104,7 @@ export default function Navbar() {
             <button id="mobileMenuBtn" class="md:hidden text-gray-700">
               <i class="fas fa-bars text-2xl"></i>
             </button>
-          </div>
+          </div>*/ }
         </div>
 
         {/* Mobile Menu Button */}
@@ -143,7 +143,7 @@ export default function Navbar() {
           </div>
         </div>
       </header>
-
+            { /* Mobile Menu 
       <LoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
@@ -155,6 +155,7 @@ export default function Navbar() {
         onClose={() => setShowRegisterModal(false)}
         onSwitchToLogin={switchToLogin}
       />
+*/}
     </>
   );
 }
