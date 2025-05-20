@@ -1,21 +1,47 @@
 import React from "react";
 import Contact from "../../components/contact/Contact";
 import Testimonio from "../../components/testimonio/Testimonio";
-import Mascotas from "../../components/mascota/Mascota";
 import Carrousel from "../../components/carrousel/Carrousel";
 import Blog from "../../components/blog/Blog";
 import About from "../../components/about/About";
+import mascotas from "../../data/mascotas";
+import CardMascota from "../../components/cardmascota/CardMascota";
 
 export const Home = () => {
-
-
   return (
     <>
       {/* Carrousel Section */}
       <Carrousel />
 
       {/* Features Pets Section */}
-      <Mascotas />
+      <section id="pets" className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+              Mascotas en Adopción
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Estos adorables compañeros están buscando un hogar amoroso. Cada
+              uno tiene su propia personalidad y necesidades especiales.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {mascotas.slice(0, 4).map((m) => (
+              <CardMascota key={m.id} mascota={m} />
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <a
+              href="/mascotas"
+              className="px-6 py-3 bg-white border-2 border-indigo-600 text-indigo-600 rounded-lg font-medium hover:bg-indigo-50"
+            >
+              Ver más mascotas
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* About Section */}
       <About />
@@ -126,9 +152,6 @@ export const Home = () => {
 
       {/* Contact Section */}
       <Contact />
-
-      
-
     </>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import mascotas from "../../data/mascotas"; // Ajusta este path si cambia
+import CardMascota from "../../components/cardmascota/CardMascota";
 
 export default function Mascota_Id() {
   const { id } = useParams();
@@ -59,7 +60,9 @@ export default function Mascota_Id() {
           <div className="p-6">
             <div className="flex justify-between items-start mb-4">
               <div>
-                <h2 className="text-3xl font-bold text-gray-800">{mascota.nombre}</h2>
+                <h2 className="text-3xl font-bold text-gray-800">
+                  {mascota.nombre}
+                </h2>
                 <div className="text-gray-600 mt-1 flex items-center">
                   <i className="fas fa-map-marker-alt mr-1"></i>
                   {mascota.ciudad}
@@ -87,7 +90,24 @@ export default function Mascota_Id() {
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
                 <div className="text-sm text-gray-500 mb-1">Género</div>
-                <div className="font-medium text-gray-800">{mascota.genero}</div>
+                <div className="font-medium text-gray-800">
+                  {mascota.genero}
+                </div>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg">
+                <div class="text-gray-500 text-sm mb-1">Tamaño</div>
+                <div class="font-medium text-gray-800"> {mascota.tamaño} </div>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg">
+                <div class="text-gray-500 text-sm mb-1">Peso</div>
+                <div class="font-medium text-gray-800"> {mascota.peso} </div>
+              </div>
+              <div class="bg-gray-50 p-3 rounded-lg">
+                <div class="text-gray-500 text-sm mb-1">Esterilizado</div>
+                <div class="font-medium text-gray-800">
+                  {" "}
+                  {mascota.esterelizado}{" "}
+                </div>
               </div>
             </div>
 
@@ -96,7 +116,9 @@ export default function Mascota_Id() {
               <div className="flex space-x-8">
                 <button
                   className={`pb-3 font-medium ${
-                    tab === "sobre" ? "text-yellow-600 border-b-2 border-yellow-500" : "text-gray-500"
+                    tab === "sobre"
+                      ? "text-yellow-600 border-b-2 border-yellow-500"
+                      : "text-gray-500"
                   }`}
                   onClick={() => setTab("sobre")}
                 >
@@ -104,7 +126,9 @@ export default function Mascota_Id() {
                 </button>
                 <button
                   className={`pb-3 font-medium ${
-                    tab === "salud" ? "text-yellow-600 border-b-2 border-yellow-500" : "text-gray-500"
+                    tab === "salud"
+                      ? "text-yellow-600 border-b-2 border-yellow-500"
+                      : "text-gray-500"
                   }`}
                   onClick={() => setTab("salud")}
                 >
@@ -112,7 +136,9 @@ export default function Mascota_Id() {
                 </button>
                 <button
                   className={`pb-3 font-medium ${
-                    tab === "requisitos" ? "text-yellow-600 border-b-2 border-yellow-500" : "text-gray-500"
+                    tab === "requisitos"
+                      ? "text-yellow-600 border-b-2 border-yellow-500"
+                      : "text-gray-500"
                   }`}
                   onClick={() => setTab("requisitos")}
                 >
@@ -128,35 +154,125 @@ export default function Mascota_Id() {
                 <h3 className="font-bold text-gray-800 mb-2">Personalidad</h3>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {mascota.personalidad?.map((item, i) => (
-                    <span key={i} className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">
+                    <span
+                      key={i}
+                      className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm"
+                    >
                       {item}
                     </span>
                   ))}
+                  <div>
+                    <h3 class="font-bold text-gray-800 mb-2">
+                      Comportamiento con
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                      <div class="flex items-center">
+                        <i class="fas fa-child feature-icon text-gray-600 mr-2"></i>
+                        <div>
+                          <div class="text-sm text-gray-500">Niños</div>
+                          <div class="font-medium text-gray-800">Excelente</div>
+                        </div>
+                      </div>
+                      <div class="flex items-center">
+                        <i class="fas fa-dog feature-icon text-gray-600 mr-2"></i>
+                        <div>
+                          <div class="text-sm text-gray-500">Otros perros</div>
+                          <div class="font-medium text-gray-800">Bueno</div>
+                        </div>
+                      </div>
+                      <div class="flex items-center">
+                        <i class="fas fa-cat feature-icon text-gray-600 mr-2"></i>
+                        <div>
+                          <div class="text-sm text-gray-500">Gatos</div>
+                          <div class="font-medium text-gray-800">
+                            No probado
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flex items-center">
+                        <i class="fas fa-home feature-icon text-gray-600 mr-2"></i>
+                        <div>
+                          <div class="text-sm text-gray-500">Apartamento</div>
+                          <div class="font-medium text-gray-800">
+                            Posible con ejercicio
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <h3 class="font-bold text-gray-800 mb-2">Historia</h3>
+                    <p class="text-gray-700">
+                      Max fue encontrado abandonado en un parque cuando tenía
+                      aproximadamente 1 año. Fue rescatado por una protectora
+                      local donde recibió todas sus vacunas y fue esterilizado.
+                      Lleva 6 meses en cuidado temporal esperando una familia
+                      permanente.
+                    </p>
+                  </div>
                 </div>
               </div>
             )}
 
             {tab === "salud" && (
               <div>
-                <h3 className="font-bold text-gray-800 mb-2">Estado de salud</h3>
-                <p className="text-gray-700 mb-2">Sin problemas médicos conocidos.</p>
+                <h3 className="font-bold text-gray-800 mb-2">
+                  Estado de salud
+                </h3>
+                <p className="text-gray-700 mb-2">
+                  Sin problemas médicos conocidos.
+                </p>
                 <h3 className="font-bold text-gray-800 mb-2">Vacunas</h3>
                 <ul className="list-disc pl-5 text-gray-700 space-y-1">
                   <li>Rabia</li>
                   <li>Moquillo</li>
                   <li>Parvovirus</li>
                 </ul>
+                <div class="mb-4">
+                  <h3 class="font-bold text-gray-800 mb-2">Tratamientos</h3>
+                  <p class="text-gray-700">
+                    Max está desparasitado internamente y externamente. Recibe
+                    tratamiento preventivo contra pulgas y garrapatas
+                    mensualmente.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 class="font-bold text-gray-800 mb-2">
+                    Información veterinaria
+                  </h3>
+                  <p class="text-gray-700">
+                    Max ha sido evaluado por nuestro veterinario asociado, Dr.
+                    Martínez, quien confirma que está listo para la adopción. Se
+                    entregará su historial médico completo al adoptante.
+                  </p>
+                </div>
               </div>
             )}
 
             {tab === "requisitos" && (
               <div>
-                <h3 className="font-bold text-gray-800 mb-2">Requisitos para adoptar</h3>
+                <h3 className="font-bold text-gray-800 mb-2">
+                  Requisitos para adoptar
+                </h3>
                 <ul className="list-disc pl-5 text-gray-700 space-y-2">
                   <li>Compromiso con la esterilización si no lo está</li>
                   <li>Tiempo y dedicación para la mascota</li>
                   <li>No dejar sola más de 6 horas</li>
                 </ul>
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <i class="fas fa-info-circle text-yellow-400"></i>
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-sm text-yellow-700">
+                        Todos los adoptantes deben firmar un contrato de
+                        adopción y permitir visitas de seguimiento para
+                        verificar el bienestar de Max.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 
@@ -171,7 +287,9 @@ export default function Mascota_Id() {
 
       {/* Refugio */}
       <div className="bg-white rounded-xl shadow-sm p-6 mt-8">
-        <h3 className="text-xl font-bold text-gray-800 mb-4">Sobre el refugio</h3>
+        <h3 className="text-xl font-bold text-gray-800 mb-4">
+          Sobre el refugio
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-2">
             <div className="flex items-start mb-4">
@@ -183,28 +301,47 @@ export default function Mascota_Id() {
               <div>
                 <h4 className="font-bold text-gray-800">Patitas Felices</h4>
                 <p className="text-gray-600 text-sm">
-                  Refugio sin ánimo de lucro dedicado al rescate y rehabilitación.
+                  Refugio sin ánimo de lucro dedicado al rescate y
+                  rehabilitación.
                 </p>
               </div>
             </div>
             <p className="text-gray-700">
-              Contamos con instalaciones amplias y un equipo comprometido en brindar cuidado, entrenamiento básico y mucho amor a cada mascota.
+              Contamos con instalaciones amplias y un equipo comprometido en
+              brindar cuidado, entrenamiento básico y mucho amor a cada mascota.
             </p>
           </div>
           <div>
             <h4 className="font-bold text-gray-800 mb-3">Contacto</h4>
             <ul className="space-y-3">
               <li className="flex items-center">
-                <i className="fas fa-map-marker-alt text-gray-500 mr-3"></i> Calle Rescate 45, Madrid
+                <i className="fas fa-map-marker-alt text-gray-500 mr-3"></i>{" "}
+                Calle Rescate 45, Madrid
               </li>
               <li className="flex items-center">
-                <i className="fas fa-phone text-gray-500 mr-3"></i> +34 911 234 567
+                <i className="fas fa-phone text-gray-500 mr-3"></i> +34 911 234
+                567
               </li>
               <li className="flex items-center">
-                <i className="fas fa-envelope text-gray-500 mr-3"></i> info@patitasfelices.org
+                <i className="fas fa-envelope text-gray-500 mr-3"></i>{" "}
+                info@patitasfelices.org
               </li>
             </ul>
           </div>
+        </div>
+      </div>
+
+      {/* other Pets */}
+      <div class="mt-12">
+        <h3 class="text-xl font-bold text-gray-800 mb-6">
+          Otras mascotas que te pueden gustar
+        </h3>
+        {/* Mostrar mascotas */}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {mascotas.slice(0, 4).map((m) => (
+            <CardMascota key={m.id} mascota={m} />
+          ))}
         </div>
       </div>
     </main>

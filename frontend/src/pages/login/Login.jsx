@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -48,6 +49,15 @@ export default function Login() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Botón Volver */}
+      <div className="mb-6">
+        <Link
+          to="/"
+          className="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium"
+        >
+          <i className="fas fa-arrow-left mr-2"></i> Volver a la página principal
+        </Link>
+      </div>
       <div className="flex flex-col lg:flex-row gap-8">
         {/* VIDEO */}
         <div className="flex-1">
