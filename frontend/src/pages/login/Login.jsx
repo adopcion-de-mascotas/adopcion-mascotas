@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -55,7 +54,8 @@ export default function Login() {
           to="/"
           className="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium"
         >
-          <i className="fas fa-arrow-left mr-2"></i> Volver a la página principal
+          <i className="fas fa-arrow-left mr-2"></i> Volver a la página
+          principal
         </Link>
       </div>
       <div className="flex flex-col lg:flex-row gap-8">
@@ -74,11 +74,15 @@ export default function Login() {
 
         {/* FORMULARIO */}
         <div className="flex-1 bg-white p-8 rounded-lg shadow-lg">
-          <h3 className="text-2xl font-bold mb-6 text-center">¡Iniciar Sesion!</h3>
+          <h3 className="text-2xl font-bold mb-6 text-center">
+            ¡Iniciar Sesion!
+          </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium">Email</label>
+              <label htmlFor="email" className="block text-sm font-medium">
+                Email
+              </label>
               <input
                 type="text"
                 id="email"
@@ -95,7 +99,9 @@ export default function Login() {
 
             {/* Contraseña */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium">Contraseña</label>
+              <label htmlFor="password" className="block text-sm font-medium">
+                Contraseña
+              </label>
               <input
                 type="password"
                 id="password"
@@ -104,6 +110,7 @@ export default function Login() {
                 className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-200"
                 placeholder="******************"
                 data-test="password"
+                autocomplete="current-password" 
               />
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">{errors.password}</p>
@@ -122,7 +129,9 @@ export default function Login() {
                 className="mr-2"
                 data-test="remember-button"
               />
-              <label htmlFor="remember" className="text-sm">Recordar</label>
+              <label htmlFor="remember" className="text-sm">
+                Recordar
+              </label>
             </div>
 
             {/* Botón */}

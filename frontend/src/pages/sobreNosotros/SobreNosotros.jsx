@@ -9,12 +9,12 @@ export default function SobreNosotros() {
       {/* Team section */}
       <main className="container mx-auto px-4 py-8">
         {/* Botón de volver al home */}
-        <div class="mb-6">
+        <div className="mb-6">
           <a
             href="/"
-            class="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium"
+            className="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium"
           >
-            <i class="fas fa-arrow-left mr-2"></i> Volver al Home
+            <i className="fas fa-arrow-left mr-2"></i> Volver al Home
           </a>
         </div>
         <section id="team" className="py-20 bg-white">
@@ -36,9 +36,9 @@ export default function SobreNosotros() {
               id="team-container"
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
             >
-              {teamMembers.map((member) => (
+              {teamMembers.map((member,index) => (
                 <div
-                  key={member.id}
+                  key={member.id || index}
                   className="team-card bg-white rounded-xl overflow-hidden shadow-lg transition duration-500 ease-in-out"
                 >
                   <div
@@ -52,15 +52,20 @@ export default function SobreNosotros() {
                   </div>
                   <div className="p-6 text-center">
                     <h3 className="text-xl font-bold">{member.name}</h3>
-                    <p className={`${member.textColor} mb-4`}>{member.role}</p>
-                    <p className="text-gray-600 mb-6">{member.description}</p>
+                    <p className={`${member.textColor} mb-4`}>
+                      {member.role}
+                    </p>
+                    <p className="text-gray-600 mb-6">
+                      {member.description}
+                    </p>
                     <a
                       href={member.portfolio}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={`inline-block px-6 py-2 ${member.bgColor} text-white rounded-full ${member.hoverColor} transition`}
                     >
-                      Ver portafolio <i className="fas fa-arrow-right ml-2"></i>
+                      Ver portafolio{" "}
+                      <i className="fas fa-arrow-right ml-2"></i>
                     </a>
                   </div>
                 </div>

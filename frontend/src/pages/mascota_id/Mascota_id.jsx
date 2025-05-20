@@ -94,17 +94,17 @@ export default function Mascota_Id() {
                   {mascota.genero}
                 </div>
               </div>
-              <div class="bg-gray-50 p-3 rounded-lg">
-                <div class="text-gray-500 text-sm mb-1">Tamaño</div>
-                <div class="font-medium text-gray-800"> {mascota.tamaño} </div>
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <div className="text-gray-500 text-sm mb-1">Tamaño</div>
+                <div className="font-medium text-gray-800"> {mascota.tamaño} </div>
               </div>
-              <div class="bg-gray-50 p-3 rounded-lg">
-                <div class="text-gray-500 text-sm mb-1">Peso</div>
-                <div class="font-medium text-gray-800"> {mascota.peso} </div>
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <div className="text-gray-500 text-sm mb-1">Peso</div>
+                <div className="font-medium text-gray-800"> {mascota.peso} </div>
               </div>
-              <div class="bg-gray-50 p-3 rounded-lg">
-                <div class="text-gray-500 text-sm mb-1">Esterilizado</div>
-                <div class="font-medium text-gray-800">
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <div className="text-gray-500 text-sm mb-1">Esterilizado</div>
+                <div className="font-medium text-gray-800">
                   {" "}
                   {mascota.esterelizado}{" "}
                 </div>
@@ -162,46 +162,46 @@ export default function Mascota_Id() {
                     </span>
                   ))}
                   <div>
-                    <h3 class="font-bold text-gray-800 mb-2">
+                    <h3 className="font-bold text-gray-800 mb-2">
                       Comportamiento con
                     </h3>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                      <div class="flex items-center">
-                        <i class="fas fa-child feature-icon text-gray-600 mr-2"></i>
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div className="flex items-center">
+                        <i className="fas fa-child feature-icon text-gray-600 mr-2"></i>
                         <div>
-                          <div class="text-sm text-gray-500">Niños</div>
-                          <div class="font-medium text-gray-800">Excelente</div>
+                          <div className="text-sm text-gray-500">Niños</div>
+                          <div className="font-medium text-gray-800">Excelente</div>
                         </div>
                       </div>
-                      <div class="flex items-center">
-                        <i class="fas fa-dog feature-icon text-gray-600 mr-2"></i>
+                      <div className="flex items-center">
+                        <i className="fas fa-dog feature-icon text-gray-600 mr-2"></i>
                         <div>
-                          <div class="text-sm text-gray-500">Otros perros</div>
-                          <div class="font-medium text-gray-800">Bueno</div>
+                          <div className="text-sm text-gray-500">Otros perros</div>
+                          <div className="font-medium text-gray-800">Bueno</div>
                         </div>
                       </div>
-                      <div class="flex items-center">
-                        <i class="fas fa-cat feature-icon text-gray-600 mr-2"></i>
+                      <div className="flex items-center">
+                        <i className="fas fa-cat feature-icon text-gray-600 mr-2"></i>
                         <div>
-                          <div class="text-sm text-gray-500">Gatos</div>
-                          <div class="font-medium text-gray-800">
+                          <div className="text-sm text-gray-500">Gatos</div>
+                          <div className="font-medium text-gray-800">
                             No probado
                           </div>
                         </div>
                       </div>
-                      <div class="flex items-center">
-                        <i class="fas fa-home feature-icon text-gray-600 mr-2"></i>
+                      <div className="flex items-center">
+                        <i className="fas fa-home feature-icon text-gray-600 mr-2"></i>
                         <div>
-                          <div class="text-sm text-gray-500">Apartamento</div>
-                          <div class="font-medium text-gray-800">
+                          <div className="text-sm text-gray-500">Apartamento</div>
+                          <div className="font-medium text-gray-800">
                             Posible con ejercicio
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <h3 class="font-bold text-gray-800 mb-2">Historia</h3>
-                    <p class="text-gray-700">
+                    <h3 className="font-bold text-gray-800 mb-2">Historia</h3>
+                    <p className="text-gray-700">
                       Max fue encontrado abandonado en un parque cuando tenía
                       aproximadamente 1 año. Fue rescatado por una protectora
                       local donde recibió todas sus vacunas y fue esterilizado.
@@ -227,9 +227,9 @@ export default function Mascota_Id() {
                   <li>Moquillo</li>
                   <li>Parvovirus</li>
                 </ul>
-                <div class="mb-4">
-                  <h3 class="font-bold text-gray-800 mb-2">Tratamientos</h3>
-                  <p class="text-gray-700">
+                <div className="mb-4">
+                  <h3 className="font-bold text-gray-800 mb-2">Tratamientos</h3>
+                  <p className="text-gray-700">
                     Max está desparasitado internamente y externamente. Recibe
                     tratamiento preventivo contra pulgas y garrapatas
                     mensualmente.
@@ -237,10 +237,10 @@ export default function Mascota_Id() {
                 </div>
 
                 <div>
-                  <h3 class="font-bold text-gray-800 mb-2">
+                  <h3 className="font-bold text-gray-800 mb-2">
                     Información veterinaria
                   </h3>
-                  <p class="text-gray-700">
+                  <p className="text-gray-700">
                     Max ha sido evaluado por nuestro veterinario asociado, Dr.
                     Martínez, quien confirma que está listo para la adopción. Se
                     entregará su historial médico completo al adoptante.
@@ -259,13 +259,13 @@ export default function Mascota_Id() {
                   <li>Tiempo y dedicación para la mascota</li>
                   <li>No dejar sola más de 6 horas</li>
                 </ul>
-                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
-                  <div class="flex">
-                    <div class="flex-shrink-0">
-                      <i class="fas fa-info-circle text-yellow-400"></i>
+                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                  <div className="flex">
+                    <div className="flex-shrink-0">
+                      <i className="fas fa-info-circle text-yellow-400"></i>
                     </div>
-                    <div class="ml-3">
-                      <p class="text-sm text-yellow-700">
+                    <div className="ml-3">
+                      <p className="text-sm text-yellow-700">
                         Todos los adoptantes deben firmar un contrato de
                         adopción y permitir visitas de seguimiento para
                         verificar el bienestar de Max.
@@ -332,8 +332,8 @@ export default function Mascota_Id() {
       </div>
 
       {/* other Pets */}
-      <div class="mt-12">
-        <h3 class="text-xl font-bold text-gray-800 mb-6">
+      <div className="mt-12">
+        <h3 className="text-xl font-bold text-gray-800 mb-6">
           Otras mascotas que te pueden gustar
         </h3>
         {/* Mostrar mascotas */}

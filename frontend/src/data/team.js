@@ -3,7 +3,7 @@ export const teamMembers = [
     {
         name: "Nahuel Argandoña",
         role: "Líder de Proyecto",
-        image: "https://media-eze1-1.cdn.whatsapp.net/v/t61.24694-24/462983808_823871012997824_3207676274210132791_n.jpg?ccb=11-4&oh=01_Q5Aa1QGes4Qt6qnmZdBwE5C3g3L1YREnusm35TaP0hTonS1HNQ&oe=682A77CF&_nc_sid=5e03e0&_nc_cat=107",
+        image: "https://randomuser.me/api/portraits/men/20.jpg",
         color: "from-blue-400 to-purple-500",
         textColor: "text-purple-600",
         bgColor: "bg-purple-600",

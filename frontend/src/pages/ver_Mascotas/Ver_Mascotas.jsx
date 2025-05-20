@@ -56,12 +56,12 @@ export default function Ver_Mascotas() {
   return (
     <main className="container mx-auto px-4 py-8">
       {/* Botón de volver al home */}
-      <div class="mb-6">
+      <div className="mb-6">
         <a
           href="/"
-          class="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium"
+          className="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium"
         >
-          <i class="fas fa-arrow-left mr-2"></i> Volver al Home
+          <i className="fas fa-arrow-left mr-2"></i> Volver al Home
         </a>
       </div>
       {/* Título */}
