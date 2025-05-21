@@ -2,10 +2,13 @@ import React from "react";
 import Contact from "../../components/contact/Contact";
 import Testimonio from "../../components/testimonio/Testimonio";
 import Carrousel from "../../components/carrousel/Carrousel";
-import Blog from "../../components/blog/Blog";
 import About from "../../components/about/About";
+
 import mascotas from "../../data/mascotas";
 import CardMascota from "../../components/cardmascota/CardMascota";
+
+import Blog from "../../components/blog/Blog";
+import blogs from "../../data/blogs";
 
 export const Home = () => {
   return (
@@ -116,7 +119,43 @@ export const Home = () => {
       </section>
 
       {/* Blog Section */}
-      <Blog />
+
+      <section id="blog" className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+              Consejos y Noticias
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Aprende sobre cuidado de mascotas, historias de adopción y
+              nuestras últimas noticias.
+            </p>
+          </div>
+
+          <section className="py-12">
+            <div className="container mx-auto px-4">
+              <h2 className="text-3xl font-bold text-gray-800 mb-8">
+                Últimas publicaciones
+              </h2>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {blogs.slice(0, 3).map((m) => (
+                  <Blog key={m.id} blog={m} />
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <div className="text-center mt-12">
+            <a
+              href="/blogs"
+              className="px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700"
+            >
+              Ver más artículos
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* Success Stories Section */}
       <Testimonio />

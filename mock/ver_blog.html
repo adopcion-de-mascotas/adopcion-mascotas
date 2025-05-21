@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Paw - Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <i class="fas fa-paw text-3xl text-indigo-600 mr-2"></i>
+                <h1 class="text-2xl font-bold text-indigo-600">Happy Paws</h1>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="text-gray-700 hover:text-indigo-600 font-medium">Inicio</a>
+                <a href="#pets" class="text-gray-700 hover:text-indigo-600 font-medium">Mascotas</a>
+                <a href="#about" class="text-gray-700 hover:text-indigo-600 font-medium">Nosotros</a>
+                <a href="#blog" class="text-gray-700 hover:text-indigo-600 font-medium">Blog</a>
+                <a href="#contact" class="text-gray-700 hover:text-indigo-600 font-medium">Contacto</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button id="loginBtn"
+                    class="px-4 py-2 text-indigo-600 font-medium hover:bg-indigo-50 rounded-lg">Iniciar Sesión</button>
+                <button id="registerBtn"
+                    class="px-4 py-2 bg-indigo-600 text-white font-medium hover:bg-indigo-700 rounded-lg">Registrarse</button>
+                <button id="mobileMenuBtn" class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+                <a href="#home" class="text-gray-700 hover:text-indigo-600 font-medium py-2">Inicio</a>
+                <a href="#pets" class="text-gray-700 hover:text-indigo-600 font-medium py-2">Mascotas</a>
+                <a href="#about" class="text-gray-700 hover:text-indigo-600 font-medium py-2">Nosotros</a>
+                <a href="#blog" class="text-gray-700 hover:text-indigo-600 font-medium py-2">Blog</a>
+                <a href="#contact" class="text-gray-700 hover:text-indigo-600 font-medium py-2">Contacto</a>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- Hero Section -->
+    <section class="hero-pattern bg-indigo-900 bg-opacity-70 text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-4">Blog Happy Paw</h2>
+            <p class="text-xl max-w-2xl mx-auto">Aprende sobre cuidado de mascotas, historias de adopción y nuestras
+                últimas noticias</p>
+        </div>
+    </section>
+
+    <!-- Blog Categories -->
+    <div class="bg-indigo-50 py-4">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-center gap-2">
+                <button class="px-4 py-2 bg-indigo-600 text-white rounded-full text-sm font-medium">Todos</button>
+                <button
+                    class="px-4 py-2 bg-white text-indigo-600 rounded-full text-sm font-medium hover:bg-indigo-100">Consejos</button>
+                <button
+                    class="px-4 py-2 bg-white text-indigo-600 rounded-full text-sm font-medium hover:bg-indigo-100">Noticias</button>
+                <button
+                    class="px-4 py-2 bg-white text-indigo-600 rounded-full text-sm font-medium hover:bg-indigo-100">Historias</button>
+                <button
+                    class="px-4 py-2 bg-white text-indigo-600 rounded-full text-sm font-medium hover:bg-indigo-100">Cuidados</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blog Listing -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8">Últimas publicaciones</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Blog Card 1 -->
+                <div
+                    class="blog-card bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="relative overflow-hidden h-48">
+                        <img src="https://images.unsplash.com/photo-1583511655826-05700d52f4d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80"
+                            alt="Cachorro jugando" class="blog-image w-full h-full object-cover">
+                        <span
+                            class="category-badge absolute top-4 left-4 bg-white text-indigo-600 px-3 py-1 rounded-full text-xs font-semibold">Consejos</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-2">
+                            <span><i class="far fa-calendar mr-1"></i> 15 Junio 2023</span>
+                            <span class="mx-2">•</span>
+                            <span><i class="far fa-clock mr-1"></i> 5 min lectura</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">10 consejos para adiestrar a tu cachorro</h3>
+                        <p class="text-gray-600 mb-4">Aprende las técnicas básicas para educar a tu nuevo compañero
+                            peludo y establecer una relación saludable desde el primer día.</p>
+                        <a href="#blog-1"
+                            class="read-more-btn inline-block px-4 py-2 border border-indigo-600 text-indigo-600 rounded-md font-medium hover:bg-indigo-600 hover:text-white">
+                            Ver blog completo
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Blog Card 2 -->
+                <div
+                    class="blog-card bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="relative overflow-hidden h-48">
+                        <img src="https://images.unsplash.com/photo-1558788353-f76d92427f16?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80"
+                            alt="Gato en adopción" class="blog-image w-full h-full object-cover">
+                        <span
+                            class="category-badge absolute top-4 left-4 bg-white text-indigo-600 px-3 py-1 rounded-full text-xs font-semibold">Historias</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-2">
+                            <span><i class="far fa-calendar mr-1"></i> 2 Junio 2023</span>
+                            <span class="mx-2">•</span>
+                            <span><i class="far fa-clock mr-1"></i> 8 min lectura</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">La conmovedora historia de Luna</h3>
+                        <p class="text-gray-600 mb-4">Conoce cómo Luna, una gata callejera, encontró un hogar amoroso
+                            después de superar múltiples desafíos y cómo transformó la vida de su nueva familia.</p>
+                        <a href="#blog-2"
+                            class="read-more-btn inline-block px-4 py-2 border border-indigo-600 text-indigo-600 rounded-md font-medium hover:bg-indigo-600 hover:text-white">
+                            Ver blog completo
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Blog Card 3 -->
+                <div
+                    class="blog-card bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="relative overflow-hidden h-48">
+                        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1364&q=80"
+                            alt="Perro en el veterinario" class="blog-image w-full h-full object-cover">
+                        <span
+                            class="category-badge absolute top-4 left-4 bg-white text-indigo-600 px-3 py-1 rounded-full text-xs font-semibold">Cuidados</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-2">
+                            <span><i class="far fa-calendar mr-1"></i> 25 Mayo 2023</span>
+                            <span class="mx-2">•</span>
+                            <span><i class="far fa-clock mr-1"></i> 6 min lectura</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Cuidados esenciales para perros mayores</h3>
+                        <p class="text-gray-600 mb-4">Descubre cómo adaptar los cuidados de tu perro cuando entra en la
+                            etapa senior para garantizar su bienestar y calidad de vida.</p>
+                        <a href="#blog-3"
+                            class="read-more-btn inline-block px-4 py-2 border border-indigo-600 text-indigo-600 rounded-md font-medium hover:bg-indigo-600 hover:text-white">
+                            Ver blog completo
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Blog Card 4 -->
+                <div
+                    class="blog-card bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="relative overflow-hidden h-48">
+                        <img src="https://images.unsplash.com/photo-1583512603805-3cc353b8a5d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                            alt="Evento de adopción" class="blog-image w-full h-full object-cover">
+                        <span
+                            class="category-badge absolute top-4 left-4 bg-white text-indigo-600 px-3 py-1 rounded-full text-xs font-semibold">Noticias</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-2">
+                            <span><i class="far fa-calendar mr-1"></i> 18 Mayo 2023</span>
+                            <span class="mx-2">•</span>
+                            <span><i class="far fa-clock mr-1"></i> 4 min lectura</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Nuestro próximo evento de adopción</h3>
+                        <p class="text-gray-600 mb-4">Te contamos todo sobre nuestro próximo evento de adopción donde 20
+                            mascotas estarán esperando encontrar un hogar amoroso.</p>
+                        <a href="#blog-4"
+                            class="read-more-btn inline-block px-4 py-2 border border-indigo-600 text-indigo-600 rounded-md font-medium hover:bg-indigo-600 hover:text-white">
+                            Ver blog completo
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Blog Card 5 -->
+                <div
+                    class="blog-card bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="relative overflow-hidden h-48">
+                        <img src="https://images.unsplash.com/photo-1551269901-5c5e14c25df7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80"
+                            alt="Gato comiendo" class="blog-image w-full h-full object-cover">
+                        <span
+                            class="category-badge absolute top-4 left-4 bg-white text-indigo-600 px-3 py-1 rounded-full text-xs font-semibold">Consejos</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-2">
+                            <span><i class="far fa-calendar mr-1"></i> 10 Mayo 2023</span>
+                            <span class="mx-2">•</span>
+                            <span><i class="far fa-clock mr-1"></i> 7 min lectura</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Alimentación adecuada para gatos</h3>
+                        <p class="text-gray-600 mb-4">Guía completa sobre cómo elegir la mejor alimentación para tu gato
+                            según su edad, peso y condiciones de salud específicas.</p>
+                        <a href="#blog-5"
+                            class="read-more-btn inline-block px-4 py-2 border border-indigo-600 text-indigo-600 rounded-md font-medium hover:bg-indigo-600 hover:text-white">
+                            Ver blog completo
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Blog Card 6 -->
+                <div
+                    class="blog-card bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <div class="relative overflow-hidden h-48">
+                        <img src="https://images.unsplash.com/photo-1534361960057-19889db9621e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                            alt="Perro y niño jugando" class="blog-image w-full h-full object-cover">
+                        <span
+                            class="category-badge absolute top-4 left-4 bg-white text-indigo-600 px-3 py-1 rounded-full text-xs font-semibold">Historias</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-2">
+                            <span><i class="far fa-calendar mr-1"></i> 28 Abril 2023</span>
+                            <span class="mx-2">•</span>
+                            <span><i class="far fa-clock mr-1"></i> 10 min lectura</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">Cómo Max ayudó a superar la ansiedad infantil
+                        </h3>
+                        <p class="text-gray-600 mb-4">La historia de cómo la adopción de Max no solo le dio un hogar a
+                            un perro necesitado, sino que también ayudó a un niño a superar sus problemas de ansiedad.
+                        </p>
+                        <a href="#blog-6"
+                            class="read-more-btn inline-block px-4 py-2 border border-indigo-600 text-indigo-600 rounded-md font-medium hover:bg-indigo-600 hover:text-white">
+                            Ver blog completo
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-12 flex justify-center">
+                <nav class="flex items-center space-x-2">
+                    <button class="px-3 py-1 rounded-md border border-gray-300 text-gray-500 hover:bg-gray-50">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="px-3 py-1 rounded-md bg-indigo-600 text-white">1</button>
+                    <button
+                        class="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">2</button>
+                    <button
+                        class="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">3</button>
+                    <span class="px-2 text-gray-500">...</span>
+                    <button
+                        class="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">8</button>
+                    <button class="px-3 py-1 rounded-md border border-gray-300 text-gray-500 hover:bg-gray-50">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="bg-indigo-50 py-12">
+        <div class="container mx-auto px-4 text-center max-w-3xl">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Suscríbete a nuestro boletín</h2>
+            <p class="text-gray-600 mb-6">Recibe consejos, historias inspiradoras y noticias sobre adopciones
+                directamente en tu correo.</p>
+            <form class="flex flex-col sm:flex-row gap-2 justify-center">
+                <input type="email" placeholder="Tu correo electrónico"
+                    class="px-4 py-3 rounded-md border border-gray-300 flex-grow max-w-md">
+                <button type="submit"
+                    class="px-6 py-3 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 transition-colors">
+                    Suscribirse
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-paw text-3xl text-indigo-400 mr-2"></i>
+                        <h3 class="text-2xl font-bold text-indigo-400">Happy Paws</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">Dedicados a encontrar hogares amorosos para mascotas abandonadas y
+                        promover la adopción responsable.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Enlaces Rápidos</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white">Inicio</a></li>
+                        <li><a href="#pets" class="text-gray-400 hover:text-white">Mascotas</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white">Nosotros</a></li>
+                        <li><a href="#blog" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Adopción</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Proceso de Adopción</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Preguntas Frecuentes</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Requisitos</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Historias de Éxito</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Hogares Temporales</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Boletín</h4>
+                    <p class="text-gray-400 mb-4">Suscríbete para recibir noticias sobre mascotas disponibles y eventos
+                        de adopción.</p>
+                    <form class="flex">
+                        <input type="email" placeholder="Tu email"
+                            class="px-4 py-2 rounded-l-lg focus:outline-none text-gray-800 w-full">
+                        <button type="submit"
+                            class="px-4 py-2 bg-indigo-600 text-white rounded-r-lg hover:bg-indigo-700">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 mb-4 md:mb-0">© 2023 Happy Paws. Todos los derechos reservados.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white">Política de Privacidad</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Términos de Servicio</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Sample Blog Post (hidden by default, would be separate pages in reality) -->
+    <div id="blog-1" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="relative h-64 w-full">
+                <img src="https://images.unsplash.com/photo-1583511655826-05700d52f4d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80"
+                    alt="Cachorro jugando" class="w-full h-full object-cover rounded-t-lg">
+                <button onclick="closeBlog()"
+                    class="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md hover:bg-gray-100">
+                    <i class="fas fa-times text-gray-800"></i>
+                </button>
+            </div>
+            <div class="p-8">
+                <div class="flex items-center text-sm text-gray-500 mb-6">
+                    <span
+                        class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-xs font-semibold mr-4">Consejos</span>
+                    <span><i class="far fa-calendar mr-1"></i> 15 Junio 2023</span>
+                    <span class="mx-2">•</span>
+                    <span><i class="far fa-clock mr-1"></i> 5 min lectura</span>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">10 consejos para adiestrar a tu cachorro</h1>
+
+                <div class="prose max-w-none text-gray-700">
+                    <p class="mb-4">Adiestrar a un cachorro puede ser un desafío, pero con paciencia y consistencia,
+                        puedes establecer una base sólida para una relación feliz y saludable con tu nueva mascota. Aquí
+                        tienes 10 consejos esenciales para ayudarte en este proceso.</p>
+
+                    <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">1. Comienza temprano</h2>
+                    <p class="mb-4">El mejor momento para comenzar el adiestramiento es cuando tu cachorro llega a casa.
+                        Los perros son más receptivos al aprendizaje entre las 8 y 16 semanas de edad. Establece rutinas
+                        claras desde el primer día.</p>
+
+                    <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">2. Usa refuerzo positivo</h2>
+                    <p class="mb-4">Recompensa el buen comportamiento con premios, elogios o caricias. Los cachorros
+                        responden mucho mejor al refuerzo positivo que al castigo. Mantén pequeños trozos de comida
+                        sabrosa a mano para recompensar inmediatamente los comportamientos deseados.</p>
+
+                    <div class="bg-indigo-50 p-6 rounded-lg my-6">
+                        <h3 class="text-lg font-semibold text-indigo-800 mb-2">Consejo profesional</h3>
+                        <p class="text-indigo-700">"Usa premios de alto valor (como trozos pequeños de pollo o queso)
+                            para los comportamientos más difíciles de aprender. Esto hará que tu cachorro esté más
+                            motivado para repetir la acción." - Dra. Laura Martínez, Veterinaria</p>
+                    </div>
+
+                    <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">3. Sé consistente</h2>
+                    <p class="mb-4">Usa las mismas palabras de comando y señales manuales cada vez. Todos en la familia
+                        deben usar los mismos comandos y reglas para evitar confundir al cachorro. La inconsistencia
+                        puede retrasar el aprendizaje.</p>
+
+                    <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">4. Mantén las sesiones cortas</h2>
+                    <p class="mb-4">Los cachorros tienen períodos de atención cortos. Limita las sesiones de
+                        entrenamiento a 5-10 minutos, varias veces al día. Es mejor terminar con éxito una sesión corta
+                        que frustrar al cachorro con una demasiado larga.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <h3 class="font-semibold text-lg mb-2 text-indigo-600">Qué hacer</h3>
+                            <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                                <li>Recompensa inmediatamente los comportamientos deseados</li>
+                                <li>Usa un tono de voz alegre y positivo</li>
+                                <li>Practica en diferentes entornos</li>
+                                <li>Ten paciencia y sé comprensivo</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <h3 class="font-semibold text-lg mb-2 text-indigo-600">Qué evitar</h3>
+                            <ul class="list-disc pl-5 space-y-1 text-gray-700">
+                                <li>Castigar físicamente al cachorro</li>
+                                <li>Gritar o perder la paciencia</li>
+                                <li>Expectativas poco realistas</li>
+                                <li>Entrenar cuando estés estresado</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <p class="mt-6">Recuerda que cada cachorro es único y aprenderá a su propio ritmo. Celebra los
+                        pequeños logros y disfruta del proceso de construir una relación especial con tu nuevo mejor
+                        amigo.</p>
+                </div>
+
+                <div class="mt-12 pt-6 border-t border-gray-200">
+                    <h3 class="text-lg font-semibold mb-4">Comparte este artículo</h3>
+                    <div class="flex space-x-4">
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-blue-400 text-white flex items-center justify-center">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center">
+                            <i class="fab fa-pinterest-p"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-700 text-white flex items-center justify-center">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-12 bg-gray-50 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4">Sobre el autor</h3>
+                    <div class="flex items-start">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80"
+                            alt="Autor" class="w-16 h-16 rounded-full object-cover mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-800">Dra. Laura Martínez</h4>
+                            <p class="text-sm text-gray-500 mb-2">Veterinaria especializada en comportamiento animal</p>
+                            <p class="text-gray-700">Con más de 10 años de experiencia en adiestramiento canino, la Dra.
+                                Martínez ha ayudado a cientos de familias a establecer relaciones armoniosas con sus
+                                mascotas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/ver_blog.js">
+
+    </script>
+</body>
+
+</html>

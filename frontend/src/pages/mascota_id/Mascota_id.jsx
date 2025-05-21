@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import mascotas from "../../data/mascotas"; // Ajusta este path si cambia
+import mascotas from "../../data/mascotas"; 
 import CardMascota from "../../components/cardmascota/CardMascota";
 
 export default function Mascota_Id() {
