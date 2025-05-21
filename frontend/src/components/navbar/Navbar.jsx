@@ -40,6 +40,11 @@ export default function Navbar() {
     setDarkMode((prev) => !prev);
   };
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen((prev) => !prev);
+  };
+
   return (
     <>
       {/*Header */}
@@ -52,17 +57,17 @@ export default function Navbar() {
             </a>
           </div>
           <nav className="hidden md:flex space-x-8">
-            <label class="switch">
+            <label className="switch">
               <input
                 type="checkbox"
                 id="modo-desktop"
                 checked={darkMode}
                 onChange={toggleDarkMode}
               />
-              <span class="slider">
-                <span class="icon sun">☀️</span>
+              <span className="slider">
+                <span className="icon sun">☀️</span>
 
-                <span class="icon moon">🌙</span>
+                <span className="icon moon">🌙</span>
               </span>
             </label>
 
@@ -97,8 +102,8 @@ export default function Navbar() {
               Contacto
             </a>
           </nav>
-          {/*<div className="flex items-center space-x-4">
-            <button
+          <div className="flex items-center space-x-4">
+            {/*  <button
               onClick={handleOpenLogin}
               id="loginBtn"
               className="px-4 py-2 text-indigo-600 font-medium hover:bg-indigo-50 rounded-lg"
@@ -112,15 +117,38 @@ export default function Navbar() {
             >
               Registrarse
             </button>
-            <button id="mobileMenuBtn" className="md:hidden text-gray-700">
+            */}
+            <button
+              id="mobileMenuBtn"
+              onClick={toggleMobileMenu}
+              className="md:hidden text-gray-700"
+            >
               <i className="fas fa-bars text-2xl"></i>
             </button>
-          </div>*/}
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
-        <div id="mobileMenu" className="hidden md:hidden bg-white border-t">
+        <div
+          id="mobileMenu"
+          className={`md:hidden bg-white border-t ${
+            mobileMenuOpen ? "block" : "hidden"
+          }`}
+        >
           <div className="container mx-auto px-4 py-3 flex flex-col space-y-3">
+            <label className="switch">
+              <input
+                type="checkbox"
+                id="modo-desktop"
+                checked={darkMode}
+                onChange={toggleDarkMode}
+              />
+              <span className="slider">
+                <span className="icon sun">☀️</span>
+
+                <span className="icon moon">🌙</span>
+              </span>
+            </label>
             <a
               href="#home"
               className="text-gray-700 hover:text-indigo-600 font-medium py-2"

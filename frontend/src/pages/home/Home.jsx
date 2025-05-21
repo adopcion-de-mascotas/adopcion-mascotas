@@ -1,16 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Contact from "../../components/contact/Contact";
 import Testimonio from "../../components/testimonio/Testimonio";
 import Carrousel from "../../components/carrousel/Carrousel";
 import About from "../../components/about/About";
 
-import mascotas from "../../data/mascotas";
+{
+  /*  import mascotas from "../../data/mascotas";*/
+}
 import CardMascota from "../../components/cardmascota/CardMascota";
+import { obtenerMascotas } from "../../services/mascotasService";
 
 import Blog from "../../components/blog/Blog";
 import blogs from "../../data/blogs";
 
 export const Home = () => {
+  const [mascotas, setMascotas] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    obtenerMascotas().then(setMascotas).catch(setError);
+  }, []);
+
+  if (error) {
+    return <p className="text-red-600">Error al cargar mascotas.</p>;
+  }
+
   return (
     <>
       {/* Carrousel Section */}
@@ -30,9 +44,13 @@ export const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {mascotas.slice(0, 4).map((m) => (
-              <CardMascota key={m.id} mascota={m} />
-            ))}
+            {Array.isArray(mascotas) ? (
+              mascotas.map((mascota) => (
+                <CardMascota key={mascota.id} mascota={mascota} />
+              ))
+            ) : (
+              <p>No hay mascotas disponibles</p>
+            )}
           </div>
 
           <div className="text-center mt-12">
