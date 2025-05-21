@@ -1,11 +1,12 @@
 const express = require("express");
+const { list, detail } = require("../controllers/mascotasController");
 const router = express.Router()
 
 /* Lista las mascotas */
-router.get("/", (req, res) => res.json("Lista de mascotas"))
+router.get("/", list)
 
 /* Datos de una mascota */
-router.get("/:id",(req, res) => res.json("Datos de una mascota"))
+router.get("/:id", detail)
 
 
 module.exports = router;
