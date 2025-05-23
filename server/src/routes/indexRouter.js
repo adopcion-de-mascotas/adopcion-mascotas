@@ -14,7 +14,6 @@ router.get("/", (req, res) => {
 })
 
 router.use("/admin", adminRouter)
-
 router.use("/mascotas", mascotasRouter)
 router.use("/testimonios", testimoniosRouter)
 router.use("/noticias", noticiasRouter)

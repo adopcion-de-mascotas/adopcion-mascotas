@@ -7,6 +7,7 @@ const adminNoticiasRouter = require("./adminNoticiasRouter")
 const adminContactosRouter = require("./adminContactosRouter")
 const adminTipoContactosRouter = require("./adminTipoContactosRouter")
 const adminDireccionesRouter = require("./adminDireccionesRouter")
+const adminSessionRouter = require("./adminSessionRouter")
 
 /* Ruta de  mascotas */
 router.use("/mascotas", adminMascotasRouter)
@@ -15,6 +16,7 @@ router.use("/noticias", adminTestimoniosRouter)
 router.use("/contactos", adminContactosRouter)
 router.use("/tipos-contacto", adminTipoContactosRouter)
 router.use("/direcciones", adminDireccionesRouter)
+router.use("/session", adminSessionRouter)
 
 
 module.exports = router;
