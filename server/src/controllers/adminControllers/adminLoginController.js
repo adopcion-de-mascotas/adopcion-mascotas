@@ -1,5 +1,7 @@
 const { Admins } = require("../../database/models")
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+const { JWT_SECRET } = process.env
 
 module.exports = {
     login: async (req, res) => {
@@ -23,12 +25,20 @@ module.exports = {
 
         if (admin && bcrypt.compareSync(password, admin.password)) {
 
+            // Si existe el admin y la contraseña es correcta, creamos el token
+            const token = jwt.sign({
+                email: admin.email
+            }, JWT_SECRET, {
+                expiresIn: "1h"
+            })
+
             // Si existe el admin y la contraseña es correcta, devolvemos el admin
             return res.status(200).json({
                 id: admin.id,
                 nombre: admin.nombre,
                 apellido: admin.apellido,
-                email: admin.email
+                email: admin.email,
+                token
             })
         }
 
