@@ -1,53 +1,40 @@
 'use strict';
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('contactos', {
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.createTable('contacto_refugios', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      nombres: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
       telefono: {
-        type: Sequelize.STRING,
-        allowNull: true
-      },
-      celular: {
-        type: Sequelize.STRING,
-        allowNull: true
+        type: Sequelize.STRING
       },
       email: {
-        type: Sequelize.STRING,
-        allowNull: true
+        type: Sequelize.STRING
       },
-      red_social: {
-        type: Sequelize.STRING,
-        allowNull: true
+      web: {
+        type: Sequelize.STRING
       },
-      tipo_id: {
+      refugio_id: {
         type: Sequelize.INTEGER,
-        allowNull: true,
         references: {
-          model: 'tipo_contactos',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
-      },
-      mascota_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'mascotas',
+          model: 'refugios',
           key: 'id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
+      },
+      direccion_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'direcciones',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
       },
       createdAt: {
         allowNull: false,
@@ -62,7 +49,7 @@ module.exports = {
     });
   },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('contactos');
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable('contacto_refugios');
   }
 };

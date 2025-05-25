@@ -1,55 +1,41 @@
 'use strict';
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('mascotas', {
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.createTable('direcciones', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      nombre: {
+      calle: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      edad: {
-        type: Sequelize.INTEGER,
-        allowNull: false
+      barrio: {
+        type: Sequelize.STRING,
+        allowNull: true
       },
-      tipo: {
+      localidad: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      raza: {
+      provincia: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      tamaño: {
+      pais: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      codigo_postal: {
         type: Sequelize.STRING,
         allowNull: false
       },
       descripcion: {
         type: Sequelize.TEXT,
-        allowNull: false
-      },
-      foto: {
-        type: Sequelize.STRING,
         allowNull: true
-      },
-      estado: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      direccion_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'direcciones',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
       },
       createdAt: {
         allowNull: false,
@@ -64,7 +50,7 @@ module.exports = {
     });
   },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('mascotas');
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable('direcciones');
   }
 };

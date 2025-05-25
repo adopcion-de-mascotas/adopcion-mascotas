@@ -4,20 +4,39 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Direcciones extends Model {
     static associate(models) {
-      Direcciones.hasOne(models.Mascotas, {
+      // Relación con Refugio corregida
+      Direcciones.hasOne(models.ContactoRefugio, {
         foreignKey: 'direccion_id',
-        as: 'mascota'
+        as: 'refugio'
       });
     }
   }
 
   Direcciones.init({
-    calle: DataTypes.STRING,
-    barrio: DataTypes.STRING,
-    localidad: DataTypes.STRING,
-    provincia: DataTypes.STRING,
-    pais: DataTypes.STRING,
-    codigo_postal: DataTypes.STRING,
+    calle: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    barrio: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    localidad: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    provincia: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    pais: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    codigo_postal: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     descripcion: {
       type: DataTypes.TEXT,
       allowNull: true
@@ -26,7 +45,8 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Direcciones',
     tableName: "direcciones",
-    freezeTableName: true
+    freezeTableName: true,
+    timestamps: true
   });
 
   return Direcciones;

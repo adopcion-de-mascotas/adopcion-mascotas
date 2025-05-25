@@ -1,48 +1,37 @@
 'use strict';
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('direcciones', {
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.createTable('admins', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      calle: {
+      nombre: {
         type: Sequelize.STRING,
-        allowNull: false
-      },
-      barrio: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      localidad: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      provincia: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      pais: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      codigo_postal: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      descripcion: {
-        type: Sequelize.TEXT,
         allowNull: true
       },
-      createdAt: {
+      apellido: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      createdAt: {          // timestamps
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
-      updatedAt: {
+      updatedAt: {          // timestamps
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
@@ -50,7 +39,7 @@ module.exports = {
     });
   },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('direcciones');
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.dropTable('admins');
   }
 };
