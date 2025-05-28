@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Mascotas } = require("../database/models");
+const { Mascota } = require("../database/models");
 const { endpointError, CustomError } = require("../utils/error");
 const { endpointResponse } = require("../utils/success");
 
@@ -10,7 +10,10 @@ module.exports = {
             limit = 10,
             tipo,
             raza,
-            tamaño,
+            tamanio,
+            genero,
+            estado,
+            ciudad,
             search
         } = req.query;
 
@@ -20,21 +23,28 @@ module.exports = {
 
         if (tipo) filters.tipo = tipo;
         if (raza) filters.raza = raza;
-        if (tamaño) filters.tamaño = tamaño;
+        if (tamanio) filters.tamanio = tamanio;
+        if (genero) filters.genero = genero;
+        if (estado) filters.estado = estado;
+        if (ciudad) filters.ciudad = ciudad;
 
         if (search) {
             filters[Op.or] = [
                 { nombre: { [Op.like]: `%${search}%` } },
-                { descripcion: { [Op.like]: `%${search}%` } }
+                { descripcion: { [Op.like]: `%${search}%` } },
+                { historia: { [Op.like]: `%${search}%` } }
             ];
         }
 
         try {
-            const { count, rows } = await Mascotas.findAndCountAll({
+            const { count, rows } = await Mascota.findAndCountAll({
                 where: filters,
                 limit: Number(limit),
                 offset: Number(offset),
-                order: [["id", "ASC"]]
+                order: [["id", "ASC"]],
+                attributes: {
+                    exclude: ["ciudad"]
+                }
             });
 
             endpointResponse({
@@ -47,7 +57,9 @@ module.exports = {
                     filters: {
                         tipo: tipo || null,
                         raza: raza || null,
-                        tamaño: tamaño || null
+                        tamanio: tamanio || null,
+                        genero: genero || null,
+                        estado: estado || null,
                     },
                     search: search || null,
                     pagination: {
@@ -73,7 +85,7 @@ module.exports = {
         const { id } = req.params;
 
         try {
-            const mascota = await Mascotas.findByPk(id);
+            const mascota = await Mascota.findByPk(id);
 
             if (!mascota) {
                 throw new CustomError("Mascota no encontrada", 404);

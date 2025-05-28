@@ -1,11 +1,11 @@
 const express = require("express");
-const { list, getOne } = require("../controllers/testimoniosController");
+const { list, getOne } = require("../controllers/refugiosController");
 const router = express.Router()
 
-/* Lista las testimonios */
+/* Lista las refugio */
 router.get("/", list)
 
-/* Datos de una testimonio */
+/* Datos de un refugio */
 router.get("/:id", getOne)
 
 
