@@ -19,9 +19,9 @@ router.use("/mascotas",verificarToken , adminMascotasRouter)
 router.use("/testimonios",verificarToken, adminNoticiasRouter)
 router.use("/noticias",verificarToken, adminTestimoniosRouter)
 router.use("/contactos",verificarToken, adminContactosRouter)
-router.use("/tipos-contacto",verificarToken, adminTipoContactosRouter)
+router.use("/comportamientos", adminComportamientos)
 router.use("/direcciones",verificarToken, adminDireccionesRouter)
 router.use("/session", adminSessionRouter)
-
+router.use("/vacunas", adminVacunasRouter)
 
 module.exports = router;
