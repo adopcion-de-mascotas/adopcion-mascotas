@@ -1,4 +1,4 @@
-const { Mascotas } = require("../../database/models");
+const { Mascota } = require("../../database/models");
 const { endpointError, CustomError } = require("../../utils/error");
 const { endpointResponse } = require("../../utils/success");
 
@@ -9,41 +9,57 @@ module.exports = {
             edad,
             tipo,
             raza,
-            tamaño,
-            descripcion
+            genero,
+            tamanio,
+            peso,
+            esterelizado,
+            estado,
+            ciudad,
+            descripcion,
+            historia,
+            imagen_principal,
+            liked = false,
+            likes = 0,
+            comportamientoId,
+            refugioId,
+            saludId
         } = req.body;
 
-        const foto = req.file ? `/images/${req.file.filename}` : null;
-
         try {
-            const data = await Mascotas.create({
+            const nuevaMascota = await Mascota.create({
                 nombre,
                 edad,
                 tipo,
                 raza,
-                tamaño,
+                genero,
+                tamanio,
+                peso,
+                esterelizado,
+                estado,
+                ciudad,
                 descripcion,
-                foto,
-                estado: true
+                historia,
+                imagen_principal,
+                liked,
+                likes,
+                comportamientoId,
+                refugioId: refugioId,
+                saludId: saludId
             });
-
-            if (!data) {
-                throw CustomError("Ocurrió un error inesperado", 500);
-            }
 
             endpointResponse({
                 res,
                 code: 201,
                 status: true,
-                message: "Datos insertados correctamente",
-                body: data
+                message: "Mascota creada correctamente",
+                body: nuevaMascota
             });
 
         } catch (error) {
             endpointError({
                 res,
                 code: 400,
-                message: error.message || "Ocurrió un error",
+                message: error.message || "Ocurrió un error al crear la mascota",
                 errors: error.errors
             });
         }
@@ -55,41 +71,93 @@ module.exports = {
             edad,
             tipo,
             raza,
-            tamaño,
-            descripcion
+            genero,
+            tamanio,
+            peso,
+            esterelizado,
+            estado,
+            ciudad,
+            descripcion,
+            historia,
+            imagen_principal,
+            liked,
+            likes,
+            comportamientoId,
+            refugioId,
+            saludId
         } = req.body;
 
-        const foto = req.file ? `/images/${req.file.filename}` : null;
-
         try {
-            const mascota = await Mascotas.findByPk(req.params.id);
+            const mascota = await Mascota.findByPk(req.params.id);
+
             if (!mascota) {
                 throw CustomError("Mascota no encontrada", 404);
             }
 
-            await mascota.update({
+            const mascotaUpdated = await mascota.update({
                 nombre,
                 edad,
                 tipo,
                 raza,
-                tamaño,
+                genero,
+                tamanio,
+                peso,
+                esterelizado,
+                estado,
+                ciudad,
                 descripcion,
-                ...(foto && { foto }) // Solo actualiza si hay nueva imagen
+                historia,
+                imagen_principal,
+                liked,
+                likes,
+                comportamientoId,
+                refugioId: refugioId,
+                saludId: saludId
             });
 
             endpointResponse({
                 res,
                 code: 200,
                 status: true,
-                message: "Datos actualizados correctamente",
-                body: mascota
+                message: "Mascota actualizada correctamente",
+                body: mascotaUpdated
             });
 
         } catch (error) {
             endpointError({
                 res,
                 code: 400,
-                message: error.message || "Ocurrió un error",
+                message: error.message || "Ocurrió un error al actualizar la mascota",
+                errors: error.errors
+            });
+        }
+    },
+
+    remove: async (req, res) => {
+        const { id } = req.params;
+
+        try {
+            const mascota = await Mascota.findByPk(id);
+
+            if (!mascota) {
+                throw new CustomError("Mascota no encontrada", 404);
+            }
+
+            await mascota.destroy();
+
+            endpointResponse({
+                res,
+                code: 200,
+                status: true,
+                message: "Mascota eliminada correctamente",
+                body: { id }
+            });
+
+        } catch (error) {
+            endpointError({
+                res,
+                code: 400,
+                message: error.message || "Ocurrió un error al eliminar la mascota",
                 errors: error.errors
             });
         }

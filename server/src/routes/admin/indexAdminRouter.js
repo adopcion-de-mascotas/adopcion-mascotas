@@ -6,9 +6,13 @@ const adminMascotasRouter = require("./adminMascotasRouter")
 const adminTestimoniosRouter = require("./adminTestimoniosRouter")
 const adminNoticiasRouter = require("./adminNoticiasRouter")
 const adminContactosRouter = require("./adminContactosRouter")
-const adminTipoContactosRouter = require("./adminTipoContactosRouter")
+const adminComportamientos = require("./adminComportamientos")
 const adminDireccionesRouter = require("./adminDireccionesRouter")
 const adminSessionRouter = require("./adminSessionRouter")
+const adminVacunasRouter = require("./adminVacunasRouter")
+
+router.use("/session", adminSessionRouter)
+
 
 /* Ruta de  mascotas */
 router.use("/mascotas",verificarToken , adminMascotasRouter)
