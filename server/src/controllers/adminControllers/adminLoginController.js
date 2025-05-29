@@ -27,6 +27,7 @@ module.exports = {
 
             // Si existe el admin y la contraseña es correcta, creamos el token
             const token = jwt.sign({
+                id: admin.id,
                 email: admin.email
             }, JWT_SECRET, {
                 expiresIn: "1h"
