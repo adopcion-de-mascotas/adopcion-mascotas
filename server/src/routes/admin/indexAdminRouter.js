@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router()
+const verificarToken = require("../../middlewares/verificarToken")
 
 const adminMascotasRouter = require("./adminMascotasRouter")
 const adminTestimoniosRouter = require("./adminTestimoniosRouter")
@@ -10,12 +11,12 @@ const adminDireccionesRouter = require("./adminDireccionesRouter")
 const adminSessionRouter = require("./adminSessionRouter")
 
 /* Ruta de  mascotas */
-router.use("/mascotas", adminMascotasRouter)
-router.use("/testimonios", adminNoticiasRouter)
-router.use("/noticias", adminTestimoniosRouter)
-router.use("/contactos", adminContactosRouter)
-router.use("/tipos-contacto", adminTipoContactosRouter)
-router.use("/direcciones", adminDireccionesRouter)
+router.use("/mascotas",verificarToken , adminMascotasRouter)
+router.use("/testimonios",verificarToken, adminNoticiasRouter)
+router.use("/noticias",verificarToken, adminTestimoniosRouter)
+router.use("/contactos",verificarToken, adminContactosRouter)
+router.use("/tipos-contacto",verificarToken, adminTipoContactosRouter)
+router.use("/direcciones",verificarToken, adminDireccionesRouter)
 router.use("/session", adminSessionRouter)
 
 
