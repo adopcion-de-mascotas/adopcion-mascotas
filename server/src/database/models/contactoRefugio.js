@@ -1,5 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
     const ContactoRefugio = sequelize.define('ContactoRefugio', {
+        nombre: DataTypes.STRING,
         telefono: DataTypes.STRING,
         email: DataTypes.STRING,
         web: DataTypes.STRING,
@@ -8,14 +9,8 @@ module.exports = (sequelize, DataTypes) => {
             references: {
                 model: 'refugios',
                 key: 'id'
-            }
-        },
-        direccion_id: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'direcciones',
-                key: 'id'
-            }
+            },
+            unique: true  // Para relación 1:1
         }
     }, {
         tableName: 'contacto_refugios'
@@ -25,11 +20,6 @@ module.exports = (sequelize, DataTypes) => {
         ContactoRefugio.belongsTo(models.Refugio, {
             foreignKey: 'refugio_id',
             as: 'refugio'
-        });
-
-        ContactoRefugio.belongsTo(models.Direcciones, {
-            foreignKey: 'direccion_id',
-            as: 'direccion'
         });
     };
 

@@ -27,7 +27,8 @@ module.exports = {
       },
       pais: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 'Argentina' // Agregado valor por defecto
       },
       codigo_postal: {
         type: Sequelize.STRING,

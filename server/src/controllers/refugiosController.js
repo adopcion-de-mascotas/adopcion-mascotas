@@ -35,7 +35,12 @@ module.exports = {
     getOne: async (req, res) => {
         const { id } = req.params;
         try {
-            const data = await Refugio.findByPk(id);
+            const data = await Refugio.findByPk(id, {
+                include: [{
+                    association: "contacto",
+                    attributes: ["nombre","telefono", "email", "web"]
+                }]
+            });
 
             if (!data) {
                 throw new CustomError("Ocurrió un error", 500)

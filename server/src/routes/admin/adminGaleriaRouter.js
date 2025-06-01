@@ -1,7 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const galeriaController = require('../../adminControllers/adminGaleriaController');
+const { multiUpload, handleMulterErrors } = require("../../middlewares/imageMiddleware")
 
-//const galeriaController = require('../controllers/galeriaController');
+// Obtener galería de mascota
+router.get('/mascota/:mascotaId', multiUpload, handleMulterErrors, galeriaController.getByMascota);
 
-router.get('/', (req, res) => { res.json("galeria controller") });
-router.delete('/:id', (req, res) => { res.json("galeria controller") });
+// Agregar foto a galería
+router.post('/mascota/:mascotaId', multiUpload, handleMulterErrors, galeriaController.create);
+
+// Eliminar foto
+router.delete('/:id', galeriaController.delete);
+
+module.exports = router;

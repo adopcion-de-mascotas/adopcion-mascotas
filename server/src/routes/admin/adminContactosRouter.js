@@ -1,11 +1,18 @@
 const express = require('express');
 const router = express.Router();
+const {
+    create,
+    getAll,
+    getById,
+    remove,
+    update
+} = require("../../controllers/adminControllers/adminContactosController")
 
-router.get("/", (req, res) => { res.json("contacto") })
-router.get('/:id', (req, res) => { res.json("contacto") });
+router.get("/", getAll)
+router.get('/:id', getById);
 
-router.post('/', (req, res) => { res.json("contacto") });
-router.put('/:id', (req, res) => { res.json("contacto") });
-router.delete('/:id', (req, res) => { res.json("contacto") });
+router.post('/', create);
+router.put('/:id', update);
+router.delete('/:id', remove);
 
 module.exports = router;

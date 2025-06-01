@@ -1,20 +1,14 @@
-const express = require("express");
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
+const direccionController = require('../../controllers/adminControllers/adminDireccionesController');
 
+router.get("/", direccionController.getAll);
+router.get("/:id", direccionController.getById);
+router.post("/", direccionController.create);
+router.put("/:id", direccionController.update);
+router.delete("/:id", direccionController.delete);
 
-/* Lista las direcciones */
-router.get("/", (req, res) => res.json("Lista de direcciones"))
-
-/* Datos de una direccion */
-router.get("/:id",(req, res) => res.json("Datos de una direccion"))
-
-/* Agrega direccion */
-router.post("/", (req, res) => res.json("post"))
-
-/* Edita datos de direccion */
-router.put("/:id", (req, res) => res.json("put"))
-
-/* Elimina datos de direccion */
-router.delete("/:id", (req, res) => res.json("delete"))
+/* Actualiza direccion de refugio */
+router.put('/refugio/:refugioId', direccionController.updateDireccionRefugio);
 
 module.exports = router;

@@ -1,11 +1,9 @@
-// routes/refugios.js
 const express = require('express');
 const router = express.Router();
+const refugioController = require('../../controllers/adminControllers/adminRefugiosController');
 
-//const refugioController = require('../controllers/refugioController');
-
-router.post('/', (req, res) => { res.json("refugios") });
-router.put('/:id', (req, res) => { res.json("refugios") });
-router.delete('/:id', (req, res) => { res.json("refugios") });
+router.post('/', refugioController.create);
+router.put('/:id', refugioController.update);
+router.delete('/:id', refugioController.delete);
 
 module.exports = router;

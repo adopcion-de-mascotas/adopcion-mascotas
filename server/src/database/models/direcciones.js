@@ -4,8 +4,8 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Direcciones extends Model {
     static associate(models) {
-      // Relación con Refugio corregida
-      Direcciones.hasOne(models.ContactoRefugio, {
+      // Relación con Refugio (1:1)
+      Direcciones.hasOne(models.Refugio, {
         foreignKey: 'direccion_id',
         as: 'refugio'
       });
@@ -31,7 +31,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     pais: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 'Argentina'
     },
     codigo_postal: {
       type: DataTypes.STRING,

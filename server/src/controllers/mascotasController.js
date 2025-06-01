@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Mascota } = require("../database/models");
+const { Mascota, GaleriaMascota } = require("../database/models");
 const { endpointError, CustomError } = require("../utils/error");
 const { endpointResponse } = require("../utils/success");
 
@@ -85,10 +85,38 @@ module.exports = {
         const { id } = req.params;
 
         try {
-            const mascota = await Mascota.findByPk(id);
+            const mascota = await Mascota.findByPk(id, {
+                include: [
+                    {
+                        model: GaleriaMascota,
+                        as: 'galeria', // Asegúrate que este alias coincida con tu asociación en el modelo Mascota
+                        attributes: ['id', 'foto'],
+                        order: [['id', 'ASC']]
+                    },
+                    // Puedes incluir otras asociaciones aquí si es necesario
+                    // Ej: refugio, comportamiento, etc.
+                ],
+                attributes: {
+                    exclude: ["createdAt", "updatedAt"] // Excluir campos innecesarios
+                }
+            });
 
             if (!mascota) {
                 throw new CustomError("Mascota no encontrada", 404);
+            }
+
+            // Formatear la respuesta para incluir URLs completas de las fotos
+            const mascotaData = mascota.get({ plain: true });
+
+            // Agregar URL base a las fotos (ajusta según tu configuración)
+            mascotaData.galeria = mascotaData.galeria.map(foto => ({
+                ...foto,
+                url: `${req.protocol}://${req.get('host')}/images/mascotas/${foto.foto}`
+            }));
+
+            // Agregar URL para la imagen principal si existe
+            if (mascotaData.imagen_principal) {
+                mascotaData.imagen_principal_url = `${req.protocol}://${req.get('host')}/images/mascotas/${mascotaData.imagen_principal}`;
             }
 
             endpointResponse({
@@ -96,15 +124,15 @@ module.exports = {
                 code: 200,
                 status: true,
                 message: "Mascota encontrada",
-                body: mascota
+                body: mascotaData
             });
 
         } catch (error) {
             endpointError({
                 res,
-                code: 400,
+                code: error.code || 400,
                 message: error.message || "Ocurrió un error",
-                errors: error.errors
+                errors: error.errors || [error.message]
             });
         }
     }

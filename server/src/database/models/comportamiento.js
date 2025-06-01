@@ -7,7 +7,10 @@ module.exports = (sequelize, DataTypes) => {
     }, { tableName: 'comportamientos' });
 
     Comportamiento.associate = models => {
-        Comportamiento.hasOne(models.Mascota);
+        Comportamiento.hasOne(models.Mascota,{
+            as: "mascota",
+            foreignKey: "comportamientoId"
+        });
     };
 
     return Comportamiento;
