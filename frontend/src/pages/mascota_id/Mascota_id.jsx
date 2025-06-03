@@ -1,13 +1,62 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import mascotas from "../../data/mascotas"; 
 import CardMascota from "../../components/cardmascota/CardMascota";
+import { obtenerMascotaPorId } from "../../services/mascotasService";
+import { obtenerMascotas } from "../../services/mascotasService";
 
 export default function Mascota_Id() {
   const { id } = useParams();
-  const mascota = mascotas.find((m) => m.id === id);
-
   const [tab, setTab] = useState("sobre");
+
+  // Estado para listado de mascotaId
+  const [mascota, setMascota] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Estado para listado de mascotas
+  const [mascotas, setMascotas] = useState([]);
+
+  // Cargar mascota Id
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+    obtenerMascotaPorId(id)
+      .then((data) => {
+        setMascota(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("No se pudo cargar la mascota.");
+        setLoading(false);
+      });
+  }, [id]);
+
+  // Cargar listado de mascotas
+  useEffect(() => {
+    obtenerMascotas()
+      .then((data) => {
+        setMascotas(data);
+      })
+      .catch(() => {});
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="text-center py-20 text-gray-600">Cargando mascota...</div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-20 text-red-600">
+        <h2 className="text-2xl font-bold mb-4">{error}</h2>
+        <Link to="/mascotas" className="text-yellow-500 hover:underline">
+          Volver al listado
+        </Link>
+      </div>
+    );
+  }
 
   if (!mascota) {
     return (
@@ -38,18 +87,18 @@ export default function Mascota_Id() {
           {/* Galería */}
           <div className="p-4">
             <img
-              src={mascota.imagen}
+              src={mascota.imagen_principal}
               alt={mascota.nombre}
-              className="w-full h-96 object-cover rounded-xl mb-4"
+              className="w-full h-96 mb-3 object-cover rounded-xl mb-4shadow-md hover:scale-105 transition-transform duration-300"   
             />
             {mascota.galeria && (
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-3 gap-3 ">
                 {mascota.galeria.map((img, i) => (
                   <img
                     key={i}
-                    src={img}
+                    src={img.foto}
                     alt={`extra-${i}`}
-                    className="h-20 object-cover rounded-lg"
+                    className="w-full h-28 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300"
                   />
                 ))}
               </div>
@@ -75,14 +124,14 @@ export default function Mascota_Id() {
 
             <div className="mb-6">
               <span className="bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full">
-                <i className="fas fa-home mr-1"></i> Disponible para adopción
+                <i className="fas fa-home mr-1"></i> {mascota.estado}
               </span>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
               <div className="bg-gray-50 p-3 rounded-lg">
                 <div className="text-sm text-gray-500 mb-1">Raza</div>
-                <div className="font-medium text-gray-800">{mascota.tipo}</div>
+                <div className="font-medium text-gray-800">{mascota.raza}</div>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
                 <div className="text-sm text-gray-500 mb-1">Edad</div>
@@ -96,17 +145,23 @@ export default function Mascota_Id() {
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
                 <div className="text-gray-500 text-sm mb-1">Tamaño</div>
-                <div className="font-medium text-gray-800"> {mascota.tamaño} </div>
+                <div className="font-medium text-gray-800">
+                  {" "}
+                  {mascota.tamanio}{" "}
+                </div>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
                 <div className="text-gray-500 text-sm mb-1">Peso</div>
-                <div className="font-medium text-gray-800"> {mascota.peso} </div>
+                <div className="font-medium text-gray-800">
+                  {" "}
+                  {mascota.peso}{" "}
+                </div>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
                 <div className="text-gray-500 text-sm mb-1">Esterilizado</div>
                 <div className="font-medium text-gray-800">
                   {" "}
-                  {mascota.esterelizado}{" "}
+                  {mascota.esterelizado ? "Sí" : "No"}{" "}
                 </div>
               </div>
             </div>
@@ -163,21 +218,29 @@ export default function Mascota_Id() {
                   ))}
                   <div>
                     <h3 className="font-bold text-gray-800 mb-2">
-                      Comportamiento con
+                      Comportamiento con {mascota.nombre}
                     </h3>
                     <div className="grid grid-cols-2 gap-4 mb-4">
                       <div className="flex items-center">
                         <i className="fas fa-child feature-icon text-gray-600 mr-2"></i>
                         <div>
                           <div className="text-sm text-gray-500">Niños</div>
-                          <div className="font-medium text-gray-800">Excelente</div>
+                          <div className="font-medium text-gray-800">
+                            {mascota.comportamiento?.niños ?? "No especificado"}
+                          </div>
                         </div>
                       </div>
                       <div className="flex items-center">
                         <i className="fas fa-dog feature-icon text-gray-600 mr-2"></i>
                         <div>
-                          <div className="text-sm text-gray-500">Otros perros</div>
-                          <div className="font-medium text-gray-800">Bueno</div>
+                          <div className="text-sm text-gray-500">
+                            Otros perros
+                          </div>
+                          <div className="font-medium text-gray-800">
+                            {" "}
+                            {mascota.comportamiento?.perros ??
+                              "No especificado"}
+                          </div>
                         </div>
                       </div>
                       <div className="flex items-center">
@@ -185,29 +248,26 @@ export default function Mascota_Id() {
                         <div>
                           <div className="text-sm text-gray-500">Gatos</div>
                           <div className="font-medium text-gray-800">
-                            No probado
+                            {mascota.comportamiento?.gatos ?? "No especificado"}
                           </div>
                         </div>
                       </div>
                       <div className="flex items-center">
                         <i className="fas fa-home feature-icon text-gray-600 mr-2"></i>
                         <div>
-                          <div className="text-sm text-gray-500">Apartamento</div>
+                          <div className="text-sm text-gray-500">
+                            Apartamento
+                          </div>
                           <div className="font-medium text-gray-800">
-                            Posible con ejercicio
+                            {mascota.comportamiento?.apartamento ??
+                              "No especificado"}
                           </div>
                         </div>
                       </div>
                     </div>
 
                     <h3 className="font-bold text-gray-800 mb-2">Historia</h3>
-                    <p className="text-gray-700">
-                      Max fue encontrado abandonado en un parque cuando tenía
-                      aproximadamente 1 año. Fue rescatado por una protectora
-                      local donde recibió todas sus vacunas y fue esterilizado.
-                      Lleva 6 meses en cuidado temporal esperando una familia
-                      permanente.
-                    </p>
+                    <p className="text-gray-700">{mascota.historia}</p>
                   </div>
                 </div>
               </div>
@@ -219,20 +279,18 @@ export default function Mascota_Id() {
                   Estado de salud
                 </h3>
                 <p className="text-gray-700 mb-2">
-                  Sin problemas médicos conocidos.
+                  {mascota.salud?.estado ?? "No especificado"}
                 </p>
                 <h3 className="font-bold text-gray-800 mb-2">Vacunas</h3>
                 <ul className="list-disc pl-5 text-gray-700 space-y-1">
-                  <li>Rabia</li>
-                  <li>Moquillo</li>
-                  <li>Parvovirus</li>
+                  {mascota.salud.vacunas.map((vacuna) => (
+                    <li key={vacuna.id}>{vacuna.nombre}</li>
+                  ))}
                 </ul>
                 <div className="mb-4">
                   <h3 className="font-bold text-gray-800 mb-2">Tratamientos</h3>
                   <p className="text-gray-700">
-                    Max está desparasitado internamente y externamente. Recibe
-                    tratamiento preventivo contra pulgas y garrapatas
-                    mensualmente.
+                    {mascota.salud?.tratamiento ?? "No especificado"}
                   </p>
                 </div>
 
@@ -241,9 +299,7 @@ export default function Mascota_Id() {
                     Información veterinaria
                   </h3>
                   <p className="text-gray-700">
-                    Max ha sido evaluado por nuestro veterinario asociado, Dr.
-                    Martínez, quien confirma que está listo para la adopción. Se
-                    entregará su historial médico completo al adoptante.
+                    {mascota.salud?.info_veterinaria ?? "No especificado"}
                   </p>
                 </div>
               </div>
@@ -294,21 +350,21 @@ export default function Mascota_Id() {
           <div className="md:col-span-2">
             <div className="flex items-start mb-4">
               <img
-                src="/refugio.jpg"
+                src={mascota.refugio?.imagen ?? "No especificado"}
                 alt="Refugio"
                 className="w-16 h-16 rounded-lg object-cover mr-4"
               />
               <div>
-                <h4 className="font-bold text-gray-800">Patitas Felices</h4>
+                <h4 className="font-bold text-gray-800">
+                  {mascota.refugio?.nombre ?? "No especificado"}
+                </h4>
                 <p className="text-gray-600 text-sm">
-                  Refugio sin ánimo de lucro dedicado al rescate y
-                  rehabilitación.
+                  {mascota.refugio?.descripcion ?? "No especificado"}
                 </p>
               </div>
             </div>
             <p className="text-gray-700">
-              Contamos con instalaciones amplias y un equipo comprometido en
-              brindar cuidado, entrenamiento básico y mucho amor a cada mascota.
+              {mascota.refugio?.info ?? "No especificado"}
             </p>
           </div>
           <div>
@@ -319,12 +375,16 @@ export default function Mascota_Id() {
                 Calle Rescate 45, Madrid
               </li>
               <li className="flex items-center">
-                <i className="fas fa-phone text-gray-500 mr-3"></i> +34 911 234
-                567
+                <i className="fas fa-phone text-gray-500 mr-3"></i>
+                {mascota.refugio.contacto?.telefono ?? "No especificado"}
               </li>
               <li className="flex items-center">
                 <i className="fas fa-envelope text-gray-500 mr-3"></i>{" "}
-                info@patitasfelices.org
+                {mascota.refugio.contacto?.email ?? "No especificado"}
+              </li>
+              <li className="flex items-center">
+                <i className="fas fa-globe text-gray-500 mr-3"></i>{" "}
+                {mascota.refugio.contacto?.web ?? "No especificado"}
               </li>
             </ul>
           </div>
@@ -339,9 +399,15 @@ export default function Mascota_Id() {
         {/* Mostrar mascotas */}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {mascotas.slice(0, 4).map((m) => (
-            <CardMascota key={m.id} mascota={m} />
-          ))}
+          {mascotas && mascotas.length > 0 ? (
+            mascotas
+              .slice(0, 4)
+              .map((mascota) => (
+                <CardMascota key={mascota.id} mascota={mascota} />
+              ))
+          ) : (
+            <p>No hay mascotas disponibles</p>
+          )}
         </div>
       </div>
     </main>

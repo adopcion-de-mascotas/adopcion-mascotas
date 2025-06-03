@@ -44,10 +44,12 @@ export const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {mascotas ? (
-              mascotas.map((mascota) => (
-                <CardMascota key={mascota.id} mascota={mascota} />
-              ))
+            {mascotas && mascotas.length > 0 ? (
+              mascotas
+                .slice(0, 4)
+                .map((mascota) => (
+                  <CardMascota key={mascota.id} mascota={mascota} />
+                ))
             ) : (
               <p>No hay mascotas disponibles</p>
             )}

@@ -8,7 +8,7 @@ import Login from "../pages/login/Login";
 import Blogs from "./../pages/blogs/blogs";
 import Blog_id from "../pages/blog_id/Blog_id";
 
-import Ver_Mascotas from "../pages/Ver_Mascotas/Ver_Mascotas";
+import Ver_Mascotas from "../pages/ver_Mascotas/Ver_Mascotas";
 import Mascota_Id from "../pages/mascota_id/Mascota_id";
 
 export default function AppRoutes() {

@@ -1,8 +1,21 @@
-import React, { useState } from "react";
-import mascotas from "../../data/mascotas";
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, { useEffect, useState } from "react";
+
 import CardMascota from "../../components/cardmascota/CardMascota";
+import { obtenerMascotas } from "../../services/mascotasService";
 
 export default function Ver_Mascotas() {
+  const [mascotas, setMascotas] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    obtenerMascotas().then(setMascotas).catch(setError);
+  }, []);
+
+  if (error) {
+    return <p className="text-red-600">Error al cargar mascotas.</p>;
+  }
+
   // Estados para filtros
   const [tipo, setTipo] = useState("Todos");
   const [edad, setEdad] = useState("Todas");
@@ -40,7 +53,9 @@ export default function Ver_Mascotas() {
   });
 
   // Mascotas que vamos a mostrar (paginación)
-  const mascotasVisibles = mascotasFiltradas.slice(0, visibleCount);
+  {
+    /* const mascotasVisibles = mascotasFiltradas.slice(0, visibleCount);*/
+  }
 
   // Función para cargar más mascotas
   const cargarMas = () => {
@@ -221,9 +236,13 @@ export default function Ver_Mascotas() {
 
       {/* Mostrar mascotas */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {mascotasVisibles.map((m) => (
-          <CardMascota key={m.id} mascota={m} />
-        ))}
+        {mascotas ? (
+          mascotas.map((mascota) => (
+            <CardMascota key={mascota.id} mascota={mascota} />
+          ))
+        ) : (
+          <p>No hay mascotas disponibles</p>
+        )}
       </div>
 
       {/* Cargar más */}
