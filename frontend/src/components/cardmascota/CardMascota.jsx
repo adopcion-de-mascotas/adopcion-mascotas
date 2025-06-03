@@ -5,7 +5,8 @@ import './CardMascota.css';
 
 export default function CardMascota({ mascota }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm overflow-hidden transition duration-300 hover:shadow-md">
+    <div className="bg-white rounded-xl shadow-sm overflow-hidde hover:shadow-md
+    mb-4shadow-md hover:scale-105 transition-transform duration-300">
       <div className="relative">
         <img
           src={mascota.imagen_principal}

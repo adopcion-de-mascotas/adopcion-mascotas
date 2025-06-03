@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Contact from "../../components/contact/Contact";
+
 import Testimonio from "../../components/testimonio/Testimonio";
+import { obtenerTestimonios } from "../../services/testimonioService";
+
 import Carrousel from "../../components/carrousel/Carrousel";
 import About from "../../components/about/About";
 
@@ -15,10 +18,22 @@ import blogs from "../../data/blogs";
 
 export const Home = () => {
   const [mascotas, setMascotas] = useState([]);
+
+  const [testimonials, setTestimonials] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     obtenerMascotas().then(setMascotas).catch(setError);
+  }, []);
+
+  useEffect(() => {
+    obtenerTestimonios()
+      .then((data) => {
+        setTestimonials(data);
+      })
+      .catch((err) => {
+        setError(err.message || "Error al cargar testimonios");
+      });
   }, []);
 
   if (error) {
@@ -177,8 +192,10 @@ export const Home = () => {
         </div>
       </section>
 
+
       {/* Success Stories Section */}
-      <Testimonio />
+      <Testimonio testimonials={testimonials} />
+
 
       {/* Call to Action Section */}
       <section className="py-16 bg-white">

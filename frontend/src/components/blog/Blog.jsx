@@ -20,7 +20,10 @@ export default function Blog({ blog }) {
 
   return (
     <>
-      <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+      <div
+        className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow 
+     overflow-hidde mb-4shadow-md hover:scale-105 duration-300"
+      >
         <div className="relative overflow-hidden h-48">
           <img
             src={blog.imagen}

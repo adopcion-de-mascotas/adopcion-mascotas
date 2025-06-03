@@ -1,7 +1,6 @@
 import React from "react";
-import { testimonials } from "../../data/testimonio";
 
-export default function Testimonio() {
+export default function Testimonio({ testimonials }) {
   return (
     <section className="py-16 bg-indigo-600 text-white">
       <div className="container mx-auto px-4">
@@ -12,45 +11,42 @@ export default function Testimonio() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map(
-            ({ nombre, cargo, mensaje, estrellas, imagen }, index) => {
-              const fullStars = Math.floor(estrellas);
-              const halfStar = estrellas % 1 >= 0.5;
-
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
+          {testimonials
+            ?.slice(0, 3)
+            .map(({ autor, fecha, comentario, foto }, index) => {
               return (
                 <div
                   key={index}
-                  className="bg-white bg-opacity-10 p-8 rounded-xl text-black"
+                  className="bg-white bg-opacity-10 p-8 rounded-xl text-black
+                  mb-4shadow-md hover:scale-105 transition-transform duration-300"
                 >
-                  <div className="flex items-center mb-4 text-yellow-400 text-xl">
-                    {Array(fullStars)
-                      .fill(0)
-                      .map((_, i) => (
-                        <i key={i} className="fas fa-star mr-1"></i>
-                      ))}
-                    {halfStar && <i className="fas fa-star-half-alt"></i>}
-                  </div>
+                  <div className="flex items-center mb-4 text-yellow-400 text-xl"></div>
 
-                  <p className="opacity-90 mb-6">"{mensaje}"</p>
+                  <p className="opacity-90 mb-6">"{comentario}"</p>
 
                   <div className="flex items-center">
                     <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
                       <img
-                        src={imagen}
-                        alt={nombre}
+                        src={foto}
+                        alt={autor}
                         className="w-full h-full object-cover"
                       />
                     </div>
                     <div>
-                      <h4 className="font-bold">{nombre}</h4>
-                      <p className="text-sm opacity-80">{cargo}</p>
+                      <h4 className="font-bold">{autor}</h4>
+                      <p className="text-sm opacity-80">
+                        {new Date(fecha).toLocaleDateString("es-ES", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </p>
                     </div>
                   </div>
                 </div>
               );
-            }
-          )}
+            })}
         </div>
       </div>
     </section>
