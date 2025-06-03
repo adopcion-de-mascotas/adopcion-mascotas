@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <>
       <div
-      className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-6 bg-cover bg-center"
+      className="flex flex-col items-center justify-center  bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-6 bg-cover bg-center"
       style={{
         backgroundImage:
           "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80')",

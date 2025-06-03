@@ -89,7 +89,7 @@ export default function Mascota_Id() {
             <img
               src={mascota.imagen_principal}
               alt={mascota.nombre}
-              className="w-full h-96 mb-3 object-cover rounded-xl mb-4shadow-md hover:scale-105 transition-transform duration-300"   
+              className="w-full h-96 mb-3 object-cover rounded-xl mb-4shadow-md hover:scale-105 transition-transform duration-300"
             />
             {mascota.galeria && (
               <div className="grid grid-cols-3 gap-3 ">
@@ -372,7 +372,8 @@ export default function Mascota_Id() {
             <ul className="space-y-3">
               <li className="flex items-center">
                 <i className="fas fa-map-marker-alt text-gray-500 mr-3"></i>{" "}
-                Calle Rescate 45, Madrid
+                
+                {mascota.refugio.direccion?.calle ?? "No especificado"}
               </li>
               <li className="flex items-center">
                 <i className="fas fa-phone text-gray-500 mr-3"></i>
