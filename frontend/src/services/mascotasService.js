@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:4000/api";
+const BASE_URL = "http://localhost:3500/api";
 
 // Obtener listado de mascotas con filtros
 export async function obtenerMascotas({ search, page, limit, tipo, raza, tamaño } = {}) {
@@ -12,12 +12,13 @@ export async function obtenerMascotas({ search, page, limit, tipo, raza, tamaño
     if (raza) params.append("raza", raza);
     if (tamaño) params.append("tamaño", tamaño);
 
-    const url = `${BASE_URL}/mascotas?${params.toString()}`;
+    const url = `${BASE_URL}/mascotas?${params}`;
 
     const response = await fetch(url);
     if (!response.ok) throw new Error("Error en la respuesta del servidor");
-
-    return await response.json();
+    const json = await response.json()
+    console.log(json.data.items)
+    return json.data.items
   } catch (error) {
     console.error("Error al obtener mascotas:", error);
     throw error;

@@ -1,6 +1,6 @@
 const { Testimonio } = require('../../database/models');
 const { endpointError, CustomError } = require('../../utils/error');
-const { endpointResponse } = require('../../utils/endpointResponse');
+const { endpointResponse } = require('../../utils/success');
 const path = require('path');
 
 module.exports = {

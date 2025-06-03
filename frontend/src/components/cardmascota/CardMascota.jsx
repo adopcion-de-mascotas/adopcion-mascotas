@@ -8,7 +8,7 @@ export default function CardMascota({ mascota }) {
     <div className="bg-white rounded-xl shadow-sm overflow-hidden transition duration-300 hover:shadow-md">
       <div className="relative">
         <img
-          src={mascota.imagen}
+          src={mascota.imagen_principal}
           alt={mascota.nombre}
           className="w-full h-48 object-cover"
         />

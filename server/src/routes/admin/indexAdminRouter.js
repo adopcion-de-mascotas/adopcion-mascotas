@@ -18,8 +18,8 @@ router.use("/session", adminSessionRouter)
 
 /* Ruta de  mascotas */
 router.use("/mascotas", verificarToken, adminMascotasRouter)
-router.use("/testimonios", verificarToken, adminNoticiasRouter)
-router.use("/noticias", verificarToken, adminTestimoniosRouter)
+router.use("/noticias", verificarToken, adminNoticiasRouter)
+router.use("/testimonios", verificarToken, adminTestimoniosRouter)
 router.use("/contactos", verificarToken, adminContactosRouter)
 router.use("/comportamientos", adminComportamientos)
 router.use("/direcciones", verificarToken, adminDireccionesRouter)
