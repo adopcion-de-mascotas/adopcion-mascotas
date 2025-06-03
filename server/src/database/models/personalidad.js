@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Personalidad.associate = models => {
         Personalidad.belongsToMany(models.Mascota, {
+            as: "mascotas",
             through: 'MascotaPersonalidad'
         });
     };

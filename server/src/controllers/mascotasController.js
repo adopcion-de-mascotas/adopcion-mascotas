@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Mascota, GaleriaMascota } = require("../database/models");
+const { Mascota, GaleriaMascota, Comportamiento, Refugio, Salud, Direcciones, ContactoRefugio, Vacuna } = require("../database/models");
 const { endpointError, CustomError } = require("../utils/error");
 const { endpointResponse } = require("../utils/success");
 
@@ -93,11 +93,54 @@ module.exports = {
                         attributes: ['id', 'foto'],
                         order: [['id', 'ASC']]
                     },
-                    // Puedes incluir otras asociaciones aquí si es necesario
-                    // Ej: refugio, comportamiento, etc.
+                    {
+                        model: Comportamiento,
+                        as: "comportamiento",
+                        attributes: {
+                            exclude: ["createdAt", "updatedAt"]
+                        }
+                    },
+                    {
+                        model: Refugio,
+                        as: "refugio",
+                        include: [
+                            {
+                                model: Direcciones,
+                                as: "direccion",
+                                attributes: {
+                                    exclude: ["createdAt", "updatedAt"]
+                                }
+                            },
+                            {
+                                model: ContactoRefugio,
+                                as: "contacto",
+                                attributes: {
+                                    exclude: ["refugio_id", "createdAt", "updatedAt"]
+                                }
+                            }
+                        ],
+                        attributes: {
+                            exclude: ["direccion_id", "createdAt", "updatedAt"]
+                        },
+                    },
+                    {
+                        model: Salud,
+                        as: "salud",
+                        include: [
+                            {
+                                model: Vacuna,
+                                as: "vacunas",
+                                attributes: ["id", "nombre"],
+                                through: {attributes:[]}
+                            }
+                        ],
+                        attributes: {
+                            exclude: ["createdAt", "updatedAt"] // Excluir campos innecesarios
+                        }
+                    }
                 ],
                 attributes: {
-                    exclude: ["createdAt", "updatedAt"] // Excluir campos innecesarios
+                    exclude: ["saludId", "refugioId", "comportamientoId", "createdAt", "updatedAt"] // Excluir campos innecesarios
                 }
             });
 

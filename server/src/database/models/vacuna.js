@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Vacuna.associate = models => {
         Vacuna.belongsToMany(models.Salud, {
+            as: "salud_vacunas",
             through: 'SaludVacuna'
         });
     };

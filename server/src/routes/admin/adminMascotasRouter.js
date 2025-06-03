@@ -12,7 +12,4 @@ router.put("/:id", singleUpload, handleMulterErrors, update)
 /* Elimina datos de mascota */
 router.delete("/:id", remove)
 
-/* Agrega mas fotos para la galeria */
-router.post('/:id/fotos', (req, res) => res.json("galeria post"));
-
 module.exports = router;

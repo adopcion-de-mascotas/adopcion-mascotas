@@ -30,16 +30,19 @@ module.exports = (sequelize, DataTypes) => {
   Mascota.associate = models => {
     // Relaciones de clave foránea
     Mascota.belongsTo(models.Refugio, {
+      as: "refugio",
       foreignKey: 'refugioId',
       onDelete: 'SET NULL'
     });
 
     Mascota.belongsTo(models.Salud, {
+      as: "salud",
       foreignKey: 'saludId',
       onDelete: 'SET NULL'
     });
 
     Mascota.belongsTo(models.Comportamiento, {
+      as: "comportamiento",
       foreignKey: 'comportamientoId',
       onDelete: 'SET NULL'
     });

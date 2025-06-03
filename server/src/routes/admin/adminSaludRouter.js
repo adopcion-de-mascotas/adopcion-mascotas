@@ -1,13 +1,13 @@
-// routes/salud.js
 const express = require('express');
 const router = express.Router();
+const saludController = require('../../controllers/adminControllers/adminSaludController');
 
-//const saludController = require('../controllers/saludController');
+// CRUD básico
+router.post('/', saludController.create);
+router.put('/:id', saludController.update);
+router.delete('/:id', saludController.delete);
 
-
-router.post('/', (req, res) => { res.json("salud") });
-router.put('/:id', (req, res) => { res.json("salud") });
-router.delete('/:id', (req, res) => { res.json("salud") });
-router.post('/:id/vacunas', (req, res) => { res.json("salud") });
+// Gestión de vacunas
+router.post('/:id/vacunas', saludController.addVacunas);
 
 module.exports = router;

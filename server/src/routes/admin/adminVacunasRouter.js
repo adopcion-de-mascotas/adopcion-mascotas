@@ -1,10 +1,11 @@
-// routes/vacunas.js
 const express = require('express');
 const router = express.Router();
+const vacunaController = require('../../controllers/adminControllers/adminVacunasController');
 
-//const vacunaController = require('../controllers/vacunaController');
+// Obtener todas las vacunas (con opción de búsqueda)
+router.get('/', vacunaController.getAll);
 
-router.get('/', (req, res) => {res.json("vacunas")});
-router.post('/', (req, res) => {res.json("vacunas")});
+// Crear nueva vacuna
+router.post('/', vacunaController.create);
 
 module.exports = router;

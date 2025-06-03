@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const galeriaController = require('../../adminControllers/adminGaleriaController');
-const { multiUpload, handleMulterErrors } = require("../../middlewares/imageMiddleware")
+const galeriaController = require('../../controllers/adminControllers/adminGaleriaController');
+const { multiUpload, handleMulterErrors } = require("../../middlewares/imageMiddleware");
 
 // Obtener galería de mascota
 router.get('/mascota/:mascotaId', multiUpload, handleMulterErrors, galeriaController.getByMascota);
