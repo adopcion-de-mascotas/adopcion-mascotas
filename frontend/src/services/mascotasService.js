@@ -86,3 +86,19 @@ export async function actualizarMascota(id, datosActualizados) {
     throw error;
   }
 }
+
+// Eliminar mascota por ID
+export async function eliminarMascota(id) {
+  try {
+    const response = await fetch(`${BASE_URL}/admin/mascotas/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) throw new Error("Error al eliminar mascota");
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error al eliminar mascota:", error);
+    throw error;
+  }
+}

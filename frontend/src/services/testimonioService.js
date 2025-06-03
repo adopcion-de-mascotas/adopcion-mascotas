@@ -1,52 +1,52 @@
 const BASE_URL = "http://localhost:4000/api";
 
-// Obtener listado de mascotas con filtros
-export async function obtenerTestimonios({ search, page, limit, tipo, raza, tamaño } = {}) {
+// Obtener todos los testimonios
+export async function obtenerTestimonios() {
   try {
-    const params = new URLSearchParams();
+    const response = await fetch(`${BASE_URL}/testimonios`);
+    if (!response.ok) throw new Error("Error al obtener testimonios");
 
-    if (search) params.append("search", search);
-    if (page) params.append("page", page);
-    if (limit) params.append("limit", limit);
-    if (tipo) params.append("tipo", tipo);
-    if (raza) params.append("raza", raza);
-    if (tamaño) params.append("tamaño", tamaño);
+    const json = await response.json();
 
-    const url = `${BASE_URL}/testimonios?${params}`;
+    if (!json?.data) {
+      throw new Error("No se encontraron testimonios");
+    }
 
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("Error en la respuesta del servidor");
-    const json = await response.json()
-    console.log(json.data.items)
-    return json.data.items
+    return json.data; // devuelve el array de testimonios
   } catch (error) {
-    console.error("Error al obtener mascotas:", error);
+    console.error("Error en obtenerTestimonios:", error.message);
     throw error;
   }
 }
 
-// Obtener detalle por ID
+// Obtener un testimonio por ID
 export async function obtenerTestimonioPorId(id) {
   try {
     const response = await fetch(`${BASE_URL}/testimonios/${id}`);
     if (!response.ok) throw new Error("No se pudo obtener el testimonio");
 
-    return await response.json();
+    const json = await response.json();
+
+    if (!json?.data) {
+      throw new Error("El testimonio no fue encontrado en la respuesta");
+    }
+
+    return json.data;
   } catch (error) {
-    console.error("Error al obtener el testimonio por ID:", error);
+    console.error("Error en obtenerTestimonioPorId:", error.message);
     throw error;
   }
 }
 
-// Crear una nueva mascota (requiere imagen)
-export async function crearTestimonio(mascota) {
+// Crear un nuevo testimonio (puede incluir imagen)
+export async function crearTestimonio(testimonio) {
   try {
     const formData = new FormData();
-    for (const key in mascota) {
-      formData.append(key, mascota[key]);
+    for (const key in testimonio) {
+      formData.append(key, testimonio[key]);
     }
 
-    const response = await fetch(`${BASE_URL}/admin/testimonio`, {
+    const response = await fetch(`${BASE_URL}/admin/testimonios`, {
       method: "POST",
       body: formData,
     });
@@ -54,12 +54,12 @@ export async function crearTestimonio(mascota) {
     if (!response.ok) throw new Error("Error al crear testimonio");
     return await response.json();
   } catch (error) {
-    console.error("Error al crear testimonio:", error);
+    console.error("Error en crearTestimonio:", error);
     throw error;
   }
 }
 
-// Actualizar mascota por ID (con o sin imagen)
+// Actualizar testimonio por ID
 export async function actualizarTestimonio(id, datosActualizados) {
   try {
     const formData = new FormData();
@@ -75,7 +75,23 @@ export async function actualizarTestimonio(id, datosActualizados) {
     if (!response.ok) throw new Error("Error al actualizar testimonio");
     return await response.json();
   } catch (error) {
-    console.error("Error al actualizar testimonio:", error);
+    console.error("Error en actualizarTestimonio:", error);
+    throw error;
+  }
+}
+
+// Eliminar testimonio por ID
+export async function eliminarTestimonio(id) {
+  try {
+    const response = await fetch(`${BASE_URL}/admin/testimonios/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) throw new Error("Error al eliminar testimonio");
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error en eliminarTestimonio:", error);
     throw error;
   }
 }
