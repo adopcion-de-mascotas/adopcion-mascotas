@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:4000/api";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 // Obtener listado de mascotas con filtros
 export async function obtenerMascotas({ search, page, limit, tipo, raza, tamaño } = {}) {
