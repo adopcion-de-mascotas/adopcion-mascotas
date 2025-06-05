@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
+import Carrousel from "../../components/carrousel/Carrousel";
+import About from "../../components/about/About";
 import Contact from "../../components/contact/Contact";
+
+import CardMascota from "../../components/cardmascota/CardMascota";
+import { obtenerMascotas } from "../../services/mascotasService";
 
 import Testimonio from "../../components/testimonio/Testimonio";
 import { obtenerTestimonios } from "../../services/testimonioService";
 
-import Carrousel from "../../components/carrousel/Carrousel";
-import About from "../../components/about/About";
+import CardNoticia from "../../components/cardnoticia/CardNoticia";
+import { obtenerNoticias } from "../../services/noticiaService";
 
-{
-  /*  import mascotas from "../../data/mascotas";*/
-}
-import CardMascota from "../../components/cardmascota/CardMascota";
-import { obtenerMascotas } from "../../services/mascotasService";
-
-import Blog from "../../components/blog/Blog";
-import blogs from "../../data/blogs";
 
 export const Home = () => {
   const [mascotas, setMascotas] = useState([]);
-
+  const [noticias, setNoticias] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
   const [error, setError] = useState(null);
 
@@ -27,17 +26,16 @@ export const Home = () => {
   }, []);
 
   useEffect(() => {
-    obtenerTestimonios()
-      .then((data) => {
-        setTestimonials(data);
-      })
-      .catch((err) => {
-        setError(err.message || "Error al cargar testimonios");
-      });
+    obtenerTestimonios().then(setTestimonials).catch(setError);
   }, []);
 
+  useEffect(() => {
+    obtenerNoticias().then(setNoticias).catch(setError);
+  }, []);
+
+
   if (error) {
-    return <p className="text-red-600">Error al cargar mascotas.</p>;
+    return <p className="text-red-600">Error al cargar datos.</p>;
   }
 
   return (
@@ -174,28 +172,32 @@ export const Home = () => {
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {blogs.slice(0, 3).map((m) => (
-                  <Blog key={m.id} blog={m} />
-                ))}
+                {noticias && noticias.length > 0 ? (
+                  noticias
+                    .slice(0, 3)
+                    .map((noticia) => (
+                      <CardNoticia key={noticia.id} noticia={noticia} />
+                    ))
+                ) : (
+                  <p>No hay noticias disponibles</p>
+                )}
               </div>
             </div>
           </section>
 
           <div className="text-center mt-12">
-            <a
-              href="/blogs"
+            <Link
+              to="/noticias"
               className="px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700"
             >
               Ver más artículos
-            </a>
+            </Link>
           </div>
         </div>
       </section>
 
-
       {/* Success Stories Section */}
       <Testimonio testimonials={testimonials} />
-
 
       {/* Call to Action Section */}
       <section className="py-16 bg-white">

@@ -5,11 +5,11 @@ import SobreNosotros from "../pages/sobreNosotros/SobreNosotros";
 import NotFound from "../pages/notFound/NotFound";
 import Login from "../pages/login/Login";
 
-import Blogs from "./../pages/blogs/blogs";
-import Blog_id from "../pages/blog_id/Blog_id";
-
 import Ver_Mascotas from "../pages/ver_Mascotas/Ver_Mascotas";
 import Mascota_Id from "../pages/mascota_id/Mascota_id";
+
+import Noticias from "../pages/noticia/noticias";
+import Noticia_id from './../pages/noticia_id/Noticia_id';
 
 export default function AppRoutes() {
   return (
@@ -18,11 +18,11 @@ export default function AppRoutes() {
       <Route path="/about" element={<SobreNosotros />} />
       <Route path="/login" element={<Login />} />
 
-      <Route path="/blogs" element={<Blogs />} />
-      <Route path="/blogs/:id" element={<Blog_id />} /> {/* ← corregido */}
+      <Route path="/noticias" element={<Noticias />} />
+      <Route path="/noticias/:id" element={<Noticia_id />} /> 
 
       <Route path="/mascotas" element={<Ver_Mascotas />} />
-      <Route path="/mascotas/:id" element={<Mascota_Id />} /> {/* ← corregido */}
+      <Route path="/mascotas/:id" element={<Mascota_Id />} /> 
 
       <Route path="*" element={<NotFound />} />
     </Routes>

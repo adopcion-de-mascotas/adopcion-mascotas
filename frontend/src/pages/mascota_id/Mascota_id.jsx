@@ -58,16 +58,6 @@ export default function Mascota_Id() {
     );
   }
 
-  if (!mascota) {
-    return (
-      <div className="text-center py-20 text-gray-600">
-        <h2 className="text-2xl font-bold mb-4">Mascota no encontrada</h2>
-        <Link to="/mascotas" className="text-yellow-500 hover:underline">
-          Volver al listado
-        </Link>
-      </div>
-    );
-  }
 
   return (
     <main className="container mx-auto px-4 py-8">
