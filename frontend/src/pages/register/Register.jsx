@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -10,7 +9,6 @@ export default function Register() {
     rememberMe: false,
   });
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
 
   const validate = () => {
     const newErrors = {};
@@ -30,17 +28,20 @@ export default function Register() {
     }
 
     try {
-      const res = await fetch("http://localhost:4000/api/admin/session/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      const res = await fetch(
+        "http://localhost:4000/api/admin/session/create",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        }
+      );
 
       const data = await res.json();
 
       if (res.ok) {
         localStorage.setItem("token", data.token);
-        navigate("/dashboard");
+        window.location.href = "/dashboard/dashboardFirts";
       } else {
         alert(data.message || "Error al crear cuenta");
       }

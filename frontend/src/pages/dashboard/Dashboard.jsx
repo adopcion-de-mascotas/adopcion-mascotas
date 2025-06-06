@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 import "./Dashboard.css";
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Borrás el token
-    navigate("/login"); // Redirigís al login
+    localStorage.removeItem("token");
+    window.location.href = "/login";
   };
 
   return (
@@ -43,7 +41,6 @@ export default function Dashboard() {
                   </h4>
                   <p className="text-xs text-gray-500">Admin</p>
                 </div>
-                
               </div>
             </div>
           </div>

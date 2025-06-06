@@ -1,8 +1,15 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+
 import "./Navbar.css";
-import Dashboard from './../../pages/dashboard/Dashboard';
 
 export default function Navbar() {
+  const location = useLocation();
+  const showDashboardLink = !location.pathname.startsWith(
+    "/dashboard/dashboardFirts"
+  );
+
   const [darkMode, setDarkMode] = useState(() => {
     const storedMode = localStorage.getItem("darkMode");
     return storedMode === "true";
@@ -33,12 +40,15 @@ export default function Navbar() {
   // Links a mostrar si está logueado
   const loggedInLinks = (
     <>
-      <a
-        href="/dashboard/dashboardFirts"
-        className="text-gray-700 hover:text-indigo-600 font-medium"
-      >
-        Volver al Dashboard
-      </a>
+      {showDashboardLink && (
+        <a
+          href="/dashboard/dashboardFirts"
+          className="text-gray-700 hover:text-indigo-600 font-medium"
+        >
+          Volver al Dashboard
+        </a>
+      )}
+
       <a
         href="/mascotas"
         className="text-gray-700 hover:text-indigo-600 font-medium"
@@ -63,7 +73,6 @@ export default function Navbar() {
   // Links a mostrar si NO está logueado
   const publicLinks = (
     <>
-      
       <a
         href="/mascotas"
         className="text-gray-700 hover:text-indigo-600 font-medium"
