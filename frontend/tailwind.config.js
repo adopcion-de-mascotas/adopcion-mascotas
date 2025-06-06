@@ -6,7 +6,14 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {  },
+    extend: {
+      colors: {
+        'happy-blue': '#3B82F6',
+        'happy-pink': '#EC4899',
+        'happy-orange': '#F59E0B',
+        'happy-purple': '#8B5CF6',
+      }
+    },
   },
-  plugins: [ ],
+  plugins: [],
 }

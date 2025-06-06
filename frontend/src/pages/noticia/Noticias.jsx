@@ -1,13 +1,25 @@
-import blogs from "../../data/blogs";
-import Blog from "./../../components/blog/Blog";
+import { useEffect, useState } from "react";
+import CardNoticia from "../../components/cardnoticia/CardNoticia";
+import { obtenerNoticias } from "../../services/noticiaService";
 
-export default function Blogs() {
+export default function Noticias() {
+  const [noticias, setNoticias] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    obtenerNoticias().then(setNoticias).catch(setError);
+  }, []);
+
+  if (error) {
+    return <p className="text-red-600">Error al cargar noticias.</p>;
+  }
+
   return (
     <>
       {/* Hero Section */}
       <section className="hero-pattern bg-indigo-900 bg-opacity-70 text-white py-16">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-4">Blog Happy Paw</h2>
+          <h2 className="text-4xl font-bold mb-4">Noticias Happy Paw</h2>
           <p className="text-xl max-w-2xl mx-auto">
             Aprende sobre cuidado de mascotas, historias de adopción y nuestras
             últimas noticias
@@ -42,14 +54,26 @@ export default function Blogs() {
 
       <section className="py-12">
         <div className="container mx-auto px-4">
+          <div className="mb-6">
+            <a
+              href="/"
+              className="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium"
+            >
+              <i className="fas fa-arrow-left mr-2"></i> Volver al Home
+            </a>
+          </div>
           <h2 className="text-3xl font-bold text-gray-800 mb-8">
             Últimas publicaciones
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogs.slice(0, 6).map((m) => (
-              <Blog key={m.id} blog={m} />
-            ))}
+            {noticias && noticias.length > 0 ? (
+              noticias.map((noticia) => (
+                <CardNoticia key={noticia.id} noticia={noticia} />
+              ))
+            ) : (
+              <p>No hay noticias disponibles</p>
+            )}
           </div>
         </div>
       </section>

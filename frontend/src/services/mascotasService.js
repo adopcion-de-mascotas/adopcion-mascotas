@@ -17,7 +17,6 @@ export async function obtenerMascotas({ search, page, limit, tipo, raza, tamaño
     const response = await fetch(url);
     if (!response.ok) throw new Error("Error en la respuesta del servidor");
     const json = await response.json()
-    console.log(json.data.items)
     return json.data.items
   } catch (error) {
     console.error("Error al obtener mascotas:", error);
