@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -8,7 +8,6 @@ export default function Login() {
     rememberMe: false,
   });
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
 
   const validate = () => {
     const newErrors = {};
@@ -36,7 +35,7 @@ export default function Login() {
 
       if (res.ok) {
         localStorage.setItem("token", data.token);
-        navigate("/dashboard");
+        window.location.href = "/dashboard/dashboardFirts"; // recarga completa
       } else {
         alert(data.message || "Error al iniciar sesión");
       }
@@ -110,7 +109,7 @@ export default function Login() {
                 className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-200"
                 placeholder="******************"
                 data-test="password"
-                autocomplete="current-password" 
+                autocomplete="current-password"
               />
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">{errors.password}</p>
