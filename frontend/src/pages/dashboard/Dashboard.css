@@ -1,0 +1,29 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.chart-container {
+  position: relative;
+  height: 250px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 0;
+    overflow: hidden;
+    position: fixed;
+    z-index: 10;
+    transition: width 0.3s ease;
+  }
+
+  .sidebar.open {
+    width: 16rem;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+}

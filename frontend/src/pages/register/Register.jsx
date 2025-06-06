@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-export default function Login() {
+export default function Register() {
   const [form, setForm] = useState({
+    nombre: "",
+    apellido: "",
     email: "",
     password: "",
     rememberMe: false,
@@ -12,6 +14,8 @@ export default function Login() {
 
   const validate = () => {
     const newErrors = {};
+    if (!form.nombre) newErrors.nombre = "El nombre es obligatorio";
+    if (!form.apellido) newErrors.apellido = "El apellido es obligatorio";
     if (!form.email) newErrors.email = "El email es obligatorio";
     if (!form.password) newErrors.password = "La contraseña es obligatoria";
     return newErrors;
@@ -26,7 +30,7 @@ export default function Login() {
     }
 
     try {
-      const res = await fetch("http://localhost:4000/api/admin/session", {
+      const res = await fetch("http://localhost:4000/api/admin/session/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -38,7 +42,7 @@ export default function Login() {
         localStorage.setItem("token", data.token);
         navigate("/dashboard");
       } else {
-        alert(data.message || "Error al iniciar sesión");
+        alert(data.message || "Error al crear cuenta");
       }
     } catch (err) {
       console.error(err);
@@ -48,16 +52,6 @@ export default function Login() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Botón Volver */}
-      <div className="mb-6">
-        <Link
-          to="/"
-          className="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium"
-        >
-          <i className="fas fa-arrow-left mr-2"></i> Volver a la página
-          principal
-        </Link>
-      </div>
       <div className="flex flex-col lg:flex-row gap-8">
         {/* VIDEO */}
         <div className="flex-1">
@@ -75,9 +69,47 @@ export default function Login() {
         {/* FORMULARIO */}
         <div className="flex-1 bg-white p-8 rounded-lg shadow-lg">
           <h3 className="text-2xl font-bold mb-6 text-center">
-            ¡Iniciar Sesion!
+            ¡Crear cuenta!
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Nombre */}
+            <div>
+              <label htmlFor="nombre" className="block text-sm font-medium">
+                Nombre
+              </label>
+              <input
+                type="text"
+                id="nombre"
+                value={form.nombre}
+                onChange={(e) => setForm({ ...form, nombre: e.target.value })}
+                className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-200"
+                placeholder="Ingrese aquí su nombre"
+                data-test="nombre"
+              />
+              {errors.nombre && (
+                <p className="text-red-500 text-sm mt-1">{errors.nombre}</p>
+              )}
+            </div>
+
+            {/* Apellido */}
+            <div>
+              <label htmlFor="apellido" className="block text-sm font-medium">
+                Apellido
+              </label>
+              <input
+                type="text"
+                id="apellido"
+                value={form.apellido}
+                onChange={(e) => setForm({ ...form, apellido: e.target.value })}
+                className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-200"
+                placeholder="Ingrese aquí su apellido"
+                data-test="apellido"
+              />
+              {errors.apellido && (
+                <p className="text-red-500 text-sm mt-1">{errors.apellido}</p>
+              )}
+            </div>
+
             {/* Email */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium">
@@ -110,7 +142,7 @@ export default function Login() {
                 className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-200"
                 placeholder="******************"
                 data-test="password"
-                autocomplete="current-password" 
+                autoComplete="new-password"
               />
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">{errors.password}</p>
@@ -137,19 +169,12 @@ export default function Login() {
             {/* Botón */}
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+              className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
               disabled={!form.email || !form.password}
-              data-test="login-button"
+              data-test="register-button"
             >
-              Iniciar sesión
+              Registrarse
             </button>
-
-            <hr className="my-4" />
-
-            {/* Enlaces */}
-            <div className="flex justify-between text-sm text-blue-600">
-              <a href="#">¿Has olvidado tu contraseña?</a>
-            </div>
           </form>
         </div>
       </div>

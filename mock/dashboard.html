@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-100">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Paws Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'happy-blue': '#3B82F6',
+                        'happy-pink': '#EC4899',
+                        'happy-orange': '#F59E0B',
+                        'happy-purple': '#8B5CF6',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 0;
+                overflow: hidden;
+                position: fixed;
+                z-index: 10;
+                transition: width 0.3s ease;
+            }
+
+            .sidebar.open {
+                width: 16rem;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="h-full">
+    <div class="flex h-full">
+        <!-- Sidebar -->
+        <div class="sidebar bg-white shadow-lg w-64 flex-shrink-0 border-r border-gray-200 md:block">
+            <!-- Close button for mobile -->
+            <button id="closeSidebar" class="md:hidden absolute right-4 top-4 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+
+            <!-- Logo -->
+            <div class="flex items-center justify-center py-6 px-4">
+                <div class="flex items-center">
+                    <i class="fas fa-paw text-happy-pink text-3xl mr-2"></i>
+                    <span class="text-xl font-bold text-gray-800">Happy Paws</span>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="mt-6">
+                <div class="px-4">
+                    <a href="#" class="flex items-center px-4 py-3 text-white bg-happy-pink rounded-lg">
+                        <i class="fas fa-chart-pie mr-3"></i>
+                        <span class="font-medium">Dashboard</span>
+                    </a>
+                </div>
+                <div class="px-4 mt-2">
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-paw mr-3"></i>
+                        <span class="font-medium">Pets</span>
+                    </a>
+                </div>
+                <div class="px-4 mt-2">
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-calendar-alt mr-3"></i>
+                        <span class="font-medium">Appointments</span>
+                    </a>
+                </div>
+                <div class="px-4 mt-2">
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-users mr-3"></i>
+                        <span class="font-medium">Clients</span>
+                    </a>
+                </div>
+                <div class="px-4 mt-2">
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-shopping-bag mr-3"></i>
+                        <span class="font-medium">Products</span>
+                    </a>
+                </div>
+                <div class="px-4 mt-2">
+                    <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-cog mr-3"></i>
+                        <span class="font-medium">Settings</span>
+                    </a>
+                </div>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="absolute bottom-0 w-full pb-4 px-4">
+                <div class="flex items-center p-3 bg-gray-100 rounded-lg">
+                    <img src="https://randomuser.me/api/portraits/women/43.jpg" class="w-10 h-10 rounded-full"
+                        alt="User">
+                    <div class="ml-3">
+                        <h4 class="text-sm font-medium text-gray-700">Sarah Miller</h4>
+                        <p class="text-xs text-gray-500">Admin</p>
+                    </div>
+                    <div class="ml-auto">
+                        <button class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content flex-1 overflow-y-auto">
+            <!-- Mobile Header -->
+            <header class="md:hidden bg-white p-4 flex items-center justify-between border-b border-gray-200">
+                <button id="toggleSidebar" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h1 class="text-xl font-bold text-gray-800">Dashboard</h1>
+                <div class="w-8"></div> <!-- Spacer to balance the layout -->
+            </header>
+
+            <!-- Desktop Header -->
+            <header class="hidden md:block bg-white p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h1 class="text-2xl font-bold text-gray-800">Welcome back, Sarah!</h1>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <input type="text" placeholder="Search..."
+                                class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-happy-pink focus:border-transparent">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                        <button class="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full">
+                            <i class="fas fa-bell"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <main class="p-4 md:p-8">
+                <!-- Stats Cards -->
+                <div class="dashboard-grid mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-lg bg-indigo-50 text-happy-blue">
+                                <i class="fas fa-paw text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm text-gray-500">Total Pets</p>
+                                <h3 class="text-2xl font-bold text-gray-800">1,248</h3>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-500 flex items-center">
+                                <span class="text-green-500 flex items-center">
+                                    <i class="fas fa-arrow-up mr-1"></i> 12.5%
+                                </span>
+                                <span class="ml-2">vs last month</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-lg bg-pink-50 text-happy-pink">
+                                <i class="fas fa-calendar-alt text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm text-gray-500">Today's Appointments</p>
+                                <h3 class="text-2xl font-bold text-gray-800">18</h3>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <button
+                                class="px-4 py-2 bg-happy-pink text-white text-sm rounded-lg hover:bg-opacity-90 transition">
+                                View All
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-lg bg-yellow-50 text-happy-orange">
+                                <i class="fas fa-shopping-bag text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm text-gray-500">Products Sold</p>
+                                <h3 class="text-2xl font-bold text-gray-800">342</h3>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="h-2 bg-gray-100 rounded-full">
+                                <div class="h-2 rounded-full bg-happy-orange" style="width: 65%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">65% of monthly goal</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-lg bg-purple-50 text-happy-purple">
+                                <i class="fas fa-dollar-sign text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm text-gray-500">Monthly Revenue</p>
+                                <h3 class="text-2xl font-bold text-gray-800">$12,489</h3>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <p class="text-sm text-gray-500">
+                                <span class="text-green-500">+3.5%</span> from last month
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 md:col-span-2">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-bold text-gray-800">Pet Registration Trends</h2>
+                            <select
+                                class="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-happy-blue">
+                                <option>Last 7 Days</option>
+                                <option>Last 30 Days</option>
+                                <option selected>Last 90 Days</option>
+                                <option>Last Year</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="registrationsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <h2 class="text-lg font-bold text-gray-800 mb-6">Pet Types</h2>
+                        <div class="chart-container">
+                            <canvas id="petTypesChart"></canvas>
+                        </div>
+                        <div class="mt-4 grid grid-cols-3 gap-2 text-xs">
+                            <div class="flex items-center">
+                                <span class="w-2 h-2 rounded-full bg-happy-blue mr-1"></span>
+                                <span>Dogs (65%)</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-2 h-2 rounded-full bg-happy-orange mr-1"></span>
+                                <span>Cats (30%)</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-2 h-2 rounded-full bg-happy-purple mr-1"></span>
+                                <span>Others (5%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities and Quick Actions -->
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 md:col-span-2">
+                        <h2 class="text-lg font-bold text-gray-800 mb-6">Recent Activities</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="p-3 rounded-lg bg-blue-50 text-happy-blue mr-4">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-gray-800">New Appointment Booked</h4>
+                                    <p class="text-sm text-gray-500">Dr. Smith has a new appointment with Max (Golden
+                                        Retriever) tomorrow at 2:00 PM</p>
+                                    <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="p-3 rounded-lg bg-green-50 text-green-500 mr-4">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-gray-800">New Product Sold</h4>
+                                    <p class="text-sm text-gray-500">Premium Dog Food (20kg) sold to customer #3421</p>
+                                    <p class="text-xs text-gray-400 mt-1">4 hours ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="p-3 rounded-lg bg-purple-50 text-happy-purple mr-4">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-gray-800">New Customer Registered</h4>
+                                    <p class="text-sm text-gray-500">Michael Johnson registered with his 2 pets</p>
+                                    <p class="text-xs text-gray-400 mt-1">1 day ago</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="mt-4 text-sm text-happy-blue hover:underline">
+                            View all activities
+                        </button>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <h2 class="text-lg font-bold text-gray-800 mb-6">Quick Actions</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button
+                                class="p-4 bg-pink-50 rounded-lg flex flex-col items-center justify-center text-happy-pink hover:bg-pink-100 transition">
+                                <i class="fas fa-plus text-xl mb-2"></i>
+                                <span class="text-sm font-medium">New Pet</span>
+                            </button>
+                            <button
+                                class="p-4 bg-blue-50 rounded-lg flex flex-col items-center justify-center text-happy-blue hover:bg-blue-100 transition">
+                                <i class="fas fa-calendar-plus text-xl mb-2"></i>
+                                <span class="text-sm font-medium">New Appointment</span>
+                            </button>
+                            <button
+                                class="p-4 bg-green-50 rounded-lg flex flex-col items-center justify-center text-green-500 hover:bg-green-100 transition">
+                                <i class="fas fa-shopping-bag text-xl mb-2"></i>
+                                <span class="text-sm font-medium">New Order</span>
+                            </button>
+                            <button
+                                class="p-4 bg-purple-50 rounded-lg flex flex-col items-center justify-center text-happy-purple hover:bg-purple-100 transition">
+                                <i class="fas fa-file-invoice-dollar text-xl mb-2"></i>
+                                <span class="text-sm font-medium">New Invoice</span>
+                            </button>
+                        </div>
+                        <div class="mt-6">
+                            <div class="bg-indigo-50 rounded-lg p-4">
+                                <h4 class="font-medium text-sm text-indigo-800 mb-2">Need help?</h4>
+                                <p class="text-xs text-indigo-600 mb-3">Our support team is here to help you with any
+                                    questions.</p>
+                                <button
+                                    class="px-3 py-1 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700 transition">
+                                    Contact Support
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Toggle sidebar on mobile
+        document.getElementById('toggleSidebar').addEventListener('click', function () {
+            document.querySelector('.sidebar').classList.add('open');
+        });
+
+        document.getElementById('closeSidebar').addEventListener('click', function () {
+            document.querySelector('.sidebar').classList.remove('open');
+        });
+
+        // Create charts
+        document.addEventListener('DOMContentLoaded', function () {
+            // Registrations Chart
+            const regCtx = document.getElementById('registrationsChart').getContext('2d');
+            const regChart = new Chart(regCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                    datasets: [{
+                        label: 'New Pets',
+                        data: [45, 60, 55, 80, 90, 110, 105, 120, 130],
+                        borderColor: '#EC4899',
+                        backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#EC4899',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                display: true,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                stepSize: 20
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false,
+                                drawBorder: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Pet Types Chart
+            const petCtx = document.getElementById('petTypesChart').getContext('2d');
+            const petChart = new Chart(petCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Dogs', 'Cats', 'Other'],
+                    datasets: [{
+                        data: [65, 30, 5],
+                        backgroundColor: [
+                            '#3B82F6',
+                            '#F59E0B',
+                            '#8B5CF6'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+
+            // Simulate loading for stats
+            setTimeout(() => {
+                document.querySelectorAll('[class*="text-2xl"]').forEach(el => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                });
+            }, 300);
+        });
+    </script>
+</body>
+
+</html>
