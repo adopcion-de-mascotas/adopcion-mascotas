@@ -89,8 +89,6 @@ module.exports = {
                 });
             }
         } else {
-            console.log("error validator", errorsValidator.array())
-            console.log("error validator", errorsValidator.mapped())
             endpointError({
                 res,
                 code: 400,

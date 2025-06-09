@@ -2,6 +2,7 @@ const { Vacuna, Salud, sequelize } = require("../../database/models");
 const { endpointError, CustomError } = require("../../utils/error");
 const { endpointResponse } = require("../../utils/success");
 const { Op } = require('sequelize');
+const { validationResult } = require('express-validator')
 
 module.exports = {
     // Obtener todas las vacunas
@@ -42,42 +43,56 @@ module.exports = {
 
     // Crear una nueva vacuna
     create: async (req, res) => {
-        const transaction = await sequelize.transaction();
-        try {
-            const { nombre } = req.body;
 
-            if (!nombre) {
-                throw new CustomError('El campo nombre es obligatorio', 400);
+        let errorsValidator = validationResult(req);
+
+        if (errorsValidator.isEmpty()){
+
+            const transaction = await sequelize.transaction();
+            try {
+                const { nombre } = req.body;
+    
+                if (!nombre) {
+                    throw new CustomError('El campo nombre es obligatorio', 400);
+                }
+    
+                // Verificar si ya existe una vacuna con ese nombre
+                const vacunaExistente = await Vacuna.findOne({
+                    where: { nombre },
+                    transaction
+                });
+    
+                if (vacunaExistente) {
+                    throw new CustomError('Ya existe una vacuna con ese nombre', 409);
+                }
+    
+                const nuevaVacuna = await Vacuna.create({ nombre }, { transaction });
+                await transaction.commit();
+    
+                endpointResponse({
+                    res,
+                    code: 201,
+                    message: 'Vacuna creada exitosamente',
+                    body: nuevaVacuna
+                });
+            } catch (error) {
+                await transaction.rollback();
+                endpointError({
+                    res,
+                    code: error.code || 500,
+                    message: error.message || 'Error al crear la vacuna',
+                    errors: error.errors || [error.message]
+                });
             }
-
-            // Verificar si ya existe una vacuna con ese nombre
-            const vacunaExistente = await Vacuna.findOne({
-                where: { nombre },
-                transaction
-            });
-
-            if (vacunaExistente) {
-                throw new CustomError('Ya existe una vacuna con ese nombre', 409);
-            }
-
-            const nuevaVacuna = await Vacuna.create({ nombre }, { transaction });
-            await transaction.commit();
-
-            endpointResponse({
-                res,
-                code: 201,
-                message: 'Vacuna creada exitosamente',
-                body: nuevaVacuna
-            });
-        } catch (error) {
-            await transaction.rollback();
+        } else {
             endpointError({
                 res,
-                code: error.code || 500,
-                message: error.message || 'Error al crear la vacuna',
-                errors: error.errors || [error.message]
-            });
+                code: 400,
+                message: "Ocurrio un error en el formulario",
+                errors: errorsValidator.mapped()
+            })
         }
+
     },
 
     // Obtener vacunas por IDs (método útil para el controlador de Salud)
