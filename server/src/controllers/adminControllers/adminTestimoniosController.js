@@ -2,43 +2,59 @@ const { Testimonio } = require('../../database/models');
 const { endpointError, CustomError } = require('../../utils/error');
 const { endpointResponse } = require('../../utils/success');
 const path = require('path');
+const { validationResult } = require('express-validator')
 
 module.exports = {
     crearTestimonio: async (req, res) => {
         try {
-            const { comentario, autor, fecha, mascota_id, admin_id } = req.body;
 
-            if (!comentario || !autor) {
-                // Si hay una imagen subida pero la validación falla, eliminarla
-                if (req.file) {
-                    const fs = require('fs');
-                    fs.unlinkSync(req.file.path);
+            // Validación de errores
+            let errorsValidator = validationResult(req);
+
+            if (errorsValidator.isEmpty()) {
+
+                const { comentario, autor, fecha, mascota_id, admin_id } = req.body;
+
+                if (!comentario || !autor) {
+                    // Si hay una imagen subida pero la validación falla, eliminarla
+                    if (req.file) {
+                        const fs = require('fs');
+                        fs.unlinkSync(req.file.path);
+                    }
+                    throw new CustomError('Datos incompletos', 400, [
+                        !comentario && 'El comentario es requerido',
+                        !autor && 'El autor es requerido'
+                    ].filter(Boolean));
                 }
-                throw new CustomError('Datos incompletos', 400, [
-                    !comentario && 'El comentario es requerido',
-                    !autor && 'El autor es requerido'
-                ].filter(Boolean));
+
+                // Construir ruta de la imagen relativa
+                const fotoPath = req.file ? `/images/testimonios/${req.file.filename}` : null;
+
+                // Crear el testimonio
+                const testimonio = await Testimonio.create({
+                    comentario,
+                    autor,
+                    fecha: fecha || new Date(),
+                    foto: fotoPath,
+                    mascota_id,
+                    admin_id
+                });
+
+                return endpointResponse({
+                    res,
+                    code: 201,
+                    message: 'Testimonio creado exitosamente',
+                    body: testimonio
+                });
+            } else {
+                endpointError({
+                    res,
+                    code: 400,
+                    message: "Ocurrio un error en el formulario",
+                    errors: errorsValidator.mapped()
+                })
             }
 
-            // Construir ruta de la imagen relativa
-            const fotoPath = req.file ? `/images/testimonios/${req.file.filename}` : null;
-
-            // Crear el testimonio
-            const testimonio = await Testimonio.create({
-                comentario,
-                autor,
-                fecha: fecha || new Date(),
-                foto: fotoPath,
-                mascota_id,
-                admin_id
-            });
-
-            return endpointResponse({
-                res,
-                code: 201,
-                message: 'Testimonio creado exitosamente',
-                body: testimonio
-            });
 
         } catch (error) {
             // Eliminar la imagen si hubo un error después de subirla

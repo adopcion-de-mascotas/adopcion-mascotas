@@ -1,4 +1,4 @@
-const { check, body } = require('express-validator')
+const { body } = require('express-validator')
 
 const mascotaValidator = [
     body("nombre").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
