@@ -2,69 +2,83 @@ const { Salud, Vacuna, sequelize } = require("../../database/models");
 const { endpointError, CustomError } = require("../../utils/error");
 const { endpointResponse } = require("../../utils/success");
 const { Op } = require('sequelize');
+const { validationResult } = require('express-validator')
 
 module.exports = {
     // Crear registro de salud
     create: async (req, res) => {
-        const transaction = await sequelize.transaction();
-        try {
-            const { estado, tratamiento, info_veterinaria, vacunas } = req.body;
 
-            // Validación básica
-            if (!estado) {
-                throw new CustomError('El campo estado es obligatorio', 400);
-            }
+        const errorsValidator = validationResult(req);
+        if (errorsValidator.isEmpty()) {
 
-            // Crear registro de salud
-            const nuevaSalud = await Salud.create({
-                estado,
-                tratamiento: tratamiento || null,
-                info_veterinaria: info_veterinaria || null
-            }, { transaction });
+            const transaction = await sequelize.transaction();
+            try {
+                const { estado, tratamiento, info_veterinaria, vacunas } = req.body;
 
-            // Asociar vacunas si se proporcionaron
-            if (vacunas && vacunas.length > 0) {
-                // Verificar que las vacunas existan
-                const vacunasExistentes = await Vacuna.findAll({
-                    where: { id: { [Op.in]: vacunas } },
-                    transaction
-                });
-
-                if (vacunasExistentes.length !== vacunas.length) {
-                    throw new CustomError('Alguna de las vacunas no existe', 404);
+                // Validación básica
+                if (!estado) {
+                    throw new CustomError('El campo estado es obligatorio', 400);
                 }
 
-                await nuevaSalud.addVacunas(vacunas, { transaction });
+                // Crear registro de salud
+                const nuevaSalud = await Salud.create({
+                    estado,
+                    tratamiento: tratamiento || null,
+                    info_veterinaria: info_veterinaria || null
+                }, { transaction });
+
+                // Asociar vacunas si se proporcionaron
+                if (vacunas && vacunas.length > 0) {
+                    // Verificar que las vacunas existan
+                    const vacunasExistentes = await Vacuna.findAll({
+                        where: { id: { [Op.in]: vacunas } },
+                        transaction
+                    });
+
+                    if (vacunasExistentes.length !== vacunas.length) {
+                        throw new CustomError('Alguna de las vacunas no existe', 404);
+                    }
+
+                    await nuevaSalud.addVacunas(vacunas, { transaction });
+                }
+
+                await transaction.commit();
+
+                // Obtener el registro creado con sus relaciones
+                const saludCompleta = await Salud.findByPk(nuevaSalud.id, {
+                    include: [{
+                        model: Vacuna,
+                        as: 'vacunas',
+                        attributes: ['id', 'nombre'],
+                        through: { attributes: [] }
+                    }]
+                });
+
+                endpointResponse({
+                    res,
+                    code: 201,
+                    message: 'Registro de salud creado exitosamente',
+                    body: saludCompleta
+                });
+
+            } catch (error) {
+                await transaction.rollback();
+                endpointError({
+                    res,
+                    code: error.code || 500,
+                    message: error.message || 'Error al crear el registro de salud',
+                    errors: error.errors || [error.message]
+                });
             }
-
-            await transaction.commit();
-
-            // Obtener el registro creado con sus relaciones
-            const saludCompleta = await Salud.findByPk(nuevaSalud.id, {
-                include: [{
-                    model: Vacuna,
-                    as: 'vacunas',
-                    attributes: ['id', 'nombre'],
-                    through: { attributes: [] }
-                }]
-            });
-
-            endpointResponse({
-                res,
-                code: 201,
-                message: 'Registro de salud creado exitosamente',
-                body: saludCompleta
-            });
-
-        } catch (error) {
-            await transaction.rollback();
+        } else {
             endpointError({
                 res,
-                code: error.code || 500,
-                message: error.message || 'Error al crear el registro de salud',
-                errors: error.errors || [error.message]
+                code: 400,
+                message: "Ocurrió un error en el formulario",
+                errors: errorsValidator.mapped()
             });
         }
+
     },
 
     // Actualizar registro de salud
