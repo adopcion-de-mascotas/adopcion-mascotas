@@ -2,22 +2,16 @@ import React from "react";
 import { teamMembers } from "../../data/team";
 import Project from "./project/Project";
 import Contact from "../../components/contact/Contact";
+import Carrousel from "../../components/carrousel/Carrousel";
 
 export default function SobreNosotros() {
   return (
     <>
+      <Carrousel />
       {/* Team section */}
       <main className="container mx-auto px-4 py-8">
-        {/* Botón de volver al home */}
-        <div className="mb-6">
-          <a
-            href="/"
-            className="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium"
-          >
-            <i className="fas fa-arrow-left mr-2"></i> Volver al Home
-          </a>
-        </div>
-        <section id="team" className="py-20 bg-white">
+      
+        <section id="team" className=" ">
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -36,7 +30,7 @@ export default function SobreNosotros() {
               id="team-container"
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
             >
-              {teamMembers.map((member,index) => (
+              {teamMembers.map((member, index) => (
                 <div
                   key={member.id || index}
                   className="team-card bg-white rounded-xl overflow-hidden shadow-lg transition duration-500 ease-in-out"
@@ -52,20 +46,15 @@ export default function SobreNosotros() {
                   </div>
                   <div className="p-6 text-center">
                     <h3 className="text-xl font-bold">{member.name}</h3>
-                    <p className={`${member.textColor} mb-4`}>
-                      {member.role}
-                    </p>
-                    <p className="text-gray-600 mb-6">
-                      {member.description}
-                    </p>
+                    <p className={`${member.textColor} mb-4`}>{member.role}</p>
+                    <p className="text-gray-600 mb-6">{member.description}</p>
                     <a
                       href={member.portfolio}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={`inline-block px-6 py-2 ${member.bgColor} text-white rounded-full ${member.hoverColor} transition`}
                     >
-                      Ver portafolio{" "}
-                      <i className="fas fa-arrow-right ml-2"></i>
+                      Ver portafolio <i className="fas fa-arrow-right ml-2"></i>
                     </a>
                   </div>
                 </div>
@@ -77,9 +66,6 @@ export default function SobreNosotros() {
 
       {/* Project section */}
       <Project />
-
-      {/* Contact section */}
-      <Contact />
     </>
   );
 }
