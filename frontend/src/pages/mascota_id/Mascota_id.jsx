@@ -58,7 +58,6 @@ export default function Mascota_Id() {
     );
   }
 
-
   return (
     <main className="container mx-auto px-4 py-8">
       {/* Botón Volver */}
@@ -321,12 +320,6 @@ export default function Mascota_Id() {
                 </div>
               </div>
             )}
-
-            <div className="mt-8">
-              <button className="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center">
-                <i className="fas fa-home mr-2"></i> Solicitar adopción
-              </button>
-            </div>
           </div>
         </div>
       </div>
@@ -362,7 +355,6 @@ export default function Mascota_Id() {
             <ul className="space-y-3">
               <li className="flex items-center">
                 <i className="fas fa-map-marker-alt text-gray-500 mr-3"></i>{" "}
-                
                 {mascota.refugio.direccion?.calle ?? "No especificado"}
               </li>
               <li className="flex items-center">

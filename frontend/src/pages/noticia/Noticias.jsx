@@ -7,7 +7,6 @@ export default function Noticias() {
   const [noticias, setNoticias] = useState([]);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todos");
   const [busqueda, setBusqueda] = useState("");
 
   const noticiasPorPagina = 6;
@@ -15,31 +14,19 @@ export default function Noticias() {
   useEffect(() => {
     obtenerNoticias()
       .then((data) => {
-        // Solo para desarrollo: duplicar noticias 3 veces
         const noticiasDuplicadas = [...data, ...data, ...data];
         setNoticias(noticiasDuplicadas);
       })
       .catch(setError);
   }, []);
 
-  const handleCategoriaChange = (categoria) => {
-    setCategoriaSeleccionada(categoria);
-    setCurrentPage(1);
-  };
-
   const handleBusquedaChange = (e) => {
     setBusqueda(e.target.value);
     setCurrentPage(1);
   };
 
-  // Filtrar por categoría
-  const noticiasFiltradasPorCategoria =
-    categoriaSeleccionada === "Todos"
-      ? noticias
-      : noticias.filter((n) => n.categoria === categoriaSeleccionada);
-
   // Filtrar por búsqueda
-  const noticiasFiltradas = noticiasFiltradasPorCategoria.filter((n) =>
+  const noticiasFiltradas = noticias.filter((n) =>
     (n.titulo + n.contenido)
       .toLowerCase()
       .includes(busqueda.trim().toLowerCase())
@@ -103,28 +90,6 @@ export default function Noticias() {
     <>
       {/* Carrousel Section */}
       <Carrousel />
-      {/* Category Filter */}
-      <div className="bg-indigo-50 py-4">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-2">
-            {["Todos", "Consejos", "Noticias", "Historias", "Cuidados"].map(
-              (categoria) => (
-                <button
-                  key={categoria}
-                  onClick={() => handleCategoriaChange(categoria)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium ${
-                    categoriaSeleccionada === categoria
-                      ? "bg-indigo-600 text-white"
-                      : "bg-white text-indigo-600 hover:bg-indigo-100"
-                  }`}
-                >
-                  {categoria}
-                </button>
-              )
-            )}
-          </div>
-        </div>
-      </div>
 
       {/* Search Input */}
       <div className="container mx-auto flex justify-center px-4 py-6">
@@ -152,7 +117,6 @@ export default function Noticias() {
             Últimas publicaciones
           </h2>
 
-          {/* Mostrar mensaje de búsqueda activa */}
           {busqueda.trim() !== "" && (
             <p className="text-gray-600 mb-4">
               Resultados para:{" "}

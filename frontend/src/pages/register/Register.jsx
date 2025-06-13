@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { registerUser } from "../../services/authService";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -28,26 +29,12 @@ export default function Register() {
     }
 
     try {
-      const res = await fetch(
-        "http://localhost:4000/api/admin/session/create",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        }
-      );
-
-      const data = await res.json();
-
-      if (res.ok) {
-        localStorage.setItem("token", data.token);
-        window.location.href = "/dashboard/dashboardFirts";
-      } else {
-        alert(data.message || "Error al crear cuenta");
-      }
+      const data = await registerUser(form);
+      localStorage.setItem("token", data.token);
+      window.location.href = "/dashboard/dashboardFirts";
     } catch (err) {
       console.error(err);
-      alert("Error al conectar con el servidor");
+      alert(err.message || "Error al crear cuenta");
     }
   };
 
@@ -69,9 +56,7 @@ export default function Register() {
 
         {/* FORMULARIO */}
         <div className="flex-1 bg-white p-8 rounded-lg shadow-lg">
-          <h3 className="text-2xl font-bold mb-6 text-center">
-            ¡Crear cuenta!
-          </h3>
+          <h3 className="text-2xl font-bold mb-6 text-center">¡Crear cuenta!</h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Nombre */}
             <div>
@@ -117,7 +102,7 @@ export default function Register() {
                 Email
               </label>
               <input
-                type="text"
+                type="email"
                 id="email"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}

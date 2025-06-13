@@ -1,6 +1,8 @@
+// src/pages/Login/Login.jsx
+
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import Carrousel from "../../components/carrousel/Carrousel";
+import { login } from "../../services/authService";
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -26,32 +28,19 @@ export default function Login() {
     }
 
     try {
-      const res = await fetch("http://localhost:4000/api/admin/session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        localStorage.setItem("token", data.token);
-        window.location.href = "/dashboard/dashboardFirts"; // recarga completa
-      } else {
-        alert(data.message || "Error al iniciar sesión");
-      }
+      const data = await login(form);
+      localStorage.setItem("token", data.token);
+      window.location.href = "/dashboard/dashboardFirts";
     } catch (err) {
       console.error(err);
-      alert("Error al conectar con el servidor");
+      alert(err.message || "Error al iniciar sesión");
     }
   };
 
   return (
     <>
-      {/* Carrousel Section */}
       <Carrousel />
       <div className="container mx-auto px-4 py-8">
-        
         <div className="flex flex-col lg:flex-row gap-8">
           {/* VIDEO */}
           <div className="flex-1">
@@ -68,15 +57,11 @@ export default function Login() {
 
           {/* FORMULARIO */}
           <div className="flex-1 bg-white p-8 rounded-lg shadow-lg">
-            <h3 className="text-2xl font-bold mb-6 text-center">
-              ¡Iniciar Sesion!
-            </h3>
+            <h3 className="text-2xl font-bold mb-6 text-center">¡Iniciar Sesión!</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Email */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium">
-                  Email
-                </label>
+                <label htmlFor="email" className="block text-sm font-medium">Email</label>
                 <input
                   type="text"
                   id="email"
@@ -86,31 +71,23 @@ export default function Login() {
                   placeholder="Ingrese aquí su email"
                   data-test="email"
                 />
-                {errors.email && (
-                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-                )}
+                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
               </div>
 
               {/* Contraseña */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium">
-                  Contraseña
-                </label>
+                <label htmlFor="password" className="block text-sm font-medium">Contraseña</label>
                 <input
                   type="password"
                   id="password"
                   value={form.password}
-                  onChange={(e) =>
-                    setForm({ ...form, password: e.target.value })
-                  }
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
                   className="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-200"
                   placeholder="******************"
                   data-test="password"
-                  autocomplete="current-password"
+                  autoComplete="current-password"
                 />
-                {errors.password && (
-                  <p className="text-red-500 text-sm mt-1">{errors.password}</p>
-                )}
+                {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
               </div>
 
               {/* Recordar */}
@@ -119,15 +96,11 @@ export default function Login() {
                   type="checkbox"
                   id="remember"
                   checked={form.rememberMe}
-                  onChange={(e) =>
-                    setForm({ ...form, rememberMe: e.target.checked })
-                  }
+                  onChange={(e) => setForm({ ...form, rememberMe: e.target.checked })}
                   className="mr-2"
                   data-test="remember-button"
                 />
-                <label htmlFor="remember" className="text-sm">
-                  Recordar
-                </label>
+                <label htmlFor="remember" className="text-sm">Recordar</label>
               </div>
 
               {/* Botón */}
