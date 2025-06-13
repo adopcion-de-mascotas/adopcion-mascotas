@@ -1,6 +1,6 @@
 const { body } = require('express-validator')
 
-const testimonioValidatorCrear = [
+const testimonioValidator = [
     body("comentario")
         .notEmpty().withMessage("Este campo no debe estar vacío").bail()
         .isLength({ max: 500 }).withMessage('El comentario no puede tener mas de 500 caracteres').bail(),
@@ -21,4 +21,4 @@ const testimonioValidatorCrear = [
         .isURL().withMessage('La foto debe ser una URL válida.'),
 ]
 
-module.exports = testimonioValidatorCrear
+module.exports = testimonioValidator
