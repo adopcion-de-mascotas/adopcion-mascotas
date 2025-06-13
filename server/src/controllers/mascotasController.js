@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Mascota, GaleriaMascota, Comportamiento, Refugio, Salud, Direcciones, ContactoRefugio, Vacuna } = require("../database/models");
+const { Mascota, GaleriaMascota, Comportamiento, Refugio, Salud, Direcciones, ContactoRefugio, Vacuna, Personalidad } = require("../database/models");
 const { endpointError, CustomError } = require("../utils/error");
 const { endpointResponse } = require("../utils/success");
 
@@ -88,6 +88,12 @@ module.exports = {
             const mascota = await Mascota.findByPk(id, {
                 include: [
                     {
+                        model: Personalidad,
+                        as: "personalidad",
+                        attributes: ["id", "nombre"],
+                        through: { attributes: [] }
+                    },
+                    {
                         model: GaleriaMascota,
                         as: 'galeria', // Asegúrate que este alias coincida con tu asociación en el modelo Mascota
                         attributes: ['id', 'foto'],
@@ -131,7 +137,7 @@ module.exports = {
                                 model: Vacuna,
                                 as: "vacunas",
                                 attributes: ["id", "nombre"],
-                                through: {attributes:[]}
+                                through: { attributes: [] }
                             }
                         ],
                         attributes: {
