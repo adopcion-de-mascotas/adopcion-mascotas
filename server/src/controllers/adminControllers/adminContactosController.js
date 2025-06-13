@@ -77,61 +77,74 @@ module.exports = {
 
     // Crear un nuevo contacto con validaciones
     create: async (req, res) => {
-        try {
-            const { telefono, email, web, refugio_id, direccion_id } = req.body;
 
-            // Validaciones básicas
-            if (!telefono || !email) {
-                throw new CustomError('Teléfono y email son campos obligatorios', 400);
+        const errorsValidator = validationResult(req)
+
+        if (errorsValidator.isEmpty()) {
+
+            try {
+                const { telefono, email, web, refugio_id, direccion_id } = req.body;
+
+                // Validaciones básicas
+                if (!telefono || !email) {
+                    throw new CustomError('Teléfono y email son campos obligatorios', 400);
+                }
+
+                // Verificar que el refugio existe
+                const refugio = await Refugio.findByPk(refugio_id);
+                if (!refugio) {
+                    throw new CustomError('El refugio especificado no existe', 404);
+                }
+
+                // Verificar que la dirección existe
+                const direccion = await Direcciones.findByPk(direccion_id);
+                if (!direccion) {
+                    throw new CustomError('La dirección especificada no existe', 404);
+                }
+
+                // Verificar que el refugio no tenga ya un contacto
+                const contactoExistente = await ContactoRefugio.findOne({ where: { refugio_id } });
+                if (contactoExistente) {
+                    throw new CustomError('Este refugio ya tiene un contacto asociado', 409);
+                }
+
+                const nuevoContacto = await ContactoRefugio.create({
+                    telefono,
+                    email,
+                    web,
+                    refugio_id,
+                    direccion_id
+                });
+
+                // Obtener el contacto creado con sus relaciones
+                const contactoCreado = await ContactoRefugio.findByPk(nuevoContacto.id, {
+                    include: [
+                        { model: Refugio, as: 'refugio' },
+                        { model: Direcciones, as: 'direccion' }
+                    ]
+                });
+
+                endpointResponse({
+                    res,
+                    code: 201,
+                    message: 'Contacto de refugio creado exitosamente',
+                    body: contactoCreado
+                });
+            } catch (error) {
+                endpointError({
+                    res,
+                    code: error.code || 500,
+                    message: error.message || 'Error al crear el contacto',
+                    errors: error.errors || [error.message]
+                });
             }
-
-            // Verificar que el refugio existe
-            const refugio = await Refugio.findByPk(refugio_id);
-            if (!refugio) {
-                throw new CustomError('El refugio especificado no existe', 404);
-            }
-
-            // Verificar que la dirección existe
-            const direccion = await Direcciones.findByPk(direccion_id);
-            if (!direccion) {
-                throw new CustomError('La dirección especificada no existe', 404);
-            }
-
-            // Verificar que el refugio no tenga ya un contacto
-            const contactoExistente = await ContactoRefugio.findOne({ where: { refugio_id } });
-            if (contactoExistente) {
-                throw new CustomError('Este refugio ya tiene un contacto asociado', 409);
-            }
-
-            const nuevoContacto = await ContactoRefugio.create({
-                telefono,
-                email,
-                web,
-                refugio_id,
-                direccion_id
-            });
-
-            // Obtener el contacto creado con sus relaciones
-            const contactoCreado = await ContactoRefugio.findByPk(nuevoContacto.id, {
-                include: [
-                    { model: Refugio, as: 'refugio' },
-                    { model: Direcciones, as: 'direccion' }
-                ]
-            });
-
-            endpointResponse({
-                res,
-                code: 201,
-                message: 'Contacto de refugio creado exitosamente',
-                body: contactoCreado
-            });
-        } catch (error) {
+        } else {
             endpointError({
                 res,
-                code: error.code || 500,
-                message: error.message || 'Error al crear el contacto',
-                errors: error.errors || [error.message]
-            });
+                code: 400,
+                message: "Ocurrio un error en el formulario",
+                errors: errorsValidator.mapped()
+            })
         }
     },
 

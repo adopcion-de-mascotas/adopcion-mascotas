@@ -6,12 +6,13 @@ const {
     getById,
     remove,
     update
-} = require("../../controllers/adminControllers/adminContactosController")
+} = require("../../controllers/adminControllers/adminContactosController");
+const contactoValidator = require('../../validations/contactoValidator');
 
 router.get("/", getAll)
 router.get('/:id', getById);
 
-router.post('/', create);
+router.post('/', contactoValidator, create);
 router.put('/:id', update);
 router.delete('/:id', remove);
 

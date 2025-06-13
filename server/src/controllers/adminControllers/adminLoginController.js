@@ -2,51 +2,65 @@ const { Admins } = require("../../database/models")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const { JWT_SECRET } = process.env
+const { validationResult } = require("express-validator")
+const { endpointError } = require("../../utils/error")
 
 module.exports = {
     login: async (req, res) => {
 
-        // Desestructuramos el body
-        const { email, password } = req.body
+        const errorsValidator = validationResult(req)
 
-        // Buscamos el admin por email
-        const admin = await Admins.findOne({
-            where: {
-                email
+        if (errorsValidator.isEmpty()) {
+
+            // Desestructuramos el body
+            const { email, password } = req.body
+
+            // Buscamos el admin por email
+            const admin = await Admins.findOne({
+                where: {
+                    email
+                }
+            })
+
+            // Si no existe el admin, devolvemos un error
+            if (!admin) {
+                return res.status(401).json({
+                    error: "El email o la contraseña son incorrectos"
+                })
             }
-        })
 
-        // Si no existe el admin, devolvemos un error
-        if (!admin) {
+            if (admin && bcrypt.compareSync(password, admin.password)) {
+
+                // Si existe el admin y la contraseña es correcta, creamos el token
+                const token = jwt.sign({
+                    id: admin.id,
+                    email: admin.email
+                }, JWT_SECRET, {
+                    expiresIn: "1h"
+                })
+
+                // Si existe el admin y la contraseña es correcta, devolvemos el admin
+                return res.status(200).json({
+                    id: admin.id,
+                    nombre: admin.nombre,
+                    apellido: admin.apellido,
+                    email: admin.email,
+                    token
+                })
+            }
+
+            // Si existe el admin pero la contraseña es incorrecta, devolvemos un error
             return res.status(401).json({
                 error: "El email o la contraseña son incorrectos"
             })
-        }
-
-        if (admin && bcrypt.compareSync(password, admin.password)) {
-
-            // Si existe el admin y la contraseña es correcta, creamos el token
-            const token = jwt.sign({
-                id: admin.id,
-                email: admin.email
-            }, JWT_SECRET, {
-                expiresIn: "1h"
-            })
-
-            // Si existe el admin y la contraseña es correcta, devolvemos el admin
-            return res.status(200).json({
-                id: admin.id,
-                nombre: admin.nombre,
-                apellido: admin.apellido,
-                email: admin.email,
-                token
+        } else {
+            endpointError({
+                res,
+                code: 400,
+                message: "Ocurrio un error en el formulario",
+                errors: errorsValidator.mapped()
             })
         }
-
-        // Si existe el admin pero la contraseña es incorrecta, devolvemos un error
-        return res.status(401).json({
-            error: "El email o la contraseña son incorrectos"
-        })
     },
 
     createAdmin: async (req, res) => {
@@ -92,5 +106,5 @@ module.exports = {
         })
 
     }
-    
+
 }

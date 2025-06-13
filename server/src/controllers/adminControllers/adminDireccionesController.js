@@ -1,3 +1,4 @@
+const { validationResult } = require("express-validator");
 const { Direcciones, ContactoRefugio, Refugio } = require("../../database/models");
 const { endpointError, CustomError } = require('../../utils/error');
 const { endpointResponse } = require('../../utils/success');
@@ -62,37 +63,45 @@ module.exports = {
     },
     // Crear una nueva dirección
     create: async (req, res) => {
-        try {
-            const { calle, localidad, provincia, pais, codigo_postal, barrio, descripcion } = req.body;
 
-            // Validaciones básicas
-            if (!calle || !localidad || !provincia || !codigo_postal) {
-                throw new CustomError('Campos obligatorios: calle, localidad, provincia y codigo_postal', 400);
+        const errorsValidator = validationResult(req)
+
+        if (errorsValidator.isEmpty()) {
+
+            try {
+                const { calle, localidad, provincia, pais, codigo_postal, barrio, descripcion } = req.body;
+
+                const nuevaDireccion = await Direcciones.create({
+                    calle,
+                    barrio: barrio || null,
+                    localidad,
+                    provincia,
+                    pais: pais || 'Argentina',
+                    codigo_postal,
+                    descripcion: descripcion || null
+                });
+
+                endpointResponse({
+                    res,
+                    code: 201,
+                    message: 'Dirección creada exitosamente',
+                    body: nuevaDireccion
+                });
+            } catch (error) {
+                endpointError({
+                    res,
+                    code: error.code || 500,
+                    message: error.message || 'Error al crear la dirección',
+                    errors: error.errors || [error.message]
+                });
             }
-
-            const nuevaDireccion = await Direcciones.create({
-                calle,
-                barrio: barrio || null,
-                localidad,
-                provincia,
-                pais: pais || 'Argentina',
-                codigo_postal,
-                descripcion: descripcion || null
-            });
-
-            endpointResponse({
-                res,
-                code: 201,
-                message: 'Dirección creada exitosamente',
-                body: nuevaDireccion
-            });
-        } catch (error) {
+        } else {
             endpointError({
                 res,
-                code: error.code || 500,
-                message: error.message || 'Error al crear la dirección',
-                errors: error.errors || [error.message]
-            });
+                code: 400,
+                message: "Ocurrio un error en el formulario",
+                errors: errorsValidator.mapped()
+            })
         }
     },
 

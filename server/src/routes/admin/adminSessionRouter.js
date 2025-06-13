@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router()
 
 /* Importar el controlador */
-const adminLoginController = require("../../controllers/adminControllers/adminLoginController")
+const adminLoginController = require("../../controllers/adminControllers/adminLoginController");
+const loginValidator = require("../../validations/loginAdminValidator");
 
 /* Iniciar sesión */
-router.post("/", adminLoginController.login)
+router.post("/", loginValidator, adminLoginController.login)
 
 /* Crear Admin */
 router.post("/create", adminLoginController.createAdmin)
