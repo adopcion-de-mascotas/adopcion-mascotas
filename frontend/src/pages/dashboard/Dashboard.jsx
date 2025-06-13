@@ -83,13 +83,13 @@ export default function Dashboard() {
               </Link>
             </div>
             <div className="px-4 mt-2">
-              <a
-                href="#"
+              <Link
+                to="/dashboard/settings"
                 className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
               >
                 <i className="fas fa-cog mr-3"></i>
                 <span className="font-medium">Settings</span>
-              </a>
+              </Link>
             </div>
           </nav>
 

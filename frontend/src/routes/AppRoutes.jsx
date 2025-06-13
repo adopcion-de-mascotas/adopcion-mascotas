@@ -18,6 +18,7 @@ import AdoptionFormPage from "../components/adopcionForm/AdoptionFormPage";
 import NoticiaForm from "../components/noticiaForm/NoticiaForm";
 import TestimonioForm from "../components/testimonioForm/TestimonioForm";
 import MascotaForm from "../components/mascotaForm/MascotaForm";
+import Settings from "../pages/settings/Settings";
 
 export default function AppRoutes() {
   return (
@@ -49,6 +50,8 @@ export default function AppRoutes() {
         <Route path="noticiaForm" element={<NoticiaForm/>}/>
         <Route path="testimonioForm" element={<TestimonioForm/>}/>
         <Route path="mascotaForm" element={<MascotaForm/>}/>
+        <Route path="settings" element={<Settings />} />
+
       </Route>
 
       <Route path="*" element={<NotFound />} />

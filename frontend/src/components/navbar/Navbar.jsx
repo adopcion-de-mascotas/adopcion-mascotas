@@ -45,7 +45,7 @@ export default function Navbar() {
           href="/dashboard/dashboardFirts"
           className="text-gray-700 hover:text-indigo-600 font-medium"
         >
-          Volver al Dashboard
+          Dashboard
         </a>
       )}
 
