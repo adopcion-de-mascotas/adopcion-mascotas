@@ -14,13 +14,19 @@ export default function Testimonio({ testimonials }) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
           {testimonials
             ?.slice(0, 3)
-            .map(({ autor, fecha, comentario, foto }, index) => {
+            .map(({ autor, fecha, comentario, foto, estrellas }, index) => {
               return (
                 <div
                   key={index}
                   className="bg-white bg-opacity-10 p-8 rounded-xl text-black
                   mb-4shadow-md hover:scale-105 transition-transform duration-300"
                 >
+                  {/* Estrellas */}
+                <div className="flex items-center mb-4 text-yellow-400 text-xl">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i}>{i < estrellas ? "★" : "☆"}</span>
+                  ))}
+                </div>
                   <div className="flex items-center mb-4 text-yellow-400 text-xl"></div>
 
                   <p className="opacity-90 mb-6">"{comentario}"</p>
@@ -33,6 +39,7 @@ export default function Testimonio({ testimonials }) {
                         className="w-full h-full object-cover"
                       />
                     </div>
+                    
                     <div>
                       <h4 className="font-bold">{autor}</h4>
                       <p className="text-sm opacity-80">
@@ -43,7 +50,9 @@ export default function Testimonio({ testimonials }) {
                         })}
                       </p>
                     </div>
+                    
                   </div>
+                  
                 </div>
               );
             })}
