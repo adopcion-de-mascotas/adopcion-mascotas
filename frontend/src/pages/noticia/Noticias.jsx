@@ -1,14 +1,99 @@
 import { useEffect, useState } from "react";
 import CardNoticia from "../../components/cardnoticia/CardNoticia";
 import { obtenerNoticias } from "../../services/noticiaService";
+import Carrousel from "../../components/carrousel/Carrousel";
 
 export default function Noticias() {
   const [noticias, setNoticias] = useState([]);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todos");
+  const [busqueda, setBusqueda] = useState("");
+
+  const noticiasPorPagina = 6;
 
   useEffect(() => {
-    obtenerNoticias().then(setNoticias).catch(setError);
+    obtenerNoticias()
+      .then((data) => {
+        // Solo para desarrollo: duplicar noticias 3 veces
+        const noticiasDuplicadas = [...data, ...data, ...data];
+        setNoticias(noticiasDuplicadas);
+      })
+      .catch(setError);
   }, []);
+
+  const handleCategoriaChange = (categoria) => {
+    setCategoriaSeleccionada(categoria);
+    setCurrentPage(1);
+  };
+
+  const handleBusquedaChange = (e) => {
+    setBusqueda(e.target.value);
+    setCurrentPage(1);
+  };
+
+  // Filtrar por categoría
+  const noticiasFiltradasPorCategoria =
+    categoriaSeleccionada === "Todos"
+      ? noticias
+      : noticias.filter((n) => n.categoria === categoriaSeleccionada);
+
+  // Filtrar por búsqueda
+  const noticiasFiltradas = noticiasFiltradasPorCategoria.filter((n) =>
+    (n.titulo + n.contenido)
+      .toLowerCase()
+      .includes(busqueda.trim().toLowerCase())
+  );
+
+  const totalPaginas = Math.ceil(noticiasFiltradas.length / noticiasPorPagina);
+  const indiceInicio = (currentPage - 1) * noticiasPorPagina;
+  const indiceFin = indiceInicio + noticiasPorPagina;
+  const noticiasActuales = noticiasFiltradas.slice(indiceInicio, indiceFin);
+
+  const handlePageChange = (pagina) => {
+    if (pagina >= 1 && pagina <= totalPaginas) {
+      setCurrentPage(pagina);
+    }
+  };
+
+  const renderPagination = () => {
+    const botones = [];
+    for (let i = 1; i <= totalPaginas; i++) {
+      botones.push(
+        <button
+          key={i}
+          onClick={() => handlePageChange(i)}
+          className={`px-3 py-1 rounded-md border ${
+            currentPage === i
+              ? "bg-indigo-600 text-white"
+              : "border-gray-300 text-gray-700 hover:bg-gray-50"
+          }`}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    return (
+      <nav className="flex items-center space-x-2">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-3 py-1 rounded-md border border-gray-300 text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+        >
+          <i className="fas fa-chevron-left"></i>
+        </button>
+        {botones}
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPaginas}
+          className="px-3 py-1 rounded-md border border-gray-300 text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+        >
+          <i className="fas fa-chevron-right"></i>
+        </button>
+      </nav>
+    );
+  };
 
   if (error) {
     return <p className="text-red-600">Error al cargar noticias.</p>;
@@ -16,43 +101,44 @@ export default function Noticias() {
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="hero-pattern bg-indigo-900 bg-opacity-70 text-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-4">Noticias Happy Paw</h2>
-          <p className="text-xl max-w-2xl mx-auto">
-            Aprende sobre cuidado de mascotas, historias de adopción y nuestras
-            últimas noticias
-          </p>
-        </div>
-      </section>
-
+      {/* Carrousel Section */}
+      <Carrousel />
       {/* Category Filter */}
       <div className="bg-indigo-50 py-4">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-2">
-            <button className="px-4 py-2 bg-indigo-600 text-white rounded-full text-sm font-medium">
-              Todos
-            </button>
-            <button className="px-4 py-2 bg-white text-indigo-600 rounded-full text-sm font-medium hover:bg-indigo-100">
-              Consejos
-            </button>
-            <button className="px-4 py-2 bg-white text-indigo-600 rounded-full text-sm font-medium hover:bg-indigo-100">
-              Noticias
-            </button>
-            <button className="px-4 py-2 bg-white text-indigo-600 rounded-full text-sm font-medium hover:bg-indigo-100">
-              Historias
-            </button>
-            <button className="px-4 py-2 bg-white text-indigo-600 rounded-full text-sm font-medium hover:bg-indigo-100">
-              Cuidados
-            </button>
+            {["Todos", "Consejos", "Noticias", "Historias", "Cuidados"].map(
+              (categoria) => (
+                <button
+                  key={categoria}
+                  onClick={() => handleCategoriaChange(categoria)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium ${
+                    categoriaSeleccionada === categoria
+                      ? "bg-indigo-600 text-white"
+                      : "bg-white text-indigo-600 hover:bg-indigo-100"
+                  }`}
+                >
+                  {categoria}
+                </button>
+              )
+            )}
           </div>
         </div>
       </div>
 
-      {/* Blog Posts Section */}
+      {/* Search Input */}
+      <div className="container mx-auto flex justify-center px-4 py-6">
+        <input
+          type="text"
+          value={busqueda}
+          onChange={handleBusquedaChange}
+          placeholder="Buscar noticias..."
+          className="w-full sm:w-1/2 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+      </div>
 
-      <section className="py-12">
+      {/* Blog Posts Section */}
+      <section className="py-4">
         <div className="container mx-auto px-4">
           <div className="mb-6">
             <a
@@ -62,46 +148,38 @@ export default function Noticias() {
               <i className="fas fa-arrow-left mr-2"></i> Volver al Home
             </a>
           </div>
-          <h2 className="text-3xl font-bold text-gray-800 mb-8">
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">
             Últimas publicaciones
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {noticias && noticias.length > 0 ? (
-              noticias.map((noticia) => (
-                <CardNoticia key={noticia.id} noticia={noticia} />
-              ))
-            ) : (
-              <p>No hay noticias disponibles</p>
-            )}
-          </div>
+          {/* Mostrar mensaje de búsqueda activa */}
+          {busqueda.trim() !== "" && (
+            <p className="text-gray-600 mb-4">
+              Resultados para:{" "}
+              <span className="font-semibold">"{busqueda}"</span>
+            </p>
+          )}
+
+          {noticiasFiltradas.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {noticiasActuales.map((noticia) => (
+                <CardNoticia
+                  key={noticia.id + Math.random()}
+                  noticia={noticia}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-600">No hay noticias disponibles.</p>
+          )}
         </div>
       </section>
 
       {/* Pagination */}
-      <div className="mt-12 flex justify-center">
-        <nav className="flex items-center space-x-2">
-          <button className="px-3 py-1 rounded-md border border-gray-300 text-gray-500 hover:bg-gray-50">
-            <i className="fas fa-chevron-left"></i>
-          </button>
-          <button className="px-3 py-1 rounded-md bg-indigo-600 text-white">
-            1
-          </button>
-          <button className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">
-            2
-          </button>
-          <button className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">
-            3
-          </button>
-          <span className="px-2 text-gray-500">...</span>
-          <button className="px-3 py-1 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50">
-            8
-          </button>
-          <button className="px-3 py-1 rounded-md border border-gray-300 text-gray-500 hover:bg-gray-50">
-            <i className="fas fa-chevron-right"></i>
-          </button>
-        </nav>
-      </div>
+      {totalPaginas > 1 && (
+        <div className="mt-12 flex justify-center">{renderPagination()}</div>
+      )}
+
       {/* Newsletter Section */}
       <section className="bg-indigo-50 py-12">
         <div className="container mx-auto px-4 text-center max-w-3xl">
