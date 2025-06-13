@@ -25,6 +25,10 @@ module.exports = {
         type: Sequelize.STRING(500),
         allowNull: true
       },
+      estrellas: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
       mascota_id: {
         type: Sequelize.INTEGER,
         allowNull: true,

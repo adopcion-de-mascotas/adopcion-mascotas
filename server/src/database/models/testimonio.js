@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     autor: DataTypes.STRING,
     fecha: DataTypes.DATE,
     foto: DataTypes.STRING(500),
+    estrellas: DataTypes.INTEGER,
     mascota_id: {
       type: DataTypes.INTEGER,
       allowNull: true

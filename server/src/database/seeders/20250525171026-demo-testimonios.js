@@ -8,6 +8,7 @@ module.exports = {
         autor: 'María López',
         fecha: new Date('2023-06-15'),
         foto: 'https://randomuser.me/api/portraits/women/44.jpg',
+        estrellas: 4,
         mascota_id: 1,
         admin_id: 2
       },
@@ -16,6 +17,7 @@ module.exports = {
         autor: 'Carlos Pérez',
         fecha: new Date('2023-07-10'),
         foto: 'https://randomuser.me/api/portraits/men/34.jpg',
+        estrellas: 5,
         mascota_id: 3,
         admin_id: 1
       },
@@ -24,6 +26,7 @@ module.exports = {
         autor: 'Lucía Fernández',
         fecha: new Date('2023-08-01'),
         foto: 'https://randomuser.me/api/portraits/women/65.jpg',
+        estrellas: 3,
         mascota_id: 5,
         admin_id: null
       },
@@ -32,6 +35,7 @@ module.exports = {
         autor: 'Jorge Martínez',
         fecha: new Date('2023-09-12'),
         foto: 'https://randomuser.me/api/portraits/men/55.jpg',
+        estrellas: 4,
         mascota_id: null,
         admin_id: 3
       },
@@ -40,6 +44,7 @@ module.exports = {
         autor: 'Ana Gómez',
         fecha: new Date('2023-10-05'),
         foto: 'https://randomuser.me/api/portraits/women/21.jpg',
+        estrellas: 4,
         mascota_id: 2,
         admin_id: 2
       }

@@ -58,7 +58,8 @@ module.exports = (sequelize, DataTypes) => {
     Mascota.belongsToMany(models.Personalidad, {
       through: 'MascotaPersonalidad',
       foreignKey: 'mascotaId',
-      otherKey: 'personalidadId'
+      otherKey: 'personalidadId',
+      as: "personalidad"
     });
   };
 
