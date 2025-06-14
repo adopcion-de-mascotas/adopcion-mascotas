@@ -204,7 +204,7 @@ useEffect(() => {
       {/* Call to Action Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="bg-indigo-600 rounded-xl p-8 md:p-12 text-center text-white">
+          <div className="bg-gray-600 rounded-xl p-8 md:p-12 text-center text-white">
             <h2 className="text-2xl md:text-3xl font-bold mb-4">
               ¿Listo para adoptar?
             </h2>

@@ -91,7 +91,6 @@ export default function Navbar() {
       >
         Noticias
       </a>
-      
     </>
   );
 
@@ -133,7 +132,7 @@ export default function Navbar() {
 
         {/* Menú móvil */}
         <div
-          className={`md:hidden bg-white border-t ${
+          className={`md:hidden bg-white dark:bg-gray-800 border-t dark:border-gray-700 ${
             mobileMenuOpen ? "block" : "hidden"
           }`}
         >
@@ -199,7 +198,6 @@ export default function Navbar() {
                 >
                   Noticias
                 </a>
-                
               </>
             )}
           </div>

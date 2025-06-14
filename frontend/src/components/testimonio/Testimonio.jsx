@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Testimonio({ testimonials }) {
   return (
-    <section className="py-16 bg-indigo-600 text-white">
+    <section className="py-16 bg-gray-600 text-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Historias de Éxito</h2>
@@ -18,6 +18,7 @@ export default function Testimonio({ testimonials }) {
               return (
                 <div
                   key={index}
+                  id="testimonio"
                   className="bg-white bg-opacity-10 p-8 rounded-xl text-black
                   mb-4shadow-md hover:scale-105 transition-transform duration-300"
                 >

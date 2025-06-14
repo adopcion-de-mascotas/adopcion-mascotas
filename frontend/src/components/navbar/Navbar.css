@@ -1,8 +1,8 @@
 .switch {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 22px;
+  width: 60px;
+  height: 28px;
 }
 
 .switch input {
@@ -17,43 +17,61 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #00339e;
-  border-radius: 30px;
+  background-color: #4b5563;
+  border-radius: 34px;
   cursor: pointer;
-  transition: background-color 0.4s ease;
+  transition: all 0.4s ease;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 6px;
-  font-size: 12px;
+  padding: 5px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 .slider::before {
   content: "";
   position: absolute;
-  height: 15px;
-  width: 15px;
-  left: 3px;
-  bottom: 3px;
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
   background-color: white;
   border-radius: 50%;
-  transition: transform 0.4s ease;
-  z-index: 1;
+  transition: all 0.4s ease;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Cambiar color del fondo cuando está activado */
 input:checked + .slider {
-  background-color: #fc6a07;
+  background-color: #1e40af;
 }
 
 /* Mover el círculo a la derecha cuando está activado */
 input:checked + .slider::before {
-  transform: translateX(30px);
+  transform: translateX(32px);
 }
 
 /* Estilos de los íconos */
 .icon {
-  z-index: 2;
-  pointer-events: none;
-  color: white;
+  font-size: 14px;
+  z-index: 1;
+  line-height: 0;
+}
+
+.sun {
+  margin-right: 4px;
+}
+
+.moon {
+  margin-left: 4px;
+}
+
+/* Efecto hover */
+.slider:hover {
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.slider:hover::before {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }

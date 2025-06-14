@@ -10,53 +10,75 @@
   visibility: visible;
 }
 
-/* Estilos por defecto (modo claro) */
-
-
 /* Modo oscuro */
-body.dark {
-  background-color: #121212;
-  color: #eee;
+:root {
+  --background-dark: #1a1a1a;
+  --text-dark: #ffffff;
+  --card-dark: #2d2d2d;
+  --hover-dark: #3d3d3d;
 }
 
-/* Ejemplo: header cambia en modo oscuro */
-body.dark header,
-body.dark footer{
-  background-color: #1e1e1e !important;
-  box-shadow: 0 2px 4px rgba(255 255 255 / 0.1)  !important;
+.dark {
+  @apply bg-gray-900 text-white;
 }
 
-body.dark #home,
-body.dark #pets,
-body.dark #about,
-body.dark #contact,
-body.dark #blog{
-  background-color: #1e1e1e !important;
-  box-shadow: 0 2px 4px rgba(255 255 255 / 0.1)  !important;
+.dark .bg-white {
+  @apply bg-gray-800;
 }
 
-body.dark .proceso_adopcion{
-  background-color: #1e1e1e !important;
-  box-shadow: 0 2px 4px rgba(255 255 255 / 0.1)  !important;
+.dark .text-gray-900 {
+  @apply text-white;
 }
 
-/* Enlaces en modo oscuro */
-body.dark a {
-  color: #bb86fc;
+.dark .text-gray-800 {
+  @apply text-gray-100;
 }
 
-body.dark a:hover {
-  color: #fff;
+.dark #testimonio {
+  @apply text-gray-100!important;
 }
 
-/* Botones */
-body.dark button {
-  background-color: #333;
-  color: #eee;
+.dark .text-gray-700 {
+  @apply text-gray-200;
 }
 
-body.dark button:hover {
-  background-color: #555;
+.dark .text-gray-600 {
+  @apply text-gray-300;
 }
 
-/* Y demás elementos que quieras personalizar */
+.dark .border-gray-200 {
+  @apply border-gray-700;
+}
+
+.dark .shadow-md {
+  @apply shadow-gray-900;
+}
+
+.dark .hover\:shadow-lg:hover {
+  @apply shadow-gray-900;
+}
+
+.dark .hover\:bg-blue-700:hover {
+  @apply bg-blue-800;
+}
+
+.dark .bg-blue-600 {
+  @apply bg-blue-700;
+}
+
+.dark .prose {
+  @apply text-gray-300;
+}
+
+.dark #blog {
+  @apply bg-gray-600;
+}
+
+.dark #about {
+  @apply bg-gray-600;
+}
+
+.dark #contact {
+  @apply bg-gray-600;
+
+}
