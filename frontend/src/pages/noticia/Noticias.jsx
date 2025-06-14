@@ -105,14 +105,7 @@ export default function Noticias() {
       {/* Blog Posts Section */}
       <section className="py-4">
         <div className="container mx-auto px-4">
-          <div className="mb-6">
-            <a
-              href="/"
-              className="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium"
-            >
-              <i className="fas fa-arrow-left mr-2"></i> Volver al Home
-            </a>
-          </div>
+          
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
             Últimas publicaciones
           </h2>

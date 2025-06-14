@@ -53,14 +53,19 @@ export default function Navbar() {
         href="/mascotas"
         className="text-gray-700 hover:text-indigo-600 font-medium"
       >
-        Mascota
+        Mascotas
       </a>
-      
+      <a
+        href="/about"
+        className="text-gray-700 hover:text-indigo-600 font-medium"
+      >
+        Nosotros
+      </a>
       <a
         href="/noticias"
         className="text-gray-700 hover:text-indigo-600 font-medium"
       >
-        Noticia
+        Noticias
       </a>
     </>
   );
@@ -86,12 +91,7 @@ export default function Navbar() {
       >
         Noticias
       </a>
-      <a
-        href="/#contact"
-        className="text-gray-700 hover:text-indigo-600 font-medium"
-      >
-        Contacto
-      </a>
+      
     </>
   );
 
@@ -152,57 +152,54 @@ export default function Navbar() {
 
             {isLoggedIn ? (
               <>
+                {showDashboardLink && (
+                  <a
+                    href="/dashboard/dashboardFirts"
+                    className="text-gray-700 hover:text-indigo-600 font-medium"
+                  >
+                    Dashboard
+                  </a>
+                )}
                 <a
-                  href="/mascota"
-                  className="text-gray-700 hover:text-indigo-600 font-medium py-2"
-                >
-                  Mascota
-                </a>
-                <a
-                  href="/testimonio"
-                  className="text-gray-700 hover:text-indigo-600 font-medium py-2"
-                >
-                  Testimonio
-                </a>
-                <a
-                  href="/noticia"
-                  className="text-gray-700 hover:text-indigo-600 font-medium py-2"
-                >
-                  Noticia
-                </a>
-              </>
-            ) : (
-              <>
-                <a
-                  href="#home"
-                  className="text-gray-700 hover:text-indigo-600 font-medium py-2"
-                >
-                  Inicio
-                </a>
-                <a
-                  href="#pets"
+                  href="/mascotas"
                   className="text-gray-700 hover:text-indigo-600 font-medium py-2"
                 >
                   Mascotas
                 </a>
                 <a
-                  href="#about"
+                  href="/about"
+                  className="text-gray-700 hover:text-indigo-600 font-medium"
+                >
+                  Nosotros
+                </a>
+                <a
+                  href="/noticias"
+                  className="text-gray-700 hover:text-indigo-600 font-medium py-2"
+                >
+                  Noticias
+                </a>
+              </>
+            ) : (
+              <>
+                <a
+                  href="/mascotas"
+                  className="text-gray-700 hover:text-indigo-600 font-medium py-2"
+                >
+                  Mascotas
+                </a>
+                <a
+                  href="/about"
                   className="text-gray-700 hover:text-indigo-600 font-medium py-2"
                 >
                   Nosotros
                 </a>
                 <a
-                  href="#blog"
+                  href="/noticias"
                   className="text-gray-700 hover:text-indigo-600 font-medium py-2"
                 >
-                  Blog
+                  Noticias
                 </a>
-                <a
-                  href="#contact"
-                  className="text-gray-700 hover:text-indigo-600 font-medium py-2"
-                >
-                  Contacto
-                </a>
+                
               </>
             )}
           </div>

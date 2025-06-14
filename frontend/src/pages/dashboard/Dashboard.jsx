@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { logout } from "../../services/authService"; // 👈 nuevo import
-
+import { logout } from "../../services/authService";
 import "./Dashboard.css";
 
 export default function Dashboard() {
@@ -9,59 +8,34 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="flex h-full">
+      <div className="flex h-auto w-auto relative">
         {/* Sidebar */}
         <div
-          className={`sidebar bg-white shadow-lg w-64 h-auto flex-shrink-0 border-r border-gray-200
-            md:block
-            fixed top-0 left-0 
+          className={`bg-white shadow-lg w-auto h-auto flex-shrink-0 border-r border-gray-200
+            md:block p-4 pt-20 md:pt-4
+            fixed top-0 left-0 z-30
             transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
             transition-transform duration-300 ease-in-out
             md:static md:translate-x-0
           `}
         >
+          {/* Botón cerrar (solo en móvil) */}
           <button
-            id="closeSidebar"
-            className="md:hidden absolute right-4 top-4 text-gray-500 hover:text-gray-700"
+            className="md:hidden absolute right-4 bot-4 text-gray-500 hover:text-gray-700"
             onClick={() => setSidebarOpen(false)}
           >
             <i className="fas fa-times text-xl"></i>
           </button>
-          <div className="flex flex-col items-center justify-center py-6 px-4">
-            {/* User Profile */}
-            <div className="w-full pb-4 px-4">
-              <div className="flex items-center p-3 bg-gray-100 rounded-lg">
-                <Link to="/dashboard/dashboardFirts">
-                  <img
-                    src="https://randomuser.me/api/portraits/women/43.jpg"
-                    className="w-10 h-10 rounded-full"
-                    alt="User"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src =
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM4sEG5g9GFcy4SUxbzWNzUTf1jMISTDZrTw&s";
-                    }}
-                  />
-                </Link>
-                <div className="ml-3">
-                  <h4 className="text-sm font-medium text-gray-700">
-                    Sarah Miller
-                  </h4>
-                  <p className="text-xs text-gray-500">Admin</p>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          {/* Navigation */}
+          {/* Navegación */}
           <nav className="mt-6">
-            <div className="px-4 mt-2">
+            <div className="px-4 mt-2 ">
               <Link
                 to="/dashboard/mascota"
                 className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
               >
                 <i className="fas fa-paw mr-3"></i>
-                <span className="font-medium">Mascota</span>
+                <span>Mascotas</span>
               </Link>
             </div>
             <div className="px-4 mt-2">
@@ -70,7 +44,7 @@ export default function Dashboard() {
                 className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
               >
                 <i className="fas fa-calendar-alt mr-3"></i>
-                <span className="font-medium">Noticia</span>
+                <span>Noticias</span>
               </Link>
             </div>
             <div className="px-4 mt-2">
@@ -79,7 +53,7 @@ export default function Dashboard() {
                 className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
               >
                 <i className="fas fa-users mr-3"></i>
-                <span className="font-medium">Register</span>
+                <span>Register</span>
               </Link>
             </div>
             <div className="px-4 mt-2">
@@ -87,8 +61,8 @@ export default function Dashboard() {
                 to="/dashboard/testimonio"
                 className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
               >
-                <i className="fas fa-shopping-bag mr-3"></i>
-                <span className="font-medium">Testimonio</span>
+                <i className="fas fa-comment-alt mr-3"></i>
+                <span>Testimonio</span>
               </Link>
             </div>
             <div className="px-4 mt-2">
@@ -97,7 +71,7 @@ export default function Dashboard() {
                 className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
               >
                 <i className="fas fa-cog mr-3"></i>
-                <span className="font-medium">Settings</span>
+                <span>Settings</span>
               </Link>
             </div>
           </nav>
@@ -105,20 +79,20 @@ export default function Dashboard() {
           {/* Cerrar sesión */}
           <div className="px-4 mt-2">
             <button
-              onClick={logout} // 👈 usando la función importada
+              onClick={logout}
               className="w-full flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
             >
               <i className="fas fa-sign-out-alt mr-3"></i>
-              <span className="font-medium">Cerrar sesión</span>
+              <span>Cerrar sesión</span>
             </button>
           </div>
         </div>
 
-        {/* Main Content */}
-        <div className="main-content flex-1 overflow-y-auto">
+        {/* Contenido principal */}
+        <div className="flex-1 overflow-y-auto relative z-10">
+          {/* Header mobile */}
           <header className="md:hidden bg-white p-4 flex items-center justify-between border-b border-gray-200">
             <button
-              id="toggleSidebar"
               className="text-gray-500 hover:text-gray-700"
               onClick={() => setSidebarOpen(true)}
             >
@@ -127,13 +101,17 @@ export default function Dashboard() {
             <h1 className="text-xl font-bold text-gray-800">Dashboard</h1>
             <div className="w-8"></div>
           </header>
-          <Outlet />
+
+          {/* Rutas anidadas */}
+          <div className="p-4">
+            <Outlet />
+          </div>
         </div>
 
         {/* Overlay para móviles */}
         {sidebarOpen && (
           <div
-            className="fixed inset-0 bg-white bg-opacity-30 z-40 md:hidden"
+            className=" inset-0 bg-black bg-opacity-40 w-auto h-auto z-20 md:hidden"
             onClick={() => setSidebarOpen(false)}
           ></div>
         )}

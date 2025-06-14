@@ -102,14 +102,7 @@ export default function Ver_Mascotas() {
       {/* Carrousel Section */}
       <Carrousel />
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-6">
-          <a
-            href="/"
-            className="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium"
-          >
-            <i className="fas fa-arrow-left mr-2"></i> Volver al Home
-          </a>
-        </div>
+        
 
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-800 mb-2">
