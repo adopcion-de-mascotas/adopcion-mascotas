@@ -24,6 +24,13 @@ export async function obtenerMascotas({ search, page, limit, tipo, raza, tamaño
   }
 }
 
+export async function obtenerRefugios() {
+  const res = await fetch(`${BASE_URL}/refugios`);
+  if (!res.ok) throw new Error("Error al obtener los refugios");
+  return await res.json();
+}
+
+
 // Obtener detalle por ID
 export async function obtenerMascotaPorId(id) {
   try {

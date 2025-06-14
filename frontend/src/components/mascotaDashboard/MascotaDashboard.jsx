@@ -1,13 +1,16 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import {
   obtenerMascotas,
   eliminarMascota,
+  obtenerRefugios
 } from "../../services/mascotasService";
 import { Link } from "react-router-dom";
 
 export default function MascotaDashboard() {
   const [mascotas, setMascotas] = useState([]);
+  const [refugios, setRefugios] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Filtros y paginación
@@ -19,17 +22,29 @@ export default function MascotaDashboard() {
   const cargarMascotas = async () => {
     setLoading(true);
     try {
-      const data = await obtenerMascotas({ search, page, limit });
-      setMascotas(data);
-      // Suponiendo que tu API devuelve metadata: totalPages
-      // Si no, deberías ajustarlo desde el backend o manejarlo con `data.length`
-      setTotalPages(5); // ⚠️ Simulado, ajustar con `json.meta.totalPages` si tu API lo da
+      const mascotasData = await obtenerMascotas({ search, page, limit });
+      setMascotas(mascotasData);
+
+      setTotalPages(5); 
     } catch (error) {
       console.error("Error al cargar mascotas:", error);
     } finally {
       setLoading(false);
     }
   };
+
+  const cargarRefugios = async () => {
+    try {
+      const respuesta = await obtenerRefugios();
+      setRefugios(respuesta.data);
+    } catch (error) {
+      console.error("Error al cargar refugios:", error);
+    }
+  };
+
+  useEffect(() => {
+    cargarRefugios();
+  }, []);
 
   useEffect(() => {
     cargarMascotas();
@@ -40,7 +55,6 @@ export default function MascotaDashboard() {
       try {
         await eliminarMascota(id);
         cargarMascotas();
-        // eslint-disable-next-line no-unused-vars
       } catch (error) {
         alert("No se pudo eliminar la mascota.");
       }
@@ -49,7 +63,13 @@ export default function MascotaDashboard() {
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
-    setPage(1); // Volver a página 1 al buscar
+    setPage(1);
+  };
+
+  // Obtener nombre del refugio por ID
+  const obtenerNombreRefugio = (refugioId) => {
+    const refugio = refugios.find((r) => r.id === refugioId);
+    return refugio ? refugio.nombre : "-";
   };
 
   return (
@@ -67,7 +87,6 @@ export default function MascotaDashboard() {
         </Link>
       </div>
 
-      {/* Buscador y Selector de cantidad */}
       <div className="flex flex-wrap items-center justify-between mb-4 gap-2">
         <input
           type="text"
@@ -122,7 +141,7 @@ export default function MascotaDashboard() {
                   <td className="px-4 py-3 border">{mascota.raza}</td>
                   <td className="px-4 py-3 border">{mascota.tamanio}</td>
                   <td className="px-4 py-3 border">
-                    {mascota.refugio?.nombre || "-"}
+                    {obtenerNombreRefugio(mascota.refugioId)}
                   </td>
                   <td className="px-4 py-3 border space-x-2">
                     <button
@@ -152,7 +171,6 @@ export default function MascotaDashboard() {
         </div>
       )}
 
-      {/* Controles de paginación */}
       <div className="flex justify-between items-center mt-4">
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}

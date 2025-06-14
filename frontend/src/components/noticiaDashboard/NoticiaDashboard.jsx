@@ -1,6 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { obtenerNoticias, eliminarNoticia } from "../../services/noticiaService";
+import {
+  obtenerNoticias,
+  eliminarNoticia,
+} from "../../services/noticiaService";
 import { Link } from "react-router-dom";
 
 export default function NoticiasDashboard() {
@@ -13,18 +16,17 @@ export default function NoticiasDashboard() {
   const [totalPages, setTotalPages] = useState(1);
 
   const cargarNoticias = async () => {
-  setLoading(true);
-  try {
-    const noticiasData = await obtenerNoticias({ search, page, limit });
-    setNoticias(noticiasData || []);
-    setTotalPages(1); // Si no tienes meta, poner 1 o calcularlo en backend
-  } catch (error) {
-    console.error("Error al cargar noticias:", error);
-  } finally {
-    setLoading(false);
-  }
-};
-
+    setLoading(true);
+    try {
+      const noticiasData = await obtenerNoticias({ search, page, limit });
+      setNoticias(noticiasData || []);
+      setTotalPages(1); // Si no tienes meta, poner 1 o calcularlo en backend
+    } catch (error) {
+      console.error("Error al cargar noticias:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     cargarNoticias();
@@ -35,7 +37,7 @@ export default function NoticiasDashboard() {
       try {
         await eliminarNoticia(id);
         cargarNoticias();
-      // eslint-disable-next-line no-unused-vars
+        // eslint-disable-next-line no-unused-vars
       } catch (error) {
         alert("No se pudo eliminar la noticia.");
       }
@@ -45,7 +47,9 @@ export default function NoticiasDashboard() {
   return (
     <main className="p-6">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold text-gray-800">Dashboard de Noticias</h1>
+        <h1 className="text-2xl font-bold text-gray-800">
+          Dashboard de Noticias
+        </h1>
         <Link
           to="/dashboard/noticiaForm"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
@@ -100,6 +104,11 @@ export default function NoticiasDashboard() {
                         src={noticia.foto}
                         alt={noticia.titulo}
                         className="w-16 h-16 object-cover rounded"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src =
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM4sEG5g9GFcy4SUxbzWNzUTf1jMISTDZrTw&s";
+                        }}
                       />
                     </td>
                     <td className="px-4 py-3 border">{noticia.titulo}</td>

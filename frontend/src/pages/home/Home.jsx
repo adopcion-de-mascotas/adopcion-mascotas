@@ -25,9 +25,11 @@ export const Home = () => {
     obtenerMascotas().then(setMascotas).catch(setError);
   }, []);
 
-  useEffect(() => {
-    obtenerTestimonios().then(setTestimonials).catch(setError);
-  }, []);
+useEffect(() => {
+  obtenerTestimonios()
+    .then((res) => setTestimonials(res.data)) // solo guardás el array
+    .catch(setError);
+}, []);
 
   useEffect(() => {
     obtenerNoticias().then(setNoticias).catch(setError);

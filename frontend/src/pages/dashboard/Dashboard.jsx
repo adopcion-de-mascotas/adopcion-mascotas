@@ -10,7 +10,16 @@ export default function Dashboard() {
   return (
     <>
       <div className="flex h-full">
-        <div className="sidebar bg-white shadow-lg w-64 flex-shrink-0 border-r border-gray-200 md:block">
+        {/* Sidebar */}
+        <div
+          className={`sidebar bg-white shadow-lg w-64 flex-shrink-0 border-r border-gray-200
+            md:block
+            fixed top-0 left-0 h-full z-50
+            transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+            transition-transform duration-300 ease-in-out
+            md:static md:translate-x-0
+          `}
+        >
           <button
             id="closeSidebar"
             className="md:hidden absolute right-4 top-4 text-gray-500 hover:text-gray-700"
@@ -27,6 +36,11 @@ export default function Dashboard() {
                     src="https://randomuser.me/api/portraits/women/43.jpg"
                     className="w-10 h-10 rounded-full"
                     alt="User"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src =
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM4sEG5g9GFcy4SUxbzWNzUTf1jMISTDZrTw&s";
+                    }}
                   />
                 </Link>
                 <div className="ml-3">
@@ -119,7 +133,7 @@ export default function Dashboard() {
         {/* Overlay para móviles */}
         {sidebarOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-30 z-40 md:hidden"
+            className="fixed inset-0 bg-white bg-opacity-30 z-40 md:hidden"
             onClick={() => setSidebarOpen(false)}
           ></div>
         )}
