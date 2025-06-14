@@ -55,12 +55,7 @@ export default function Navbar() {
       >
         Mascota
       </a>
-      <a
-        href="/testimonios"
-        className="text-gray-700 hover:text-indigo-600 font-medium"
-      >
-        Testimonio
-      </a>
+      
       <a
         href="/noticias"
         className="text-gray-700 hover:text-indigo-600 font-medium"
