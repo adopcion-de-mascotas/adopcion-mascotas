@@ -42,31 +42,46 @@ export default function Dashboard() {
           {/* Navigation */}
           <nav className="mt-6">
             <div className="px-4 mt-2">
-              <Link to="/dashboard/mascotaForm" className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg">
+              <Link
+                to="/dashboard/mascota"
+                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
+              >
                 <i className="fas fa-paw mr-3"></i>
-                <span className="font-medium">Mascota add Form</span>
+                <span className="font-medium">Mascota</span>
               </Link>
             </div>
             <div className="px-4 mt-2">
-              <Link to="/dashboard/noticiaForm" className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg">
+              <Link
+                to="/dashboard/noticia"
+                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
+              >
                 <i className="fas fa-calendar-alt mr-3"></i>
-                <span className="font-medium">Noticia add form</span>
+                <span className="font-medium">Noticia</span>
               </Link>
             </div>
             <div className="px-4 mt-2">
-              <Link to="/dashboard/register" className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg">
+              <Link
+                to="/dashboard/register"
+                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
+              >
                 <i className="fas fa-users mr-3"></i>
                 <span className="font-medium">Register</span>
               </Link>
             </div>
             <div className="px-4 mt-2">
-              <Link to="/dashboard/testimonioForm" className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg">
+              <Link
+                to="/dashboard/testimonio"
+                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
+              >
                 <i className="fas fa-shopping-bag mr-3"></i>
-                <span className="font-medium">Testimonio add form</span>
+                <span className="font-medium">Testimonio</span>
               </Link>
             </div>
             <div className="px-4 mt-2">
-              <Link to="/dashboard/settings" className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg">
+              <Link
+                to="/dashboard/settings"
+                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
+              >
                 <i className="fas fa-cog mr-3"></i>
                 <span className="font-medium">Settings</span>
               </Link>

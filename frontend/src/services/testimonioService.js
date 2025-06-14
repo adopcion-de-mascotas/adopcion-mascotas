@@ -1,23 +1,20 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-// Obtener todos los testimonios
-export async function obtenerTestimonios() {
+export async function obtenerTestimonios({ search, page, limit } = {}) {
   try {
-    const response = await fetch(`${BASE_URL}/testimonios`);
-    if (!response.ok) throw new Error("Error al obtener testimonios");
+    const params = new URLSearchParams();
+    if (search) params.append("search", search);
+    if (page) params.append("page", page);
+    if (limit) params.append("limit", limit);
 
-    const json = await response.json();
-
-    if (!json?.data) {
-      throw new Error("No se encontraron testimonios");
-    }
-
-    return json.data; // devuelve el array de testimonios
+    const response = await fetch(`${BASE_URL}/testimonios?${params}`);
+    return await response.json(); // <- IMPORTANTE
   } catch (error) {
-    console.error("Error en obtenerTestimonios:", error.message);
-    throw error;
+    console.error("Error al obtener testimonios:", error);
+    return { data: [], options: { length: 0 } };
   }
 }
+
 
 // Obtener un testimonio por ID
 export async function obtenerTestimonioPorId(id) {

@@ -1,9 +1,9 @@
 /* eslint-disable no-useless-catch */
-const API_URL = "http://localhost:4000/api/admin";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export async function login({ email, password, rememberMe }) {
   try {
-    const res = await fetch(`${API_URL}/session`, {
+    const res = await fetch(`${BASE_URL}/admin/session`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password, rememberMe }),
@@ -33,7 +33,7 @@ export function isAuthenticated() {
 // ✅ Registro de usuario
 export async function registerUser(userData) {
   try {
-    const res = await fetch(`${API_URL}/session/create`, {
+    const res = await fetch(`${BASE_URL}/admin/session/create`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
@@ -55,7 +55,7 @@ export async function registerUser(userData) {
 export async function editUser(updatedData) {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch(`${API_URL}/me`, {
+    const res = await fetch(`${BASE_URL}/admin/session/editar`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -80,7 +80,7 @@ export async function editUser(updatedData) {
 export async function getCurrentUser() {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch(`${API_URL}/me`, {
+    const res = await fetch(`${BASE_URL}/admin/session/:id`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -102,7 +102,7 @@ export async function getCurrentUser() {
 export async function deleteUser() {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch(`${API_URL}/me`, {
+    const res = await fetch(`${BASE_URL}/admin/session/deleted`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
