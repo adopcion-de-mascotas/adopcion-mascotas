@@ -77,7 +77,7 @@ export default function Ver_Mascotas() {
     }
 
     return (
-      <nav className="flex items-center justify-center space-x-2 mt-8">
+      <nav className="flex items-center justify-center space-x-2 m-12">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}

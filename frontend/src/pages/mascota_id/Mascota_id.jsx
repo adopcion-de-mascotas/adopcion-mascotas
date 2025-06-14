@@ -196,15 +196,17 @@ export default function Mascota_Id() {
               <div>
                 <p className="text-gray-700 mb-4">{mascota.descripcion}</p>
                 <h3 className="font-bold text-gray-800 mb-2">Personalidad</h3>
-                <div className="flex flex-wrap gap-2 mb-4">
+                <div>
                   {mascota.personalidad?.map((item, i) => (
                     <span
                       key={i}
                       className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm"
                     >
-                      {item}
+                      {item.nombre}
                     </span>
                   ))}
+                </div>
+                <div className="flex flex-wrap gap-2 mb-4">
                   <div>
                     <h3 className="font-bold text-gray-800 mb-2">
                       Comportamiento con {mascota.nombre}
@@ -379,15 +381,13 @@ export default function Mascota_Id() {
         <h3 className="text-xl font-bold text-gray-800 mb-6">
           Otras mascotas que te pueden gustar
         </h3>
-        {/* Mostrar mascotas */}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {mascotas && mascotas.length > 0 ? (
             mascotas
+              .filter((m) => m.id !== mascota.id) // 👈 filtra la actual
               .slice(0, 4)
-              .map((mascota) => (
-                <CardMascota key={mascota.id} mascota={mascota} />
-              ))
+              .map((m) => <CardMascota key={m.id} mascota={m} />)
           ) : (
             <p>No hay mascotas disponibles</p>
           )}

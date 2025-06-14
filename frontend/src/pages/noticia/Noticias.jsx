@@ -141,34 +141,9 @@ export default function Noticias() {
 
       {/* Pagination */}
       {totalPaginas > 1 && (
-        <div className="mt-12 flex justify-center">{renderPagination()}</div>
+        <div className="m-12 flex justify-center">{renderPagination()}</div>
       )}
 
-      {/* Newsletter Section */}
-      <section className="bg-indigo-50 py-12">
-        <div className="container mx-auto px-4 text-center max-w-3xl">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
-            Suscríbete a nuestro boletín
-          </h2>
-          <p className="text-gray-600 mb-6">
-            Recibe consejos, historias inspiradoras y noticias sobre adopciones
-            directamente en tu correo.
-          </p>
-          <form className="flex flex-col sm:flex-row gap-2 justify-center">
-            <input
-              type="email"
-              placeholder="Tu correo electrónico"
-              className="px-4 py-3 rounded-md border border-gray-300 flex-grow max-w-md"
-            />
-            <button
-              type="submit"
-              className="px-6 py-3 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 transition-colors"
-            >
-              Suscribirse
-            </button>
-          </form>
-        </div>
-      </section>
     </>
   );
 }
