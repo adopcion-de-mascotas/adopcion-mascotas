@@ -11,7 +11,7 @@ export default function Dashboard() {
       <div className="flex h-auto w-auto relative">
         {/* Sidebar */}
         <div
-          className={`bg-white shadow-lg w-auto h-auto flex-shrink-0 border-r border-gray-200
+          className={`bg-white shadow-lg w-auto h-auto flex-shrink-0 border-r border-gray-200 
             md:block p-4 pt-20 md:pt-4
             fixed top-0 left-0 z-30
             transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
@@ -32,7 +32,7 @@ export default function Dashboard() {
             <div className="px-4 mt-2 ">
               <Link
                 to="/dashboard/mascota"
-                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
+                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
               >
                 <i className="fas fa-paw mr-3"></i>
                 <span>Mascotas</span>
@@ -41,7 +41,7 @@ export default function Dashboard() {
             <div className="px-4 mt-2">
               <Link
                 to="/dashboard/noticia"
-                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
+                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
               >
                 <i className="fas fa-calendar-alt mr-3"></i>
                 <span>Noticias</span>
@@ -50,7 +50,7 @@ export default function Dashboard() {
             <div className="px-4 mt-2">
               <Link
                 to="/dashboard/register"
-                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
+                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
               >
                 <i className="fas fa-users mr-3"></i>
                 <span>Register</span>
@@ -59,7 +59,7 @@ export default function Dashboard() {
             <div className="px-4 mt-2">
               <Link
                 to="/dashboard/testimonio"
-                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
+                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
               >
                 <i className="fas fa-comment-alt mr-3"></i>
                 <span>Testimonio</span>
@@ -68,7 +68,7 @@ export default function Dashboard() {
             <div className="px-4 mt-2">
               <Link
                 to="/dashboard/settings"
-                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
+                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
               >
                 <i className="fas fa-cog mr-3"></i>
                 <span>Settings</span>
@@ -80,7 +80,7 @@ export default function Dashboard() {
           <div className="px-4 mt-2">
             <button
               onClick={logout}
-              className="w-full flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg"
+              className="w-full flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
             >
               <i className="fas fa-sign-out-alt mr-3"></i>
               <span>Cerrar sesión</span>

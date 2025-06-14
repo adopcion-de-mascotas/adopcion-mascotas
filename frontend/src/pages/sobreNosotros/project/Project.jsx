@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Project() {
   return (
-    <section id="project" className="py-20 bg-gray-50">
+    <section id="project" className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Nuestra Misión</h2>
@@ -57,11 +57,11 @@ export default function Project() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                   <div className="bg-purple-50 p-4 rounded-lg">
                     <i className="fas fa-certificate text-purple-600 text-2xl mb-2"></i>
-                    <p className="font-semibold">Certificados por APA</p>
+                    <p className="font-semibold text-black">Certificados por APA</p>
                   </div>
                   <div className="bg-blue-50 p-4 rounded-lg">
                     <i className="fas fa-award text-blue-600 text-2xl mb-2"></i>
-                    <p className="font-semibold">Premio Bienestar Animal 2022</p>
+                    <p className="font-semibold text-black">Premio Bienestar Animal 2022</p>
                   </div>
                 </div>
                 <a

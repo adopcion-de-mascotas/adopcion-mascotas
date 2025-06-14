@@ -169,7 +169,7 @@ useEffect(() => {
 
           <section className="py-12">
             <div className="container mx-auto px-4">
-              <h2 className="text-3xl font-bold text-gray-800 mb-8">
+              <h2 className="text-3xl font-bold text-gray-800 ">
                 Últimas publicaciones
               </h2>
 
@@ -204,7 +204,7 @@ useEffect(() => {
       {/* Call to Action Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="bg-gray-600 rounded-xl p-8 md:p-12 text-center text-white">
+          <div className="bg-gray-400 dark:bg-gray-500 rounded-xl p-8 md:p-12 text-center text-white">
             <h2 className="text-2xl md:text-3xl font-bold mb-4">
               ¿Listo para adoptar?
             </h2>

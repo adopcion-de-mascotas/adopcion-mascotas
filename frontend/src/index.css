@@ -22,6 +22,7 @@
   @apply bg-gray-900 text-white;
 }
 
+
 .dark .bg-white {
   @apply bg-gray-800;
 }

@@ -98,7 +98,7 @@ export default function MascotaDashboard() {
         <select
           value={limit}
           onChange={(e) => setLimit(Number(e.target.value))}
-          className="border border-gray-300 rounded px-3 py-2"
+          className="border border-gray-300 rounded dark:bg-gray-400 dark:text-black px-3 py-2"
         >
           <option value={5}>5 por página</option>
           <option value={10}>10 por página</option>
@@ -113,19 +113,19 @@ export default function MascotaDashboard() {
           <table className="min-w-full text-left border">
             <thead className="bg-gray-100 text-gray-600 uppercase text-sm">
               <tr>
-                <th className="px-4 py-3 border">ID</th>
-                <th className="px-4 py-3 border">Imagen</th>
-                <th className="px-4 py-3 border">Nombre</th>
-                <th className="px-4 py-3 border">Tipo</th>
-                <th className="px-4 py-3 border">Raza</th>
-                <th className="px-4 py-3 border">Tamaño</th>
-                <th className="px-4 py-3 border">Refugio</th>
-                <th className="px-4 py-3 border">Acciones</th>
+                <th className="px-4 py-3 dark:text-black border">ID</th>
+                <th className="px-4 py-3 dark:text-black border">Imagen</th>
+                <th className="px-4 py-3 dark:text-black border">Nombre</th>
+                <th className="px-4 py-3 dark:text-black border">Tipo</th>
+                <th className="px-4 py-3 dark:text-black border">Raza</th>
+                <th className="px-4 py-3 dark:text-black border">Tamaño</th>
+                <th className="px-4 py-3 dark:text-black border">Refugio</th>
+                <th className="px-4 py-3 dark:text-black border">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {mascotas.map((mascota) => (
-                <tr key={mascota.id} className="hover:bg-gray-50">
+                <tr key={mascota.id} className="hover:bg-gray-500">
                   <td className="px-4 py-3 border">{mascota.id}</td>
                   <td className="px-4 py-3 border">
                     <img
@@ -175,7 +175,7 @@ export default function MascotaDashboard() {
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+          className="px-4 py-2 bg-gray-200 rounded dark:text-black hover:bg-gray-300 disabled:opacity-50"
         >
           Anterior
         </button>
@@ -185,7 +185,7 @@ export default function MascotaDashboard() {
         <button
           onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
           disabled={page === totalPages}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+          className="px-4 py-2 bg-gray-200 rounded dark:text-black hover:bg-gray-300 disabled:opacity-50"
         >
           Siguiente
         </button>

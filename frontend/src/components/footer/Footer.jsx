@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <>
       {/* Footer Component */}
-      <footer className="bg-gray-800 dark:bg-gray-900 text-white py-12">
+      <footer className="bg-gray-800 text-white dark:text-black py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
@@ -133,7 +133,7 @@ export default function Footer() {
                 <input
                   type="email"
                   placeholder="Tu email"
-                  className="px-4 py-2 rounded-l-lg focus:outline-none text-gray-800 dark:text-gray-200 dark:bg-gray-700 dark:placeholder-gray-400 w-full transition-colors duration-200"
+                  className="px-4 py-2 rounded-l-lg focus:outline-none  text-gray-200 bg-gray-700 placeholder-gray-400 w-full transition-colors duration-200"
                 />
                 <button
                   type="submit"
