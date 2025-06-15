@@ -1,41 +1,8 @@
-// src/pages/Login/Login.jsx
-
-import { useState } from "react";
 import Carrousel from "../../components/carrousel/Carrousel";
-import { login } from "../../services/authService";
+import { useLoginForm } from "./UseLoginForm";
 
 export default function Login() {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-    rememberMe: false,
-  });
-  const [errors, setErrors] = useState({});
-
-  const validate = () => {
-    const newErrors = {};
-    if (!form.email) newErrors.email = "El email es obligatorio";
-    if (!form.password) newErrors.password = "La contraseña es obligatoria";
-    return newErrors;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const validation = validate();
-    if (Object.keys(validation).length > 0) {
-      setErrors(validation);
-      return;
-    }
-
-    try {
-      const data = await login(form);
-      localStorage.setItem("token", data.token);
-      window.location.href = "/dashboard/dashboardFirts";
-    } catch (err) {
-      console.error(err);
-      alert(err.message || "Error al iniciar sesión");
-    }
-  };
+  const { form, errors, setForm, handleSubmit } = useLoginForm();
 
   return (
     <>

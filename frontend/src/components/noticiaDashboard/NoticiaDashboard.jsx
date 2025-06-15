@@ -1,48 +1,20 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
-import {
-  obtenerNoticias,
-  eliminarNoticia,
-} from "../../services/noticiaService";
+import React from "react";
 import { Link } from "react-router-dom";
+import { useNoticias } from "./useNoticias";
 
 export default function NoticiasDashboard() {
-  const [noticias, setNoticias] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
-  const [totalPages, setTotalPages] = useState(1);
-
-  const cargarNoticias = async () => {
-    setLoading(true);
-    try {
-      const noticiasData = await obtenerNoticias({ search, page, limit });
-      setNoticias(noticiasData || []);
-      setTotalPages(1); // Si no tienes meta, poner 1 o calcularlo en backend
-    } catch (error) {
-      console.error("Error al cargar noticias:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    cargarNoticias();
-  }, [search, page, limit]);
-
-  const handleEliminar = async (id) => {
-    if (confirm("¿Estás seguro de eliminar esta noticia?")) {
-      try {
-        await eliminarNoticia(id);
-        cargarNoticias();
-        // eslint-disable-next-line no-unused-vars
-      } catch (error) {
-        alert("No se pudo eliminar la noticia.");
-      }
-    }
-  };
+  const {
+    noticias,
+    loading,
+    search,
+    setSearch,
+    page,
+    setPage,
+    limit,
+    setLimit,
+    totalPages,
+    handleEliminar,
+  } = useNoticias();
 
   return (
     <main className="p-6">

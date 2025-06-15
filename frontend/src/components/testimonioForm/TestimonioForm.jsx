@@ -1,158 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
+import useTestimonioForm from "./useTestimonioForm";
 import "./TestimonioForm.css";
-import { crearTestimonio } from "../../services/testimonioService"; 
 
 export default function TestimonioForm() {
-  const [formData, setFormData] = useState({
-    comentario: "",
-    autor: "",
-    estrellas: 5,
-    mascota_id: "", // opcional: establece la mascota relacionada
-    foto: null,
-    fotoPreview: null,
-  });
+  const {
+    formData,
+    errors,
+    isSubmitting,
+    submitSuccess,
+    handleChange,
+    handleImageChange,
+    handleDrop,
+    handleDragOver,
+    handleSubmit,
+    handleCancel,
+  } = useTestimonioForm();
 
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-
-  // ────────────────────────────────────────────────────────────────────────────────
-  // Handlers
-  // ────────────────────────────────────────────────────────────────────────────────
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "estrellas" ? parseInt(value) : value,
-    }));
-
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: null,
-      }));
-    }
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData((prev) => ({
-        ...prev,
-        foto: file,
-      }));
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData((prev) => ({
-          ...prev,
-          fotoPreview: reader.result,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.match("image.*")) {
-      setFormData((prev) => ({
-        ...prev,
-        foto: file,
-      }));
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData((prev) => ({
-          ...prev,
-          fotoPreview: reader.result,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
-  // ────────────────────────────────────────────────────────────────────────────────
-  // Validación
-  // ────────────────────────────────────────────────────────────────────────────────
-  const validateForm = () => {
-    let valid = true;
-    const newErrors = {};
-
-    if (!formData.autor.trim()) {
-      newErrors.autor = "El nombre del autor es requerido";
-      valid = false;
-    }
-
-    if (!formData.comentario.trim()) {
-      newErrors.comentario = "El comentario es requerido";
-      valid = false;
-    } else if (formData.comentario.trim().length < 150) {
-      newErrors.comentario = "El comentario debe tener al menos 150 caracteres";
-      valid = false;
-    }
-
-    if (!formData.foto) {
-      newErrors.foto = "Por favor selecciona una foto";
-      valid = false;
-    }
-
-    if (formData.estrellas < 1 || formData.estrellas > 5) {
-      newErrors.estrellas = "La calificación debe estar entre 1 y 5 estrellas";
-      valid = false;
-    }
-
-    setErrors(newErrors);
-    return valid;
-  };
-
-  // ────────────────────────────────────────────────────────────────────────────────
-  // Submit
-  // ────────────────────────────────────────────────────────────────────────────────
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if (!validateForm()) return;
-
-  setIsSubmitting(true);
-  setErrors({});
-  setSubmitSuccess(false);
-
-  try {
-    await crearTestimonio(formData); // ← Envío real
-    setSubmitSuccess(true);
-    // Reiniciar formulario
-    setFormData({
-      comentario: "",
-      autor: "",
-      estrellas: 5,
-      mascota_id: "",
-      foto: null,
-      fotoPreview: null,
-    });
-  } catch (error) {
-    console.error("Error al enviar testimonio:", error);
-    setErrors((prev) => ({
-      ...prev,
-      general: "Ocurrió un error al enviar el testimonio. Intenta nuevamente.",
-    }));
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-
-
-  // ────────────────────────────────────────────────────────────────────────────────
-  // UI
-  // ────────────────────────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
@@ -174,25 +37,17 @@ export default function TestimonioForm() {
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-8">
             <div className="flex items-center">
               <i className="fas fa-check-circle mr-2"></i>
-              <span>
-                ¡Testimonio enviado con éxito! Será publicado tras revisión.
-              </span>
+              <span>¡Testimonio enviado con éxito! Será publicado tras revisión.</span>
             </div>
           </div>
         )}
 
         {/* Formulario */}
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white shadow-xl rounded-lg overflow-hidden"
-        >
+        <form onSubmit={handleSubmit} className="bg-white shadow-xl rounded-lg overflow-hidden">
           <div className="p-6 sm:p-8">
             {/* Autor */}
             <div className="mb-6">
-              <label
-                htmlFor="autor"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label htmlFor="autor" className="block text-sm font-medium text-gray-700 mb-1">
                 Nombre del Autor <span className="text-red-500">*</span>
               </label>
               <input
@@ -206,17 +61,12 @@ export default function TestimonioForm() {
                 }`}
                 placeholder="Ej: María López"
               />
-              {errors.autor && (
-                <p className="mt-1 text-sm text-red-600">{errors.autor}</p>
-              )}
+              {errors.autor && <p className="mt-1 text-sm text-red-600">{errors.autor}</p>}
             </div>
 
             {/* Comentario */}
             <div className="mb-6">
-              <label
-                htmlFor="comentario"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label htmlFor="comentario" className="block text-sm font-medium text-gray-700 mb-1">
                 Comentario <span className="text-red-500">*</span>
               </label>
               <textarea
@@ -230,20 +80,13 @@ export default function TestimonioForm() {
                 }`}
                 placeholder="Escribe tu experiencia detallada..."
               ></textarea>
-              {errors.comentario && (
-                <p className="mt-1 text-sm text-red-600">{errors.comentario}</p>
-              )}
-              <p className="mt-1 text-xs text-gray-500">
-                {formData.comentario.length}/150 caracteres mínimos
-              </p>
+              {errors.comentario && <p className="mt-1 text-sm text-red-600">{errors.comentario}</p>}
+              <p className="mt-1 text-xs text-gray-500">{formData.comentario.length}/150 caracteres mínimos</p>
             </div>
 
             {/* Estrellas */}
             <div className="mb-6">
-              <label
-                htmlFor="estrellas"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label htmlFor="estrellas" className="block text-sm font-medium text-gray-700 mb-1">
                 Calificación (1-5 estrellas) <span className="text-red-500">*</span>
               </label>
               <select
@@ -259,17 +102,12 @@ export default function TestimonioForm() {
                   </option>
                 ))}
               </select>
-              {errors.estrellas && (
-                <p className="mt-1 text-sm text-red-600">{errors.estrellas}</p>
-              )}
+              {errors.estrellas && <p className="mt-1 text-sm text-red-600">{errors.estrellas}</p>}
             </div>
 
             {/* Mascota ID (opcional) */}
             <div className="mb-6">
-              <label
-                htmlFor="mascota_id"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label htmlFor="mascota_id" className="block text-sm font-medium text-gray-700 mb-1">
                 Mascota ID (opcional)
               </label>
               <input
@@ -316,11 +154,8 @@ export default function TestimonioForm() {
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
-                        setFormData((prev) => ({
-                          ...prev,
-                          foto: null,
-                          fotoPreview: null,
-                        }));
+                        // Resetear foto
+                        handleCancel();
                       }}
                       className="text-sm text-red-500 hover:text-red-700"
                     >
@@ -331,35 +166,20 @@ export default function TestimonioForm() {
                   <div className="space-y-2">
                     <i className="fas fa-cloud-upload-alt text-3xl text-emerald-400"></i>
                     <p className="text-sm font-medium text-gray-700">
-                      Arrastra y suelta una imagen aquí <br />o haz clic para
-                      seleccionar
+                      Arrastra y suelta una imagen aquí <br />o haz clic para seleccionar
                     </p>
-                    <p className="text-xs text-gray-500">
-                      Formatos soportados: JPG, PNG, GIF (Máx. 5MB)
-                    </p>
+                    <p className="text-xs text-gray-500">Formatos soportados: JPG, PNG, GIF (Máx. 5MB)</p>
                   </div>
                 )}
               </div>
-              {errors.foto && (
-                <p className="mt-1 text-sm text-red-600">{errors.foto}</p>
-              )}
+              {errors.foto && <p className="mt-1 text-sm text-red-600">{errors.foto}</p>}
             </div>
 
             {/* Botones */}
             <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200">
               <button
                 type="button"
-                onClick={() => {
-                  setFormData({
-                    comentario: "",
-                    autor: "",
-                    estrellas: 5,
-                    mascota_id: "",
-                    foto: null,
-                    fotoPreview: null,
-                  });
-                  setErrors({});
-                }}
+                onClick={handleCancel}
                 className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 Cancelar
@@ -368,9 +188,7 @@ export default function TestimonioForm() {
                 type="submit"
                 disabled={isSubmitting}
                 className={`px-6 py-2 rounded-lg text-white ${
-                  isSubmitting
-                    ? "bg-emerald-400"
-                    : "bg-emerald-600 hover:bg-emerald-700"
+                  isSubmitting ? "bg-emerald-400" : "bg-emerald-600 hover:bg-emerald-700"
                 } transition-colors flex items-center`}
               >
                 {isSubmitting ? (
@@ -410,8 +228,7 @@ export default function TestimonioForm() {
         {/* Nota */}
         <div className="mt-8 text-center text-sm text-gray-500">
           <p>
-            Todos los testimonios son revisados por nuestro equipo antes de ser
-            publicados.
+            Todos los testimonios son revisados por nuestro equipo antes de ser publicados.
           </p>
           <p className="mt-1">¡Gracias por compartir tu experiencia en Happy Paw!</p>
         </div>

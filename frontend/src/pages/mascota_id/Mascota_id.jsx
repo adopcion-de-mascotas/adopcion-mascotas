@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import CardMascota from "../../components/cardmascota/CardMascota";
@@ -54,7 +53,7 @@ export default function Mascota_Id() {
       .then((data) => {
         setMascotas(data);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   if (loading) {
@@ -114,11 +113,10 @@ export default function Mascota_Id() {
               </div>
               <button
                 onClick={handleLike}
-                className={`text-2xl transition ${
-                  mascota.liked
+                className={`text-2xl transition ${mascota.liked
                     ? "text-red-500"
                     : "text-gray-400 hover:text-red-500"
-                }`}
+                  }`}
               >
                 <i
                   className={mascota.liked ? "fas fa-heart" : "far fa-heart"}
@@ -191,31 +189,28 @@ export default function Mascota_Id() {
             <div className="border-b border-gray-200 mb-6">
               <div className="flex space-x-8">
                 <button
-                  className={`pb-3 font-medium ${
-                    tab === "sobre"
+                  className={`pb-3 font-medium ${tab === "sobre"
                       ? "text-yellow-600 border-b-2 border-yellow-500"
                       : "text-gray-500"
-                  }`}
+                    }`}
                   onClick={() => setTab("sobre")}
                 >
                   Sobre
                 </button>
                 <button
-                  className={`pb-3 font-medium ${
-                    tab === "salud"
+                  className={`pb-3 font-medium ${tab === "salud"
                       ? "text-yellow-600 border-b-2 border-yellow-500"
                       : "text-gray-500"
-                  }`}
+                    }`}
                   onClick={() => setTab("salud")}
                 >
                   Salud
                 </button>
                 <button
-                  className={`pb-3 font-medium ${
-                    tab === "requisitos"
+                  className={`pb-3 font-medium ${tab === "requisitos"
                       ? "text-yellow-600 border-b-2 border-yellow-500"
                       : "text-gray-500"
-                  }`}
+                    }`}
                   onClick={() => setTab("requisitos")}
                 >
                   Requisitos

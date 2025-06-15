@@ -10,10 +10,6 @@ export default function Noticia_id() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Estado para listado de noticias
-  {
-    /*const [noticias, setNoticias] = useState([]);*/
-  }
 
   // Cargar noticia Id
   useEffect(() => {
@@ -30,13 +26,7 @@ export default function Noticia_id() {
       });
   }, [id]);
 
-  // Cargar listado de noticias
-  {
-    /*  useEffect(() => {
-    obtenerNoticias().then(setNoticias).catch(setError);
-  }, []);
-*/
-  }
+  
   if (loading) {
     return (
       <div className="text-center py-20 text-gray-600">

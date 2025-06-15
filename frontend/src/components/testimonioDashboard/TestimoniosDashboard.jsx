@@ -1,49 +1,21 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
-import { obtenerTestimonios, eliminarTestimonio } from "../../services/testimonioService";
+import React from "react";
 import { Link } from "react-router-dom";
+import { useTestimonios } from "./useTestimonios"; // Ajusta la ruta según tu estructura
 
 export default function TestimonioDashboard() {
-  const [testimonios, setTestimonios] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    testimonios,
+    loading,
+    search,
+    setSearch,
+    page,
+    setPage,
+    limit,
+    setLimit,
+    totalPages,
+    eliminar,
+  } = useTestimonios();
 
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
-  const [totalPages, setTotalPages] = useState(1);
-
-  const cargarTestimonios = async () => {
-    setLoading(true);
-    try {
-      const data = await obtenerTestimonios({ search, page, limit });
-      // Asumo que la API devuelve directamente el array en data.data
-      setTestimonios(data.data || []);
-      // Si no tienes totalPages, puedes calcularlo o poner 1 fijo
-      setTotalPages(1);
-    } catch (error) {
-      console.error("Error al cargar testimonios:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    cargarTestimonios();
-  }, [search, page, limit]);
-
-  const handleEliminar = async (id) => {
-    if (confirm("¿Estás seguro de eliminar este testimonio?")) {
-      try {
-        await eliminarTestimonio(id);
-        cargarTestimonios();
-      // eslint-disable-next-line no-unused-vars
-      } catch (error) {
-        alert("No se pudo eliminar el testimonio.");
-      }
-    }
-  };
-
-  // Función para renderizar estrellas
   const renderEstrellas = (count) => {
     return Array.from({ length: 5 }, (_, i) => (
       <span key={i} className={i < count ? "text-yellow-400" : "text-gray-300"}>
@@ -128,7 +100,7 @@ export default function TestimonioDashboard() {
                         Editar
                       </button>
                       <button
-                        onClick={() => handleEliminar(testimonio.id)}
+                        onClick={() => eliminar(testimonio.id)}
                         className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
                       >
                         Eliminar

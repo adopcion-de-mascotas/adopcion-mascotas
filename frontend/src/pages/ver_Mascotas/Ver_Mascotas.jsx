@@ -1,61 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CardMascota from "../../components/cardmascota/CardMascota";
-import { obtenerMascotas } from "../../services/mascotasService";
 import Carrousel from "../../components/carrousel/Carrousel";
+import UseMascotas  from './UseMascotas';
+
 
 export default function Ver_Mascotas() {
-  const [mascotas, setMascotas] = useState([]);
-  const [error, setError] = useState(null);
+const {
+    mascotasVisibles,
+    tipo,
+    setTipo,
+    edad,
+    setEdad,
+    tamanio,
+    setTamanio,
+    genero,
+    setGenero,
+    busqueda,
+    setBusqueda,
+    aplicarFiltros,
+    currentPage,
+    handlePageChange,
+    totalPaginas,
+    error,
+  } = UseMascotas();
 
-  // Filtros
-  const [tipo, setTipo] = useState("Todos");
-  const [edad, setEdad] = useState("Todas");
-  const [tamanio, setTamanio] = useState("Todos");
-  const [genero, setGenero] = useState("Todos");
-  const [busqueda, setBusqueda] = useState("");
-
-  // Paginación
-  const [currentPage, setCurrentPage] = useState(1);
-  const mascotasPorPagina = 8;
-
-  useEffect(() => {
-    obtenerMascotas().then(setMascotas).catch(setError);
-  }, []);
-
-  if (error) {
-    return <p className="text-red-600">Error al cargar mascotas.</p>;
-  }
-
-  // Filtrado completo
-  const mascotasFiltradas = mascotas.filter((m) => {
-    if (tipo !== "Todos" && m.tipo !== tipo) return false;
-    if (edad !== "Todas" && m.edad !== edad) return false;
-    if (tamanio !== "Todos" && m.tamanio !== tamanio) return false;
-    if (genero !== "Todos" && m.genero !== genero) return false;
-    if (
-      busqueda.trim() !== "" &&
-      !m.nombre.toLowerCase().includes(busqueda.trim().toLowerCase())
-    )
-      return false;
-    return true;
-  });
-
-  const totalPaginas = Math.ceil(mascotasFiltradas.length / mascotasPorPagina);
-  const indiceInicio = (currentPage - 1) * mascotasPorPagina;
-  const mascotasVisibles = mascotasFiltradas.slice(
-    indiceInicio,
-    indiceInicio + mascotasPorPagina
-  );
-
-  const aplicarFiltros = () => {
-    setCurrentPage(1); // Reiniciar paginación al aplicar filtros
-  };
-
-  const handlePageChange = (pagina) => {
-    if (pagina >= 1 && pagina <= totalPaginas) {
-      setCurrentPage(pagina);
-    }
-  };
+  if (error) return <p className="text-red-600">Error al cargar mascotas.</p>;
 
   const renderPagination = () => {
     const botones = [];
@@ -99,11 +68,9 @@ export default function Ver_Mascotas() {
 
   return (
     <>
-      {/* Carrousel Section */}
       <Carrousel />
       <main className="container mx-auto px-4 py-8">
-        
-
+        {/* Título */}
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-800 mb-2">
             Encuentra a tu compañero perfecto
@@ -116,6 +83,7 @@ export default function Ver_Mascotas() {
         {/* Filtros */}
         <div className="bg-white rounded-xl shadow-sm p-4 mb-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
+            {/* Tipo */}
             <div className="flex-1 min-w-[200px]">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Tipo de mascota
@@ -131,6 +99,7 @@ export default function Ver_Mascotas() {
               </select>
             </div>
 
+            {/* Edad */}
             <div className="flex-1 min-w-[200px]">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Edad
@@ -149,6 +118,7 @@ export default function Ver_Mascotas() {
               </select>
             </div>
 
+            {/* Tamaño */}
             <div className="flex-1 min-w-[200px]">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Tamaño
@@ -165,6 +135,7 @@ export default function Ver_Mascotas() {
               </select>
             </div>
 
+            {/* Género */}
             <div className="flex-1 min-w-[200px]">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Género
@@ -180,6 +151,7 @@ export default function Ver_Mascotas() {
               </select>
             </div>
 
+            {/* Botón aplicar */}
             <button
               onClick={aplicarFiltros}
               className="self-end bg-yellow-400 hover:bg-yellow-500 text-white font-medium py-2 px-6 rounded-lg transition duration-300"
@@ -197,20 +169,20 @@ export default function Ver_Mascotas() {
             value={busqueda}
             onChange={(e) => {
               setBusqueda(e.target.value);
-              setCurrentPage(1);
+              aplicarFiltros();
             }}
             className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
           />
         </div>
 
-        {/* Filtros rápidos por iconos */}
+        {/* Filtros rápidos */}
         <div className="flex flex-wrap gap-2 mb-6">
           {["Todos", "Perro", "Gato"].map((t) => (
             <button
               key={t}
               onClick={() => {
                 setTipo(t);
-                setCurrentPage(1);
+                aplicarFiltros();
               }}
               className={`filter-option px-4 py-2 rounded-full ${
                 tipo === t
@@ -225,7 +197,7 @@ export default function Ver_Mascotas() {
           ))}
         </div>
 
-        {/* Mostrar tarjetas */}
+        {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {mascotasVisibles.length > 0 ? (
             mascotasVisibles.map((mascota) => (
