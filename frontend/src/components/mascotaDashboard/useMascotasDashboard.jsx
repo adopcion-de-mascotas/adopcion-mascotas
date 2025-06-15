@@ -1,27 +1,34 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   obtenerMascotas,
   eliminarMascota,
-  obtenerRefugios
+  obtenerRefugios,
 } from "../../services/mascotasService";
 
 export function useMascotasDashboard() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialPage = parseInt(searchParams.get("page")) || 1;
+
   const [mascotas, setMascotas] = useState([]);
   const [refugios, setRefugios] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(initialPage);
+  const [total, setTotal] = useState(18)
   const [limit, setLimit] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
 
   const cargarMascotas = async () => {
     setLoading(true);
     try {
-      const mascotasData = await obtenerMascotas({ search, page, limit });
+      const mascotasData = await obtenerMascotas({ search, page, total, limit });
       setMascotas(mascotasData);
-      setTotalPages(5); // TODO: reemplazar con valor real cuando esté disponible en la respuesta
+      setTotal(total)
+      setTotalPages(Math.ceil(total / limit));
     } catch (error) {
       console.error("Error al cargar mascotas:", error);
     } finally {
@@ -65,8 +72,15 @@ export function useMascotasDashboard() {
 
   useEffect(() => {
     cargarMascotas();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, page, limit]);
+
+  useEffect(() => {
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+      newParams.set("page", page);
+      return newParams;
+    });
+  }, [page]);
 
   return {
     mascotas,
@@ -80,6 +94,6 @@ export function useMascotasDashboard() {
     setPage,
     handleEliminar,
     handleSearchChange,
-    obtenerNombreRefugio
+    obtenerNombreRefugio,
   };
 }

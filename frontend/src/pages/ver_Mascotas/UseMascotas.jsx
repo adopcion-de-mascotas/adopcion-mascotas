@@ -1,8 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { obtenerMascotas2 } from "../../services/mascotasService";
 
 export default function UseMascotas() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const pageParam = parseInt(searchParams.get("page")) || 1;
+
   const [mascotas, setMascotas] = useState([]);
   const [error, setError] = useState(null);
 
@@ -14,9 +19,13 @@ export default function UseMascotas() {
   const [busqueda, setBusqueda] = useState("");
 
   // Paginación
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(pageParam);
   const [totalPaginas, setTotalPaginas] = useState(1);
   const [mascotasPorPagina, setMascotasPorPagina] = useState(8);
+
+  useEffect(() => {
+    setCurrentPage(pageParam); // 🔄 Sincroniza cuando cambia la URL
+  }, [pageParam]);
 
   useEffect(() => {
     const filtros = {
@@ -51,12 +60,20 @@ export default function UseMascotas() {
 
   const handlePageChange = (pagina) => {
     if (pagina >= 1 && pagina <= totalPaginas) {
-      setCurrentPage(pagina);
+      setSearchParams((prev) => {
+        const newParams = new URLSearchParams(prev);
+        newParams.set("page", pagina);
+        return newParams;
+      });
     }
   };
 
   const aplicarFiltros = () => {
-    setCurrentPage(1); 
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+      newParams.set("page", 1); // Reinicia a página 1
+      return newParams;
+    });
   };
 
   return {
