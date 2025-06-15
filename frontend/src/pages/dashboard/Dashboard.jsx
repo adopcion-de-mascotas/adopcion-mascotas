@@ -49,15 +49,6 @@ export default function Dashboard() {
             </div>
             <div className="px-4 mt-2">
               <Link
-                to="/dashboard/register"
-                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
-              >
-                <i className="fas fa-users mr-3"></i>
-                <span>Register</span>
-              </Link>
-            </div>
-            <div className="px-4 mt-2">
-              <Link
                 to="/dashboard/testimonio"
                 className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
               >
@@ -65,6 +56,16 @@ export default function Dashboard() {
                 <span>Testimonio</span>
               </Link>
             </div>
+            <div className="px-4 mt-2">
+              <Link
+                to="/dashboard/register"
+                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
+              >
+                <i className="fas fa-users mr-3"></i>
+                <span>Register</span>
+              </Link>
+            </div>
+
             <div className="px-4 mt-2">
               <Link
                 to="/dashboard/settings"

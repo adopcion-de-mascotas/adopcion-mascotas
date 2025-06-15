@@ -135,36 +135,52 @@ export default function Mascota_Id() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
               <div className="bg-gray-50 p-3 rounded-lg">
-                <div className="text-sm text-gray-500 mb-1">Raza</div>
-                <div className="font-medium text-gray-800">{mascota.raza}</div>
+                <div className="text-sm text-gray-500 mb-1 dark:text-black">
+                  Raza
+                </div>
+                <div className="font-medium dark:text-black">
+                  {mascota.raza}
+                </div>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
-                <div className="text-sm text-gray-500 mb-1">Edad</div>
-                <div className="font-medium text-gray-800">{mascota.edad}</div>
+                <div className="text-sm text-gray-500 mb-1 dark:text-black">
+                  Edad
+                </div>
+                <div className="font-medium dark:text-black">
+                  {mascota.edad}
+                </div>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
-                <div className="text-sm text-gray-500 mb-1">Género</div>
-                <div className="font-medium text-gray-800">
+                <div className="text-sm text-gray-500 mb-1 dark:text-black">
+                  Género
+                </div>
+                <div className="font-medium dark:text-black">
                   {mascota.genero}
                 </div>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
-                <div className="text-gray-500 text-sm mb-1">Tamaño</div>
-                <div className="font-medium text-gray-800">
+                <div className="text-gray-500 text-sm mb-1 dark:text-black ">
+                  Tamaño
+                </div>
+                <div className="font-medium dark:text-black">
                   {" "}
                   {mascota.tamanio}{" "}
                 </div>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
-                <div className="text-gray-500 text-sm mb-1">Peso</div>
-                <div className="font-medium text-gray-800">
+                <div className="text-gray-500 text-sm mb-1 dark:text-black">
+                  Peso
+                </div>
+                <div className="font-medium dark:text-black">
                   {" "}
                   {mascota.peso}{" "}
                 </div>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg">
-                <div className="text-gray-500 text-sm mb-1">Esterilizado</div>
-                <div className="font-medium text-gray-800">
+                <div className="text-gray-500 text-sm mb-1 dark:text-black">
+                  Esterilizado
+                </div>
+                <div className="font-medium  dark:text-black">
                   {" "}
                   {mascota.esterelizado ? "Sí" : "No"}{" "}
                 </div>
@@ -211,17 +227,22 @@ export default function Mascota_Id() {
             {tab === "sobre" && (
               <div>
                 <p className="text-gray-700 mb-4">{mascota.descripcion}</p>
-                <h3 className="font-bold text-gray-800 mb-2">Personalidad</h3>
-                <div>
-                  {mascota.personalidad?.map((item, i) => (
-                    <span
-                      key={i}
-                      className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm"
-                    >
-                      {item.nombre}
-                    </span>
-                  ))}
+
+                <div className="flex flex-wrap dark:text-black">
+                  <h3 className="font-bold text-gray-800">Personalidad</h3>
+
+                  <div className="flex flex-wrap gap-2">
+                    {mascota.personalidad?.map((item, i) => (
+                      <span
+                        key={i}
+                        className="bg-gray-100 ml-1 px-1 py-1 rounded text-sm dark:text-black"
+                      >
+                        {item.nombre}
+                      </span>
+                    ))}
+                  </div>
                 </div>
+
                 <div className="flex flex-wrap gap-2 mb-4">
                   <div>
                     <h3 className="font-bold text-gray-800 mb-2">
