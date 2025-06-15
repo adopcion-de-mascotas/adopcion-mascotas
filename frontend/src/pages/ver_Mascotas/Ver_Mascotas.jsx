@@ -1,12 +1,11 @@
 import React from "react";
 import CardMascota from "../../components/cardmascota/CardMascota";
 import Carrousel from "../../components/carrousel/Carrousel";
-import UseMascotas  from './UseMascotas';
-
+import UseMascotas from "./UseMascotas";
 
 export default function Ver_Mascotas() {
-const {
-    mascotasVisibles,
+  const {
+    mascotas,
     tipo,
     setTipo,
     edad,
@@ -24,7 +23,8 @@ const {
     error,
   } = UseMascotas();
 
-  if (error) return <p className="text-red-600">Error al cargar mascotas.</p>;
+  if (error)
+    return <p className="text-red-600">Error al cargar mascotas: {error}</p>;
 
   const renderPagination = () => {
     const botones = [];
@@ -93,9 +93,9 @@ const {
                 onChange={(e) => setTipo(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               >
-                <option>Todos</option>
-                <option>Perro</option>
-                <option>Gato</option>
+                <option className="dark:text-black">Todos</option>
+                <option className="dark:text-black">Perro</option>
+                <option className="dark:text-black">Gato</option>
               </select>
             </div>
 
@@ -107,14 +107,14 @@ const {
               <select
                 value={edad}
                 onChange={(e) => setEdad(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                className="w-full p-2 border  border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               >
-                <option>Todas</option>
-                <option>6 meses</option>
-                <option>1 año</option>
-                <option>2 años</option>
-                <option>3 años</option>
-                <option>4 años</option>
+                <option className="dark:text-black">Todas</option>
+                <option className="dark:text-black">6 meses</option>
+                <option className="dark:text-black">1 año</option>
+                <option className="dark:text-black">2 años</option>
+                <option className="dark:text-black">3 años</option>
+                <option className="dark:text-black">4 años</option>
               </select>
             </div>
 
@@ -128,10 +128,10 @@ const {
                 onChange={(e) => setTamanio(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               >
-                <option>Todos</option>
-                <option>Pequeño</option>
-                <option>Mediano</option>
-                <option>Grande</option>
+                <option className="dark:text-black">Todos</option>
+                <option className="dark:text-black">Pequeño</option>
+                <option className="dark:text-black">Mediano</option>
+                <option className="dark:text-black">Grande</option>
               </select>
             </div>
 
@@ -145,9 +145,9 @@ const {
                 onChange={(e) => setGenero(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               >
-                <option>Todos</option>
-                <option>Macho</option>
-                <option>Hembra</option>
+                <option className="dark:text-black">Todos</option>
+                <option className="dark:text-black">Macho</option>
+                <option className="dark:text-black">Hembra</option>
               </select>
             </div>
 
@@ -199,8 +199,8 @@ const {
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {mascotasVisibles.length > 0 ? (
-            mascotasVisibles.map((mascota) => (
+          {mascotas.length > 0 ? (
+            mascotas.map((mascota) => (
               <CardMascota key={mascota.id} mascota={mascota} />
             ))
           ) : (

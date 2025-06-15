@@ -24,6 +24,29 @@ export async function obtenerMascotas({ search, page, limit, tipo, raza, tamaño
   }
 }
 
+export async function obtenerMascotas2({ search, page, limit, tipo, raza, tamaño } = {}) {
+  try {
+    const params = new URLSearchParams();
+
+    if (search) params.append("search", search);
+    if (page) params.append("page", page);
+    if (limit) params.append("limit", limit);
+    if (tipo) params.append("tipo", tipo);
+    if (raza) params.append("raza", raza);
+    if (tamaño) params.append("tamaño", tamaño);
+
+    const url = `${BASE_URL}/mascotas?${params}`;
+
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Error en la respuesta del servidor");
+    const json = await response.json()
+    return json
+  } catch (error) {
+    console.error("Error al obtener mascotas:", error);
+    throw error;
+  }
+}
+
 export async function obtenerRefugios() {
   const res = await fetch(`${BASE_URL}/refugios`);
   if (!res.ok) throw new Error("Error al obtener los refugios");

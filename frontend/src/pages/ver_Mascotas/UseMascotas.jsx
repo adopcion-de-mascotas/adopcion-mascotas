@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { obtenerMascotas } from "../../services/mascotasService";
+import { obtenerMascotas2 } from "../../services/mascotasService";
 
 export default function UseMascotas() {
   const [mascotas, setMascotas] = useState([]);
@@ -14,33 +15,39 @@ export default function UseMascotas() {
 
   // Paginación
   const [currentPage, setCurrentPage] = useState(1);
-  const mascotasPorPagina = 8;
+  const [totalPaginas, setTotalPaginas] = useState(1);
+  const [mascotasPorPagina, setMascotasPorPagina] = useState(8);
 
   useEffect(() => {
-    obtenerMascotas().then(setMascotas).catch(setError);
-  }, []);
+    const filtros = {
+      page: currentPage,
+      limit: mascotasPorPagina,
+      tipo: tipo !== "Todos" ? tipo : undefined,
+      edad: edad !== "Todas" ? edad : undefined,
+      tamanio: tamanio !== "Todos" ? tamanio : undefined,
+      genero: genero !== "Todos" ? genero : undefined,
+      search: busqueda.trim() !== "" ? busqueda.trim() : undefined,
+    };
 
-  const aplicarFiltros = () => setCurrentPage(1);
-
-  const mascotasFiltradas = mascotas.filter((m) => {
-    if (tipo !== "Todos" && m.tipo !== tipo) return false;
-    if (edad !== "Todas" && m.edad !== edad) return false;
-    if (tamanio !== "Todos" && m.tamanio !== tamanio) return false;
-    if (genero !== "Todos" && m.genero !== genero) return false;
-    if (
-      busqueda.trim() !== "" &&
-      !m.nombre.toLowerCase().includes(busqueda.trim().toLowerCase())
-    )
-      return false;
-    return true;
-  });
-
-  const totalPaginas = Math.ceil(mascotasFiltradas.length / mascotasPorPagina);
-  const indiceInicio = (currentPage - 1) * mascotasPorPagina;
-  const mascotasVisibles = mascotasFiltradas.slice(
-    indiceInicio,
-    indiceInicio + mascotasPorPagina
-  );
+    obtenerMascotas2(filtros)
+      .then((respuesta) => {
+        if (respuesta.status && respuesta.data) {
+          setMascotas(respuesta.data.items);
+          setTotalPaginas(respuesta.data.pagination.pages);
+          setMascotasPorPagina(respuesta.data.pagination.limit);
+          setError(null);
+        } else {
+          setError("No se pudo obtener la lista de mascotas.");
+          setMascotas([]);
+          setTotalPaginas(1);
+        }
+      })
+      .catch((err) => {
+        setError(err.message || "Error al obtener mascotas");
+        setMascotas([]);
+        setTotalPaginas(1);
+      });
+  }, [currentPage, tipo, edad, tamanio, genero, busqueda]);
 
   const handlePageChange = (pagina) => {
     if (pagina >= 1 && pagina <= totalPaginas) {
@@ -48,8 +55,12 @@ export default function UseMascotas() {
     }
   };
 
+  const aplicarFiltros = () => {
+    setCurrentPage(1); 
+  };
+
   return {
-    mascotasVisibles,
+    mascotas,
     tipo,
     setTipo,
     edad,
@@ -60,10 +71,10 @@ export default function UseMascotas() {
     setGenero,
     busqueda,
     setBusqueda,
-    aplicarFiltros,
     currentPage,
     handlePageChange,
     totalPaginas,
     error,
+    aplicarFiltros,
   };
 }
