@@ -1,7 +1,10 @@
-import { useState } from "react";
-import { crearTestimonio } from "../../services/testimonioService";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { obtenerTestimonioPorId, actualizarTestimonio } from "../../services/testimonioService";
 
-export default function useTestimonioForm() {
+export default function useTestimonioFormEdit() {
+  const { id } = useParams();
+
   const [formData, setFormData] = useState({
     comentario: "",
     autor: "",
@@ -15,7 +18,26 @@ export default function useTestimonioForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  // Manejo de inputs de texto y select
+  // Obtener datos del testimonio actual
+  useEffect(() => {
+    if (id) {
+      obtenerTestimonioPorId(id)
+        .then((data) => {
+          setFormData({
+            comentario: data.comentario || "",
+            autor: data.autor || "",
+            estrellas: data.estrellas || 5,
+            mascota_id: data.mascota_id || "",
+            foto: null, // no se trae la imagen como File
+            fotoPreview: data.foto || null,
+          });
+        })
+        .catch(() => {
+          setErrors({ general: "No se pudo cargar el testimonio" });
+        });
+    }
+  }, [id]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -28,7 +50,6 @@ export default function useTestimonioForm() {
     }
   };
 
-  // Manejo cambio de imagen por input
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -42,11 +63,8 @@ export default function useTestimonioForm() {
     }
   };
 
-  // Drag and drop
   const handleDrop = (e) => {
     e.preventDefault();
-    e.stopPropagation();
-
     const file = e.dataTransfer.files[0];
     if (file && file.type.match("image.*")) {
       setFormData((prev) => ({ ...prev, foto: file }));
@@ -61,10 +79,8 @@ export default function useTestimonioForm() {
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    e.stopPropagation();
   };
 
-  // Validación del formulario
   const validateForm = () => {
     let valid = true;
     const newErrors = {};
@@ -82,11 +98,6 @@ export default function useTestimonioForm() {
       valid = false;
     }
 
-    if (!formData.foto) {
-      newErrors.foto = "Por favor selecciona una foto";
-      valid = false;
-    }
-
     if (formData.estrellas < 1 || formData.estrellas > 5) {
       newErrors.estrellas = "La calificación debe estar entre 1 y 5 estrellas";
       valid = false;
@@ -96,7 +107,6 @@ export default function useTestimonioForm() {
     return valid;
   };
 
-  // Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -107,30 +117,19 @@ export default function useTestimonioForm() {
     setSubmitSuccess(false);
 
     try {
-      await crearTestimonio(formData);
+      await actualizarTestimonio(id, formData);
       setSubmitSuccess(true);
-
-      // Resetear formulario
-      setFormData({
-        comentario: "",
-        autor: "",
-        estrellas: 5,
-        mascota_id: "",
-        foto: null,
-        fotoPreview: null,
-      });
     } catch (error) {
-      console.error("Error al enviar testimonio:", error);
+      console.error("Error al actualizar testimonio:", error);
       setErrors((prev) => ({
         ...prev,
-        general: "Ocurrió un error al enviar el testimonio. Intenta nuevamente.",
+        general: "Ocurrió un error al actualizar el testimonio.",
       }));
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Cancelar (resetear)
   const handleCancel = () => {
     setFormData({
       comentario: "",
@@ -155,6 +154,6 @@ export default function useTestimonioForm() {
     handleDragOver,
     handleSubmit,
     handleCancel,
-    setFormData, // si quieres acceso para cambios específicos desde UI
+    setFormData,
   };
 }

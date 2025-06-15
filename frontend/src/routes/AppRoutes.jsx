@@ -22,6 +22,7 @@ import Settings from "../pages/settings/Settings";
 import MascotaDashboard from "../components/mascotaDashboard/MascotaDashboard";
 import NoticiasDashboard from "../components/noticiaDashboard/NoticiaDashboard";
 import TestimonioDashboard from "../components/testimonioDashboard/TestimoniosDashboard";
+import TestimonioFormEdit from "../components/testimonioFormEdit/TestimonioFormEdit";
 
 export default function AppRoutes() {
   return (
@@ -51,6 +52,7 @@ export default function AppRoutes() {
         <Route path="dashboardFirts" element={<DashboardFirts />} />
         <Route path="testimonio" element={<TestimonioDashboard />} />
         <Route path="testimonioForm" element={<TestimonioForm />} />
+        <Route path="testimonios/:id" element={<TestimonioFormEdit />} />
         <Route path="mascota" element={<MascotaDashboard />} />
         <Route path="mascotaForm" element={<MascotaForm />} />
         <Route path="noticia" element={<NoticiasDashboard />} />

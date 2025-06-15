@@ -27,7 +27,9 @@ export default function TestimonioDashboard() {
   return (
     <main className="p-6">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold text-gray-800">Dashboard de Testimonios</h1>
+        <h1 className="text-2xl font-bold text-gray-800">
+          Dashboard de Testimonios
+        </h1>
         <Link
           to="/dashboard/testimonioForm"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
@@ -86,19 +88,26 @@ export default function TestimonioDashboard() {
                         className="w-16 h-16 object-cover rounded-full"
                       />
                     </td>
-                    <td className="px-4 py-3 border">{testimonio.comentario}</td>
+                    <td className="px-4 py-3 border">
+                      {testimonio.comentario}
+                    </td>
                     <td className="px-4 py-3 border">{testimonio.autor}</td>
                     <td className="px-4 py-3 border">
                       {new Date(testimonio.fecha).toLocaleDateString()}
                     </td>
-                    <td className="px-4 py-3 border">{renderEstrellas(testimonio.estrellas)}</td>
+                    <td className="px-4 py-3 border">
+                      {renderEstrellas(testimonio.estrellas)}
+                    </td>
                     <td className="px-4 py-3 border space-x-2">
-                      <button
-                        onClick={() => alert(`Editar testimonio ID ${testimonio.id}`)}
+                      <Link
+                        to={`/dashboard/testimonios/${testimonio.id}`}
+                        onClick={() =>
+                          alert(`Editar testimonio ID ${testimonio.id}`)
+                        }
                         className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                       >
                         Editar
-                      </button>
+                      </Link>
                       <button
                         onClick={() => eliminar(testimonio.id)}
                         className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
