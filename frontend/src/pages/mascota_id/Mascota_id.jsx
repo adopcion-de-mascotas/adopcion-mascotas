@@ -17,6 +17,22 @@ export default function Mascota_Id() {
   // Estado para listado de mascotas
   const [mascotas, setMascotas] = useState([]);
 
+  const handleLike = () => {
+    const isLiked = mascota.liked;
+    setMascota({
+      ...mascota,
+      liked: !isLiked,
+      likes: isLiked ? mascota.likes - 1 : mascota.likes + 1,
+    });
+    fetch("/api/like", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({ mascotaId: mascota.id, like: !isLiked }),
+    });
+  };
   // Cargar mascota Id
   useEffect(() => {
     setLoading(true);
@@ -60,16 +76,6 @@ export default function Mascota_Id() {
 
   return (
     <main className="container mx-auto px-4 py-8">
-      {/* Botón Volver */}
-      <div className="mb-6">
-        <Link
-          to="/mascotas"
-          className="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium"
-        >
-          <i className="fas fa-arrow-left mr-2"></i> Volver a mascotas
-        </Link>
-      </div>
-
       {/* Detalle Mascota */}
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -106,8 +112,18 @@ export default function Mascota_Id() {
                   {mascota.ciudad}
                 </div>
               </div>
-              <button className="text-2xl text-gray-400 hover:text-red-500 transition">
-                <i className="far fa-heart"></i>
+              <button
+                onClick={handleLike}
+                className={`text-2xl transition ${
+                  mascota.liked
+                    ? "text-red-500"
+                    : "text-gray-400 hover:text-red-500"
+                }`}
+              >
+                <i
+                  className={mascota.liked ? "fas fa-heart" : "far fa-heart"}
+                ></i>
+                <span> {mascota.likes} </span>
               </button>
             </div>
 

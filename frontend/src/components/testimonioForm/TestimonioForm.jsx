@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./TestimonioForm.css";
+import { crearTestimonio } from "../../services/testimonioService"; 
 
 export default function TestimonioForm() {
   const [formData, setFormData] = useState({
@@ -117,39 +118,37 @@ export default function TestimonioForm() {
   // Submit
   // ────────────────────────────────────────────────────────────────────────────────
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!validateForm()) return;
+  if (!validateForm()) return;
 
-    setIsSubmitting(true);
+  setIsSubmitting(true);
+  setErrors({});
+  setSubmitSuccess(false);
 
-    // Aquí transformarías formData en FormData() si tu endpoint necesita multipart
-    // const body = new FormData();
-    // body.append("comentario", formData.comentario);
-    // body.append("autor", formData.autor);
-    // body.append("estrellas", formData.estrellas);
-    // if (formData.mascota_id) body.append("mascota_id", formData.mascota_id);
-    // body.append("foto", formData.foto);
+  try {
+    await crearTestimonio(formData); // ← Envío real
+    setSubmitSuccess(true);
+    // Reiniciar formulario
+    setFormData({
+      comentario: "",
+      autor: "",
+      estrellas: 5,
+      mascota_id: "",
+      foto: null,
+      fotoPreview: null,
+    });
+  } catch (error) {
+    console.error("Error al enviar testimonio:", error);
+    setErrors((prev) => ({
+      ...prev,
+      general: "Ocurrió un error al enviar el testimonio. Intenta nuevamente.",
+    }));
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
-    // Simulación de llamada al backend
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitSuccess(true);
-
-      // Reinicio del formulario
-      setTimeout(() => {
-        setFormData({
-          comentario: "",
-          autor: "",
-          estrellas: 5,
-          mascota_id: "",
-          foto: null,
-          fotoPreview: null,
-        });
-        setSubmitSuccess(false);
-      }, 3000);
-    }, 2000);
-  };
 
   // ────────────────────────────────────────────────────────────────────────────────
   // UI

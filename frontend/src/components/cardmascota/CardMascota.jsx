@@ -14,7 +14,7 @@ export default function CardMascota({ mascota }) {
           className="w-full h-48 object-cover"
         />
         <span className="absolute bottom-3 left-3 bg-yellow-400 text-white text-xs font-bold px-2 py-1 rounded-full">
-          Adopción
+          {mascota.estado}
         </span>
       </div>
       <div className="p-4">

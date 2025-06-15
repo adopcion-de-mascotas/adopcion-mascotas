@@ -59,15 +59,7 @@ export default function Noticia_id() {
   return (
     <>
       <main className="container mx-auto px-4 py-8 animate-fadeIn">
-        {/* Botón Volver */}
-        <div className="mb-6">
-          <Link
-            to="/noticias"
-            className="inline-flex items-center text-yellow-500 hover:text-yellow-600 font-medium"
-          >
-            <i className="fas fa-arrow-left mr-2"></i> Volver a noticias
-          </Link>
-        </div>
+        
         <article className="news-article max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
           {/* Article Header */}
           <div className="p-6 border-b border-gray-200">
