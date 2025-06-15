@@ -36,7 +36,7 @@
 }
 
 .dark #testimonio {
-  @apply text-gray-100!important;
+  @apply text-gray-100;
 }
 
 .dark .text-gray-700 {
