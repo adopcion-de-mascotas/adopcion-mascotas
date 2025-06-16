@@ -30,7 +30,6 @@ export default function DashboardFirst() {
     generoData,
     tipoData,
     tamanioData,
-    esterilizacionData,
   } = useDashboardMascotas();
 
   // Helper para convertir objeto a dataset para chart.js
@@ -55,7 +54,7 @@ export default function DashboardFirst() {
         {/* Total Mascotas */}
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <div className="flex items-center">
-            <div className="p-3 rounded-lg bg-indigo-50 text-happy-blue">
+            <div className="p-3 rounded-lg bg-indigo-200 text-happy-blue">
               <i className="fas fa-paw text-xl"></i>
             </div>
             <div className="ml-4">
@@ -154,32 +153,6 @@ export default function DashboardFirst() {
               scales: { y: { beginAtZero: true } },
             }}
           />
-        </div>
-
-        {/* Esterilización */}
-        <div className="bg-white p-4 rounded-xl shadow border border-gray-100">
-          <h4 className="mb-4 font-semibold text-gray-700">Esterilización</h4>
-          <div className="w-64 h-64 max-xl:w-40 max-xl:h-40">
-            <Doughnut
-              data={{
-                labels: ["Esterilizados", "No esterilizados"],
-                datasets: [
-                  {
-                    label: "Cantidad",
-                    data: [
-                      esterilizacionData.esterilizados,
-                      esterilizacionData.noEsterilizados,
-                    ],
-                    backgroundColor: ["#10B981", "#EF4444"],
-                  },
-                ],
-              }}
-              options={{
-                responsive: true,
-                plugins: { legend: { position: "bottom" } },
-              }}
-            />
-          </div>
         </div>
       </div>
     </main>

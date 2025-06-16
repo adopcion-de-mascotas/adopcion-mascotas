@@ -9,7 +9,6 @@ export function useDashboardMascotas() {
   const [generoData, setGeneroData] = useState({});
   const [tipoData, setTipoData] = useState({});
   const [tamanioData, setTamanioData] = useState({});
-  const [esterilizacionData, setEsterilizacionData] = useState({ esterilizados: 0, noEsterilizados: 0 });
 
   useEffect(() => {
     const cargarDatos = async () => {
@@ -19,14 +18,14 @@ export function useDashboardMascotas() {
         setTotalMascotas(mascotasData.length);
 
         // Mascotas adoptadas
-        const adoptionCount = mascotasData.filter(m =>
-          m.estado && m.estado.toLowerCase().includes("adop")
+        const adoptionCount = mascotasData.filter(
+          (m) => m.estado && m.estado.toLowerCase().includes("adop")
         ).length;
         setAvailableForAdoption(adoptionCount);
 
         // Mascotas disponibles
-        const disponiblesCount = mascotasData.filter(m =>
-          m.estado && m.estado.toLowerCase().includes("disponible")
+        const disponiblesCount = mascotasData.filter(
+          (m) => m.estado && m.estado.toLowerCase().includes("disponible")
         ).length;
         setAvailableStatusCount(disponiblesCount);
 
@@ -55,11 +54,6 @@ export function useDashboardMascotas() {
           return acc;
         }, {});
         setTamanioData(tamanioCounts);
-
-        // Esterilizados / no esterilizados (ojo, corregí el typo)
-        const esterilizadosCount = mascotasData.filter(m => m.esterilizado).length;
-        const noEsterilizadosCount = mascotasData.length - esterilizadosCount;
-        setEsterilizacionData({ esterilizados: esterilizadosCount, noEsterilizados: noEsterilizadosCount });
       } catch (error) {
         console.error("Error al cargar datos:", error);
       }
@@ -76,6 +70,5 @@ export function useDashboardMascotas() {
     generoData,
     tipoData,
     tamanioData,
-    esterilizacionData,
   };
 }

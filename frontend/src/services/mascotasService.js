@@ -74,12 +74,52 @@ export async function obtenerMascotaPorId(id) {
 }
 
 
-// Crear una nueva mascota (requiere imagen)
 export async function crearMascota(mascota) {
   try {
     const formData = new FormData();
-    for (const key in mascota) {
-      formData.append(key, mascota[key]);
+
+    // Datos simples
+    formData.append("nombre", mascota.nombre);
+    formData.append("tipo", mascota.tipo);
+    formData.append("raza", mascota.raza);
+    formData.append("tamaño", mascota.tamaño);
+    formData.append("edad", mascota.edad);
+    formData.append("descripcion", mascota.descripcion);
+    formData.append("sexo", mascota.sexo);
+    formData.append("refugioId", mascota.refugioId);
+
+    // Imagen principal
+    if (mascota.imagen) {
+      formData.append("imagen", mascota.imagen);
+    }
+
+    // Galería (múltiples archivos)
+    if (mascota.galeria && mascota.galeria.length > 0) {
+      for (const file of mascota.galeria) {
+        formData.append("galeria[]", file);
+      }
+    }
+
+    // Comportamiento
+    if (mascota.comportamiento) {
+      formData.append("comportamiento[niños]", mascota.comportamiento.niños || "");
+      formData.append("comportamiento[perros]", mascota.comportamiento.perros || "");
+      formData.append("comportamiento[gatos]", mascota.comportamiento.gatos || "");
+      formData.append("comportamiento[apartamento]", mascota.comportamiento.apartamento || "");
+    }
+
+    // Salud
+    if (mascota.salud) {
+      formData.append("salud[estado]", mascota.salud.estado || "");
+      formData.append("salud[tratamiento]", mascota.salud.tratamiento || "");
+      formData.append("salud[info_veterinaria]", mascota.salud.info_veterinaria || "");
+    }
+
+    // Vacunas
+    if (mascota.vacunas && mascota.vacunas.length > 0) {
+      for (const vacuna of mascota.vacunas) {
+        formData.append("vacunas[]", vacuna);
+      }
     }
 
     const response = await fetch(`${BASE_URL}/admin/mascotas`, {
@@ -95,12 +135,46 @@ export async function crearMascota(mascota) {
   }
 }
 
-// Actualizar mascota por ID (con o sin imagen)
-export async function actualizarMascota(id, datosActualizados) {
+export async function actualizarMascota(id, mascota) {
   try {
     const formData = new FormData();
-    for (const key in datosActualizados) {
-      formData.append(key, datosActualizados[key]);
+
+    formData.append("nombre", mascota.nombre);
+    formData.append("tipo", mascota.tipo);
+    formData.append("raza", mascota.raza);
+    formData.append("tamaño", mascota.tamaño);
+    formData.append("edad", mascota.edad);
+    formData.append("descripcion", mascota.descripcion);
+    formData.append("sexo", mascota.sexo);
+    formData.append("refugioId", mascota.refugioId);
+
+    if (mascota.imagen) {
+      formData.append("imagen", mascota.imagen);
+    }
+
+    if (mascota.galeria && mascota.galeria.length > 0) {
+      for (const file of mascota.galeria) {
+        formData.append("galeria[]", file);
+      }
+    }
+
+    if (mascota.comportamiento) {
+      formData.append("comportamiento[niños]", mascota.comportamiento.niños || "");
+      formData.append("comportamiento[perros]", mascota.comportamiento.perros || "");
+      formData.append("comportamiento[gatos]", mascota.comportamiento.gatos || "");
+      formData.append("comportamiento[apartamento]", mascota.comportamiento.apartamento || "");
+    }
+
+    if (mascota.salud) {
+      formData.append("salud[estado]", mascota.salud.estado || "");
+      formData.append("salud[tratamiento]", mascota.salud.tratamiento || "");
+      formData.append("salud[info_veterinaria]", mascota.salud.info_veterinaria || "");
+    }
+
+    if (mascota.vacunas && mascota.vacunas.length > 0) {
+      for (const vacuna of mascota.vacunas) {
+        formData.append("vacunas[]", vacuna);
+      }
     }
 
     const response = await fetch(`${BASE_URL}/admin/mascotas/${id}`, {
@@ -115,6 +189,7 @@ export async function actualizarMascota(id, datosActualizados) {
     throw error;
   }
 }
+
 
 // Eliminar mascota por ID
 export async function eliminarMascota(id) {

@@ -88,12 +88,13 @@ export default function NoticiasDashboard() {
                       {new Date(noticia.fecha).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3 border space-x-2">
-                      <button
+                      <Link
                         onClick={() => alert(`Editar noticia ID ${noticia.id}`)}
+                        to={`/dashboard/noticiaFormEdit/${noticia.id}`}
                         className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                       >
                         Editar
-                      </button>
+                      </Link>
                       <button
                         onClick={() => handleEliminar(noticia.id)}
                         className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
