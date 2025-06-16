@@ -8,12 +8,9 @@ const path = require('path');
 module.exports = {
     create: async (req, res) => {
 
-        console.log(req.body)
         let errorsValidator = validationResult(req);
-        console.log(errorsValidator)
 
         if (errorsValidator.isEmpty()) {
-
 
             const transaction = await sequelize.transaction();
             try {
@@ -102,82 +99,96 @@ module.exports = {
     },
 
     update: async (req, res) => {
-        const transaction = await sequelize.transaction();
-        try {
-            const mascota = await Mascota.findByPk(req.params.id, { transaction });
 
-            if (!mascota) {
-                throw new CustomError("Mascota no encontrada", 404);
-            }
+        let errorsValidator = validationResult(req);
 
-            // 1. Validar referencias si se están actualizando
-            if (req.body.refugioId) {
-                const refugio = await Refugio.findByPk(req.body.refugioId, { transaction });
-                if (!refugio) throw new CustomError("Refugio no encontrado", 404);
-            }
+        if (errorsValidator.isEmpty()) {
 
-            if (req.body.saludId) {
-                const salud = await Salud.findByPk(req.body.saludId, { transaction });
-                if (!salud) throw new CustomError("Registro de salud no encontrado", 404);
-            }
+            const transaction = await sequelize.transaction();
+            try {
+                const mascota = await Mascota.findByPk(req.params.id, { transaction });
 
-            if (req.body.comportamientoId) {
-                const comportamiento = await Comportamiento.findByPk(req.body.comportamientoId, { transaction });
-                if (!comportamiento) throw new CustomError("Comportamiento no encontrado", 404);
-            }
-
-            // 2. Manejo de la imagen principal
-            let imagenAnterior = null;
-            if (req.file) {
-                imagenAnterior = mascota.imagen_principal;
-                mascota.imagen_principal = req.file.filename;
-            }
-
-            // 3. Actualización parcial
-            const camposActualizables = [
-                'nombre', 'edad', 'tipo', 'raza', 'genero', 'tamanio', 'peso',
-                'esterelizado', 'estado', 'ciudad', 'descripcion', 'historia',
-                'liked', 'likes', 'comportamientoId', 'refugioId', 'saludId'
-            ];
-
-            camposActualizables.forEach(campo => {
-                if (req.body[campo] !== undefined) {
-                    mascota[campo] = req.body[campo];
+                if (!mascota) {
+                    throw new CustomError("Mascota no encontrada", 404);
                 }
-            });
 
-            const mascotaUpdated = await mascota.save({ transaction });
-            await transaction.commit();
-
-            // 4. Eliminar imagen anterior si se actualizó
-            if (imagenAnterior) {
-                const imagePath = path.join(__dirname, '../../public/images/mascotas', imagenAnterior);
-                if (fs.existsSync(imagePath)) {
-                    fs.unlinkSync(imagePath);
+                // 1. Validar referencias si se están actualizando
+                if (req.body.refugioId) {
+                    const refugio = await Refugio.findByPk(req.body.refugioId, { transaction });
+                    if (!refugio) throw new CustomError("Refugio no encontrado", 404);
                 }
-            }
 
-            endpointResponse({
-                res,
-                code: 200,
-                status: true,
-                message: "Mascota actualizada correctamente",
-                body: mascotaUpdated
-            });
+                if (req.body.saludId) {
+                    const salud = await Salud.findByPk(req.body.saludId, { transaction });
+                    if (!salud) throw new CustomError("Registro de salud no encontrado", 404);
+                }
 
-        } catch (error) {
-            // Eliminar la nueva imagen si hubo error
-            if (req.file && req.file.path) {
-                fs.unlinkSync(req.file.path);
+                if (req.body.comportamientoId) {
+                    const comportamiento = await Comportamiento.findByPk(req.body.comportamientoId, { transaction });
+                    if (!comportamiento) throw new CustomError("Comportamiento no encontrado", 404);
+                }
+
+                // 2. Manejo de la imagen principal
+                let imagenAnterior = null;
+                if (req.file) {
+                    imagenAnterior = mascota.imagen_principal;
+                    mascota.imagen_principal = req.file.filename;
+                }
+
+                // 3. Actualización parcial
+                const camposActualizables = [
+                    'nombre', 'edad', 'tipo', 'raza', 'genero', 'tamanio', 'peso',
+                    'esterelizado', 'estado', 'ciudad', 'descripcion', 'historia',
+                    'liked', 'likes', 'comportamientoId', 'refugioId', 'saludId'
+                ];
+
+                camposActualizables.forEach(campo => {
+                    if (req.body[campo] !== undefined) {
+                        mascota[campo] = req.body[campo];
+                    }
+                });
+
+                const mascotaUpdated = await mascota.save({ transaction });
+                await transaction.commit();
+
+                // 4. Eliminar imagen anterior si se actualizó
+                if (imagenAnterior) {
+                    const imagePath = path.join(__dirname, '../../public/images/mascotas', imagenAnterior);
+                    if (fs.existsSync(imagePath)) {
+                        fs.unlinkSync(imagePath);
+                    }
+                }
+
+                endpointResponse({
+                    res,
+                    code: 200,
+                    status: true,
+                    message: "Mascota actualizada correctamente",
+                    body: mascotaUpdated
+                });
+
+            } catch (error) {
+                // Eliminar la nueva imagen si hubo error
+                if (req.file && req.file.path) {
+                    fs.unlinkSync(req.file.path);
+                }
+                await transaction.rollback();
+                endpointError({
+                    res,
+                    code: error.code || 400,
+                    message: error.message || "Ocurrió un error al actualizar la mascota",
+                    errors: error.errors || [error.message]
+                });
             }
-            await transaction.rollback();
+        } else {
             endpointError({
                 res,
-                code: error.code || 400,
-                message: error.message || "Ocurrió un error al actualizar la mascota",
-                errors: error.errors || [error.message]
+                code: 400,
+                message: "Ocurrió un error en el formulario",
+                errors: errorsValidator.mapped()
             });
         }
+
     },
 
     remove: async (req, res) => {

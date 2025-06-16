@@ -64,8 +64,6 @@ module.exports = {
     },
 
     createAdmin: async (req, res) => {
-
-
         const errorsValidator = validationResult(req)
 
         if (errorsValidator.isEmpty()) {
@@ -116,7 +114,68 @@ module.exports = {
                 errors: errorsValidator.mapped()
             })
         }
+    },
 
+    editAdmin: async (req, res) => {
+
+        const errorsValidator = validationResult(req)
+
+        if (errorsValidator.isEmpty()) {
+            // Desestructuramos el body
+            const { nombre, apellido, email, password, newPassword } = req.body
+
+            // Buscamos el admin por id
+            const admin = await Admins.findByPk(req.params.id)
+
+            // Si no existe el admin, devolvemos un error
+            if (!admin) {
+                return res.status(401).json({
+                    error: "El admin no existe"
+                })
+            }
+
+            // Si la password es correcta, la actualizamos
+            if (newPassword && !bcrypt.compareSync(password, admin.password)) {
+                endpointError({
+                    res,
+                    code: 400,
+                    message: "La contraseña actual es incorrecta",
+                    errors: {}
+                })
+            }
+
+            // Si existe el admin, lo actualizamos
+            const updatedAdmin = await admin.update({
+                nombre,
+                apellido,
+                email,
+                password: newPassword ? bcrypt.hashSync(newPassword, 10) : admin.password
+            })
+
+            // Si se actualiza el admin, devolvemos el admin
+            if (updatedAdmin) {
+                return res.status(200).json({
+                    id: updatedAdmin.id,
+                    nombre: updatedAdmin.nombre,
+                    apellido: updatedAdmin.apellido,
+                    email: updatedAdmin.email
+                })
+            }
+
+            // Si no se actualiza el admin, devolvemos un error
+            return res.status(401).json({
+                error: "Error al actualizar el admin"
+            })
+
+
+        } else {
+            endpointError({
+                res,
+                code: 400,
+                message: "Ocurrio un error en el formulario",
+                errors: errorsValidator.mapped()
+            })
+        }
     }
 
 }

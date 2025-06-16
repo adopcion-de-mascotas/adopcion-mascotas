@@ -12,4 +12,7 @@ router.post("/", loginValidator, adminLoginController.login)
 /* Crear Admin */
 router.post("/create", sessionValidator, adminLoginController.createAdmin)
 
+/* Editar Admin */
+router.put("/:id", sessionValidator, adminLoginController.editAdmin)
+
 module.exports = router;
