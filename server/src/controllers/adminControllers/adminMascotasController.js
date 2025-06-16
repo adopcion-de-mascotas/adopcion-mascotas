@@ -192,6 +192,7 @@ module.exports = {
     },
 
     remove: async (req, res) => {
+        console.log('remove controller')
         const transaction = await sequelize.transaction();
         try {
             const mascota = await Mascota.findByPk(req.params.id, {
@@ -202,6 +203,7 @@ module.exports = {
             if (!mascota) {
                 throw new CustomError("Mascota no encontrada", 404);
             }
+            console.log('llego')
 
             // 1. Eliminar imagen principal
             if (mascota.imagen_principal) {

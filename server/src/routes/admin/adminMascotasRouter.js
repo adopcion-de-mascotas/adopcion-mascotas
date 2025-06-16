@@ -2,11 +2,10 @@ const express = require("express");
 const router = express.Router()
 const { singleUpload, handleMulterErrors } = require("../../middlewares/imageMiddleware")
 const { create, update, remove } = require("../../controllers/adminControllers/adminMascotasController");
-const adminGaleriaRouter = require("./adminGaleriaRouter")
+// const adminGaleriaRouter = require("./adminGaleriaRouter")
 const mascotaValidator = require("../../validations/mascotasValidator")
 
-router.use("/", adminGaleriaRouter)
-
+// router.use("/galeria", adminGaleriaRouter)
 
 /* Agrega mascota */
 router.post("/", mascotaValidator, singleUpload, handleMulterErrors, create)
