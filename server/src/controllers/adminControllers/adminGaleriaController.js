@@ -1,4 +1,4 @@
-const { GaleriaMascota, Mascota } = require("../../database/models");
+const { GaleriaMascota, Mascota, sequelize } = require("../../database/models");
 const { endpointError, CustomError } = require('../../utils/error');
 const { endpointResponse } = require('../../utils/success');
 const fs = require('fs');

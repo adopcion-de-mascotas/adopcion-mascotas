@@ -1,17 +1,17 @@
-const { body } = require('express-validator')
+const { check,  } = require('express-validator')
 
 const mascotaValidator = [
-    body("nombre").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
-    body("edad").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
-    body("tipo").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
-    body("raza").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
-    body("genero").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
-    body("tamanio").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
-    body("peso").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
-    body("estado").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
-    body("ciudad").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
-    body("descripcion").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
-    body("historia").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
+    check("nombre").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
+    check("edad").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
+    check("tipo").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
+    check("raza").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
+    check("genero").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
+    check("tamanio").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
+    check("peso").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
+    check("estado").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
+    check("ciudad").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
+    check("descripcion").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
+    check("historia").notEmpty().not().isNumeric().withMessage("Este campo no debe estar vacío").bail(),
 ]
 
 module.exports = mascotaValidator

@@ -8,9 +8,12 @@ const path = require('path');
 module.exports = {
     create: async (req, res) => {
 
+        console.log(req.body)
         let errorsValidator = validationResult(req);
+        console.log(errorsValidator)
 
         if (errorsValidator.isEmpty()) {
+
 
             const transaction = await sequelize.transaction();
             try {
