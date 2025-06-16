@@ -193,9 +193,18 @@ export async function actualizarMascota(id, mascota) {
 
 // Eliminar mascota por ID
 export async function eliminarMascota(id) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No hay token de autenticación disponible");
+  }
   try {
     const response = await fetch(`${BASE_URL}/admin/mascotas/${id}`, {
       method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     });
 
     if (!response.ok) throw new Error("Error al eliminar mascota");

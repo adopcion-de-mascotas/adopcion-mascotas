@@ -66,17 +66,31 @@ export async function editarNoticia(id, noticiaActualizada) {
   }
 }
 
-// Eliminar una noticia
+// Eliminar testimonio por ID
 export async function eliminarNoticia(id) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No hay token de autenticación disponible");
+  }
   try {
-    const response = await fetch(`${BASE_URL}/noticias/${id}`, {
+    const response = await fetch(`${BASE_URL}/admin/noticias/${id}`, {
       method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     });
 
-    if (!response.ok) throw new Error("No se pudo eliminar la noticia");
-    return true;
+    if (!response.ok) {
+      const errorBody = await response.text();
+      console.error("Respuesta del servidor:", errorBody);
+      throw new Error("Error al eliminar noticia");
+    }
+
+    return await response.json();
   } catch (error) {
-    console.error("Error al eliminar noticia:", error);
+    console.error("Error en eliminarNoticia:", error);
     throw error;
   }
 }
