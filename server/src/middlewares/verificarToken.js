@@ -1,20 +1,24 @@
-const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = process.env
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = process.env;
 
-function verificarToken(req, res, next) {
-  const token = req.headers['authorization']?.split(' ')[1]; // Formato: "Bearer <token>"
+const verificarToken = (req, res, next) => {
+    const authHeader = req.headers.authorization;
 
-  if (!token) {
-    return res.status(401).json({ mensaje: 'Token no proporcionado' });
-  }
+    // Aceptamos "Bearer" o "Beaber" por si el cliente se equivocó
+    if (!authHeader || (!authHeader.startsWith("Bearer ") && !authHeader.startsWith("Beaber "))) {
+        return res.status(401).json({ error: "Token no proporcionado o mal formado" });
+    }
 
-  try {
-    const payload = jwt.verify(token, JWT_SECRET);
-    req.usuario = payload; // Guarda los datos decodificados
-    next();
-  } catch (err) {
-    return res.status(403).json({ mensaje: 'Token inválido o expirado' });
-  }
-}
+    // Extraemos el token sin importar si es Bearer o Beaber
+    const token = authHeader.replace(/^(Bearer|Beaber)\s/, "");
+
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.user = decoded;
+        next();
+    } catch (err) {
+        return res.status(401).json({ error: "Token inválido" });
+    }
+};
 
 module.exports = verificarToken;

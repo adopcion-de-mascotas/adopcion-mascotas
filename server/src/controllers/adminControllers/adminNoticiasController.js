@@ -132,6 +132,7 @@ module.exports = {
         const transaction = await sequelize.transaction();
         try {
             const { id } = req.params;
+            console.log(req.user)
             const adminId = req.user.id; // ID del admin autenticado
 
             const noticia = await Noticias.findByPk(id, { transaction });

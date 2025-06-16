@@ -7,21 +7,17 @@ const { endpointError } = require("../../utils/error")
 
 module.exports = {
     login: async (req, res) => {
-
         const errorsValidator = validationResult(req)
 
         if (errorsValidator.isEmpty()) {
-
             // Desestructuramos el body
             const { email, password } = req.body
-
             // Buscamos el admin por email
             const admin = await Admins.findOne({
                 where: {
                     email
                 }
             })
-
             // Si no existe el admin, devolvemos un error
             if (!admin) {
                 return res.status(401).json({
@@ -30,21 +26,25 @@ module.exports = {
             }
 
             if (admin && bcrypt.compareSync(password, admin.password)) {
-
                 // Si existe el admin y la contraseña es correcta, creamos el token
-                const token = jwt.sign({
+                const tokenPayload = {
                     id: admin.id,
                     email: admin.email
-                }, JWT_SECRET, {
-                    expiresIn: "1h"
-                })
-
-                // Si existe el admin y la contraseña es correcta, devolvemos el admin
-                return res.status(200).json({
+                }
+                const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: "1h" })
+                
+                // Guardamos al usuario logueado en req.user
+                req.user = {
                     id: admin.id,
                     nombre: admin.nombre,
                     apellido: admin.apellido,
-                    email: admin.email,
+                    email: admin.email
+                }
+                console.log(req.user)
+
+                // Si existe el admin y la contraseña es correcta, devolvemos el admin
+                return res.status(200).json({
+                    ...req.user,
                     token
                 })
             }
