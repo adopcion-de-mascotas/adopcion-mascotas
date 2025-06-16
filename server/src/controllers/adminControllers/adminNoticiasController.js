@@ -132,7 +132,6 @@ module.exports = {
         const transaction = await sequelize.transaction();
         try {
             const { id } = req.params;
-            console.log(req.user)
             const adminId = req.user.id; // ID del admin autenticado
 
             const noticia = await Noticias.findByPk(id, { transaction });
@@ -141,9 +140,9 @@ module.exports = {
             }
 
             // Verificar permisos (solo el admin creador puede eliminar)
-            if (noticia.admin_id !== adminId) {
-                throw new CustomError('No autorizado para eliminar esta noticia', 403);
-            }
+            // if (noticia.admin_id !== adminId) {
+            //     throw new CustomError('No autorizado para eliminar esta noticia', 403);
+            // }
 
             // Eliminar imagen asociada si existe
             if (noticia.foto) {
