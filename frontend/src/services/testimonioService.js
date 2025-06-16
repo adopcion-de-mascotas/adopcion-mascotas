@@ -59,6 +59,9 @@ export async function crearTestimonio(testimonio) {
 // Actualizar testimonio por ID
 export async function actualizarTestimonio(id, datosActualizados) {
   try {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("No hay token de autenticación disponible");
+
     const formData = new FormData();
     for (const key in datosActualizados) {
       formData.append(key, datosActualizados[key]);
@@ -66,6 +69,9 @@ export async function actualizarTestimonio(id, datosActualizados) {
 
     const response = await fetch(`${BASE_URL}/admin/testimonios/${id}`, {
       method: "PUT",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
       body: formData,
     });
 
@@ -77,14 +83,28 @@ export async function actualizarTestimonio(id, datosActualizados) {
   }
 }
 
+
 // Eliminar testimonio por ID
 export async function eliminarTestimonio(id) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No hay token de autenticación disponible");
+  }
   try {
     const response = await fetch(`${BASE_URL}/admin/testimonios/${id}`, {
       method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     });
 
-    if (!response.ok) throw new Error("Error al eliminar testimonio");
+    if (!response.ok) {
+      const errorBody = await response.text();
+      console.error("Respuesta del servidor:", errorBody);
+      throw new Error("Error al eliminar testimonio");
+    }
 
     return await response.json();
   } catch (error) {
