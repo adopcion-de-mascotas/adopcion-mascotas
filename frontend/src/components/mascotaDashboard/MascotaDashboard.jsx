@@ -90,12 +90,13 @@ export default function MascotaDashboard() {
                     {obtenerNombreRefugio(mascota.refugioId)}
                   </td>
                   <td className="px-4 py-3 border space-x-2">
-                    <button
+                    <Link
                       onClick={() => alert(`Editar mascota ID ${mascota.id}`)}
                       className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                      to={`/dashboard/mascotaFormEdit/${mascota.id}`}
                     >
                       Editar
-                    </button>
+                    </Link>
                     <button
                       onClick={() => handleEliminar(mascota.id)}
                       className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
