@@ -1,5 +1,5 @@
 import React from "react";
-import { useMascotaEdit } from "./useMascotaFormEdit";
+import { useMascotaFormEdit } from "./useMascotaFormEdit";
 
 export default function MascotaFormEdit() {
   const {
@@ -10,7 +10,7 @@ export default function MascotaFormEdit() {
     mensaje,
     error,
     cargando,
-  } = useMascotaEdit();
+  } = useMascotaFormEdit();
 
   const opcionesPersonalidad = [
     "Amigable",
