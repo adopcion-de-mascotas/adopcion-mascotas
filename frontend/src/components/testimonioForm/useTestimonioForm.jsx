@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { crearTestimonio } from "../../services/testimonioService";
 
 export default function useTestimonioForm() {
@@ -14,6 +14,7 @@ export default function useTestimonioForm() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [mascotas, setMascotas] = useState([]);
 
   // Manejo de inputs de texto y select
   const handleChange = (e) => {
@@ -123,7 +124,8 @@ export default function useTestimonioForm() {
       console.error("Error al enviar testimonio:", error);
       setErrors((prev) => ({
         ...prev,
-        general: "Ocurrió un error al enviar el testimonio. Intenta nuevamente.",
+        general:
+          "Ocurrió un error al enviar el testimonio. Intenta nuevamente.",
       }));
     } finally {
       setIsSubmitting(false);
@@ -144,9 +146,23 @@ export default function useTestimonioForm() {
     setSubmitSuccess(false);
   };
 
+  useEffect(() => {
+    async function fetchMascotas() {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/mascotas`);
+        const data = await res.json();
+        setMascotas(data.data.items || []);
+      } catch (error) {
+        console.error("Error al cargar mascotas:", error);
+      }
+    }
+    fetchMascotas();
+  }, []);
+
   return {
     formData,
     errors,
+    mascotas, // devuelvo las mascotas para que el componente pueda usarlas
     isSubmitting,
     submitSuccess,
     handleChange,

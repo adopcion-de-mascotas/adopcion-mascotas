@@ -1,5 +1,5 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
-
+import { jwtDecode } from "jwt-decode";
 export async function obtenerTestimonios({ search, page, limit } = {}) {
   try {
     const params = new URLSearchParams();
@@ -35,46 +35,10 @@ export async function obtenerTestimonioPorId(id) {
   }
 }
 
-// Crear un nuevo testimonio (puede incluir imagen)
-/*export async function crearTestimonio(testimonio) {
-  const token = localStorage.getItem("token");
-
-  try {
-    const payload = {
-      comentario: testimonio.comentario,
-      autor: testimonio.autor,
-      estrellas: testimonio.estrellas ? parseInt(testimonio.estrellas) : null,
-
-      mascota_id: parseInt(testimonio.mascota_id),
-      fecha: new Date().toISOString().split("T")[0] // formato: YYYY-MM-DD
-    };
-
-    console.log("JSON que se envía:", payload);
-
-    const response = await fetch(`${BASE_URL}/admin/testimonios`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error("Respuesta del servidor:", data);
-      throw new Error("Error al crear testimonio");
-    }
-
-    return data;
-  } catch (error) {
-    console.error("Error en crearTestimonio:", error);
-    throw error;
-  }
-}*/
 export async function crearTestimonio(testimonio) {
   const token = localStorage.getItem("token");
+  const decoded = jwtDecode(token);
+  const admin_id = decoded.id;  // o el campo que uses en tu token
 
   try {
     const formData = new FormData();
@@ -84,6 +48,7 @@ export async function crearTestimonio(testimonio) {
     formData.append("estrellas", testimonio.estrellas?.toString() || "");
     formData.append("mascota_id", testimonio.mascota_id?.toString() || "");
     formData.append("fecha", new Date().toISOString().split("T")[0]);
+    formData.append("admin_id", admin_id);
 
     if (testimonio.foto) {
       formData.append("foto", testimonio.foto);

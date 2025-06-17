@@ -5,6 +5,7 @@ import "./TestimonioForm.css";
 export default function TestimonioForm() {
   const {
     formData,
+    mascotas,
     errors,
     isSubmitting,
     submitSuccess,
@@ -37,17 +38,25 @@ export default function TestimonioForm() {
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-8">
             <div className="flex items-center">
               <i className="fas fa-check-circle mr-2"></i>
-              <span>¡Testimonio enviado con éxito! Será publicado tras revisión.</span>
+              <span>
+                ¡Testimonio enviado con éxito! Será publicado tras revisión.
+              </span>
             </div>
           </div>
         )}
 
         {/* Formulario */}
-        <form onSubmit={handleSubmit} className="bg-white shadow-xl rounded-lg overflow-hidden">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white shadow-xl rounded-lg overflow-hidden"
+        >
           <div className="p-6 sm:p-8">
             {/* Autor */}
             <div className="mb-6">
-              <label htmlFor="autor" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="autor"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Nombre del Autor <span className="text-red-500">*</span>
               </label>
               <input
@@ -61,12 +70,17 @@ export default function TestimonioForm() {
                 }`}
                 placeholder="Ej: María López"
               />
-              {errors.autor && <p className="mt-1 text-sm text-red-600">{errors.autor}</p>}
+              {errors.autor && (
+                <p className="mt-1 text-sm text-red-600">{errors.autor}</p>
+              )}
             </div>
 
             {/* Comentario */}
             <div className="mb-6">
-              <label htmlFor="comentario" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="comentario"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Comentario <span className="text-red-500">*</span>
               </label>
               <textarea
@@ -76,18 +90,28 @@ export default function TestimonioForm() {
                 onChange={handleChange}
                 rows="8"
                 className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${
-                  errors.comentario ? "border-red-500 bg-red-50" : "border-gray-300"
+                  errors.comentario
+                    ? "border-red-500 bg-red-50"
+                    : "border-gray-300"
                 }`}
                 placeholder="Escribe tu experiencia detallada..."
               ></textarea>
-              {errors.comentario && <p className="mt-1 text-sm text-red-600">{errors.comentario}</p>}
-              <p className="mt-1 text-xs text-gray-500">{formData.comentario.length}/50 caracteres mínimos</p>
+              {errors.comentario && (
+                <p className="mt-1 text-sm text-red-600">{errors.comentario}</p>
+              )}
+              <p className="mt-1 text-xs text-gray-500">
+                {formData.comentario.length}/50 caracteres mínimos
+              </p>
             </div>
 
             {/* Estrellas */}
             <div className="mb-6">
-              <label htmlFor="estrellas" className="block text-sm font-medium text-gray-700 mb-1">
-                Calificación (1-5 estrellas) <span className="text-red-500">*</span>
+              <label
+                htmlFor="estrellas"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Calificación (1-5 estrellas){" "}
+                <span className="text-red-500">*</span>
               </label>
               <select
                 id="estrellas"
@@ -102,25 +126,50 @@ export default function TestimonioForm() {
                   </option>
                 ))}
               </select>
-              {errors.estrellas && <p className="mt-1 text-sm text-red-600">{errors.estrellas}</p>}
+              {errors.estrellas && (
+                <p className="mt-1 text-sm text-red-600">{errors.estrellas}</p>
+              )}
             </div>
 
             {/* Mascota ID (opcional) */}
+            {/* Mascota */}
+            {/* Mascotas */}
             <div className="mb-6">
-              <label htmlFor="mascota_id" className="block text-sm font-medium text-gray-700 mb-1">
-                Mascota ID (opcional)
+              <label
+                htmlFor="mascota_id"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Mascota (opcional)
               </label>
-              <input
-                type="number"
+              <select
                 id="mascota_id"
                 name="mascota_id"
                 value={formData.mascota_id}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                placeholder="ID de la mascota asociada"
-                min="1"
-              />
+              >
+                <option value="">-- Seleccione una mascota --</option>
+                {mascotas.map((mascota) => (
+                  <option key={mascota.id} value={mascota.id}>
+                    {mascota.nombre}
+                  </option>
+                ))}
+              </select>
+              {errors.mascota_id && (
+                <p className="mt-1 text-sm text-red-600">{errors.mascota_id}</p>
+              )}
             </div>
+
+            {/* Opcional: mostrar nombre seleccionado afuera del select */}
+            {formData.mascota_id && (
+              <p className="mt-2 text-gray-600">
+                Mascota seleccionada:{" "}
+                {
+                  mascotas.find((m) => m.id === Number(formData.mascota_id))
+                    ?.nombre
+                }
+              </p>
+            )}
 
             {/* Foto */}
             <div className="mb-6">
@@ -166,13 +215,18 @@ export default function TestimonioForm() {
                   <div className="space-y-2">
                     <i className="fas fa-cloud-upload-alt text-3xl text-emerald-400"></i>
                     <p className="text-sm font-medium text-gray-700">
-                      Arrastra y suelta una imagen aquí <br />o haz clic para seleccionar
+                      Arrastra y suelta una imagen aquí <br />o haz clic para
+                      seleccionar
                     </p>
-                    <p className="text-xs text-gray-500">Formatos soportados: JPG, PNG, GIF (Máx. 5MB)</p>
+                    <p className="text-xs text-gray-500">
+                      Formatos soportados: JPG, PNG, GIF (Máx. 5MB)
+                    </p>
                   </div>
                 )}
               </div>
-              {errors.foto && <p className="mt-1 text-sm text-red-600">{errors.foto}</p>}
+              {errors.foto && (
+                <p className="mt-1 text-sm text-red-600">{errors.foto}</p>
+              )}
             </div>
 
             {/* Botones */}
@@ -188,7 +242,9 @@ export default function TestimonioForm() {
                 type="submit"
                 disabled={isSubmitting}
                 className={`px-6 py-2 rounded-lg text-white ${
-                  isSubmitting ? "bg-emerald-400" : "bg-emerald-600 hover:bg-emerald-700"
+                  isSubmitting
+                    ? "bg-emerald-400"
+                    : "bg-emerald-600 hover:bg-emerald-700"
                 } transition-colors flex items-center`}
               >
                 {isSubmitting ? (
@@ -217,7 +273,8 @@ export default function TestimonioForm() {
                   </>
                 ) : (
                   <>
-                    <i className="fas fa-paper-plane mr-2"></i> Publicar Testimonio
+                    <i className="fas fa-paper-plane mr-2"></i> Publicar
+                    Testimonio
                   </>
                 )}
               </button>
@@ -228,9 +285,12 @@ export default function TestimonioForm() {
         {/* Nota */}
         <div className="mt-8 text-center text-sm text-gray-500">
           <p>
-            Todos los testimonios son revisados por nuestro equipo antes de ser publicados.
+            Todos los testimonios son revisados por nuestro equipo antes de ser
+            publicados.
           </p>
-          <p className="mt-1">¡Gracias por compartir tu experiencia en Happy Paw!</p>
+          <p className="mt-1">
+            ¡Gracias por compartir tu experiencia en Happy Paw!
+          </p>
         </div>
       </div>
     </div>
