@@ -10,7 +10,6 @@ export default function Noticia_id() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-
   // Cargar noticia Id
   useEffect(() => {
     setLoading(true);
@@ -26,7 +25,6 @@ export default function Noticia_id() {
       });
   }, [id]);
 
-  
   if (loading) {
     return (
       <div className="text-center py-20 text-gray-600">
@@ -49,7 +47,6 @@ export default function Noticia_id() {
   return (
     <>
       <main className="container mx-auto px-4 py-8 animate-fadeIn">
-        
         <article className="news-article max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
           {/* Article Header */}
           <div className="p-6 border-b border-gray-200">
@@ -71,13 +68,12 @@ export default function Noticia_id() {
                 </h1>
                 <div className="flex items-center text-gray-500 text-sm space-x-4">
                   <span>
-                    <i className="far fa-calendar-alt mr-1"></i> 15 Junio 2023
-                  </span>
-                  <span>
-                    <i className="far fa-clock mr-1"></i> 5 min lectura
-                  </span>
-                  <span>
-                    <i className="far fa-eye mr-1"></i> 1,245 vistas
+                    <i className="far fa-calendar-alt mr-1"></i>{" "}
+                    {new Date(noticia.fecha).toLocaleDateString("es-AR", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
                   </span>
                 </div>
               </div>
@@ -98,9 +94,14 @@ export default function Noticia_id() {
           {/* Article Image */}
           <div className="w-full h-64 md:h-96 overflow-hidden">
             <img
-              src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80"
+              src={noticia.foto}
               alt="Perro y gato juntos"
               className="w-full h-full object-cover"
+              onError={(e) => {
+              e.target.onerror = null;
+              e.target.src =
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM4sEG5g9GFcy4SUxbzWNzUTf1jMISTDZrTw&s";
+            }}
             />
           </div>
 
@@ -108,186 +109,8 @@ export default function Noticia_id() {
           <div className="p-6 md:p-8">
             <div className="prose max-w-none">
               <p className="text-lg text-gray-700 mb-6">
-                Un reciente estudio publicado en el Journal of Veterinary
-                Nutrition ha demostrado que las dietas naturales preparadas en
-                casa pueden tener beneficios significativos para la salud de
-                nuestras mascotas, especialmente en perros y gatos con problemas
-                digestivos o alergias.
+                {noticia.texto}
               </p>
-
-              <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
-                ¿Qué encontró el estudio?
-              </h2>
-              <p className="text-gray-700 mb-4">
-                La investigación, que duró 18 meses y analizó a más de 500
-                mascotas, encontró que:
-              </p>
-              <ul className="list-disc pl-6 mb-6 text-gray-700 space-y-2">
-                <li>
-                  Mejora en la condición del pelaje en un 78% de los casos
-                </li>
-                <li>Reducción de problemas digestivos en un 65%</li>
-                <li>Menor incidencia de alergias cutáneas</li>
-                <li>Aumento de los niveles de energía</li>
-                <li>Mejor salud dental al reducirse la acumulación de sarro</li>
-              </ul>
-
-              <div className="bg-indigo-50 border-l-4 border-indigo-500 p-4 my-6">
-                <p className="text-indigo-700 italic">
-                  "Los resultados sugieren que una dieta balanceada hecha en
-                  casa puede ser una excelente alternativa a los alimentos
-                  comerciales, siempre que sea supervisada por un veterinario
-                  nutricionista" - Dra. María Rodríguez, autora principal del
-                  estudio.
-                </p>
-              </div>
-
-              <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
-                ¿Cómo comenzar con una dieta natural?
-              </h2>
-              <p className="text-gray-700 mb-4">
-                Si estás considerando cambiar la dieta de tu mascota, estos son
-                los pasos recomendados por los expertos:
-              </p>
-
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                  <div className="flex items-center mb-3">
-                    <div className="bg-indigo-100 text-indigo-800 font-bold rounded-full w-8 h-8 flex items-center justify-center mr-3">
-                      1
-                    </div>
-                    <h3 className="font-bold text-lg text-gray-900">
-                      Consulta con un veterinario
-                    </h3>
-                  </div>
-                  <p className="text-gray-700">
-                    Es fundamental que un especialista evalúe las necesidades
-                    nutricionales específicas de tu mascota antes de hacer
-                    cualquier cambio en su dieta.
-                  </p>
-                </div>
-
-                <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                  <div className="flex items-center mb-3">
-                    <div className="bg-indigo-100 text-indigo-800 font-bold rounded-full w-8 h-8 flex items-center justify-center mr-3">
-                      2
-                    </div>
-                    <h3 className="font-bold text-lg text-gray-900">
-                      Transición gradual
-                    </h3>
-                  </div>
-                  <p className="text-gray-700">
-                    No cambies la comida de golpe. Mezcla el alimento nuevo con
-                    el antiguo durante 7-10 días, aumentando progresivamente la
-                    proporción.
-                  </p>
-                </div>
-
-                <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                  <div className="flex items-center mb-3">
-                    <div className="bg-indigo-100 text-indigo-800 font-bold rounded-full w-8 h-8 flex items-center justify-center mr-3">
-                      3
-                    </div>
-                    <h3 className="font-bold text-lg text-gray-900">
-                      Balance adecuado
-                    </h3>
-                  </div>
-                  <p className="text-gray-700">
-                    Las mascotas necesitan proteínas, carbohidratos, grasas,
-                    vitaminas y minerales en proporciones específicas según su
-                    edad, tamaño y estado de salud.
-                  </p>
-                </div>
-
-                <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-                  <div className="flex items-center mb-3">
-                    <div className="bg-indigo-100 text-indigo-800 font-bold rounded-full w-8 h-8 flex items-center justify-center mr-3">
-                      4
-                    </div>
-                    <h3 className="font-bold text-lg text-gray-900">
-                      Higiene y seguridad
-                    </h3>
-                  </div>
-                  <p className="text-gray-700">
-                    Manipula los alimentos con las mismas precauciones que para
-                    consumo humano. Algunos alimentos seguros para nosotros
-                    pueden ser tóxicos para mascotas.
-                  </p>
-                </div>
-              </div>
-
-              <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
-                Receta básica aprobada
-              </h2>
-              <p className="text-gray-700 mb-4">
-                Los investigadores compartieron esta receta básica que cumple
-                con los requerimientos nutricionales para perros adultos sanos:
-              </p>
-
-              <div className="border border-gray-200 rounded-lg overflow-hidden mb-6">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Ingrediente
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Cantidad
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Beneficio
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    <tr>
-                      <td className="px-4 py-3 text-sm text-gray-700">
-                        Carne magra (pollo, pavo, res)
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-700">50%</td>
-                      <td className="px-4 py-3 text-sm text-gray-700">
-                        Proteínas esenciales
-                      </td>
-                    </tr>
-                    <tr className="bg-gray-50">
-                      <td className="px-4 py-3 text-sm text-gray-700">
-                        Verduras (zanahoria, calabaza, espinaca)
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-700">25%</td>
-                      <td className="px-4 py-3 text-sm text-gray-700">
-                        Vitaminas y fibra
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-3 text-sm text-gray-700">
-                        Carbohidratos (arroz integral, quinoa)
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-700">15%</td>
-                      <td className="px-4 py-3 text-sm text-gray-700">
-                        Energía sostenida
-                      </td>
-                    </tr>
-                    <tr className="bg-gray-50">
-                      <td className="px-4 py-3 text-sm text-gray-700">
-                        Grasas saludables (aceite de pescado, aceite de coco)
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-700">5%</td>
-                      <td className="px-4 py-3 text-sm text-gray-700">
-                        Piel y pelo saludables
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="px-4 py-3 text-sm text-gray-700">
-                        Suplementos vitamínicos
-                      </td>
-                      <td className="px-4 py-3 text-sm text-gray-700">5%</td>
-                      <td className="px-4 py-3 text-sm text-gray-700">
-                        Balance nutricional
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
 
               <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 my-6">
                 <div className="flex">
@@ -321,22 +144,14 @@ export default function Noticia_id() {
                   />
                   <div>
                     <p className="text-sm font-medium text-gray-900">
-                      Dra. Ana Beltrán
+                      {noticia.admin_id}
                     </p>
                     <p className="text-sm text-gray-500">
                       Veterinaria especialista en nutrición animal
                     </p>
                   </div>
                 </div>
-                <div className="flex space-x-2">
-                  <button className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800">
-                    <i className="far fa-bookmark"></i>
-                  </button>
-                  <button className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg flex items-center">
-                    <i className="far fa-thumbs-up mr-2"></i>
-                    <span>Me gusta (248)</span>
-                  </button>
-                </div>
+                
               </div>
             </div>
           </div>
