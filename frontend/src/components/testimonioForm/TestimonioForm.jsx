@@ -81,7 +81,7 @@ export default function TestimonioForm() {
                 placeholder="Escribe tu experiencia detallada..."
               ></textarea>
               {errors.comentario && <p className="mt-1 text-sm text-red-600">{errors.comentario}</p>}
-              <p className="mt-1 text-xs text-gray-500">{formData.comentario.length}/150 caracteres mínimos</p>
+              <p className="mt-1 text-xs text-gray-500">{formData.comentario.length}/50 caracteres mínimos</p>
             </div>
 
             {/* Estrellas */}

@@ -36,20 +36,78 @@ export async function obtenerTestimonioPorId(id) {
 }
 
 // Crear un nuevo testimonio (puede incluir imagen)
+/*export async function crearTestimonio(testimonio) {
+  const token = localStorage.getItem("token");
+
+  try {
+    const payload = {
+      comentario: testimonio.comentario,
+      autor: testimonio.autor,
+      estrellas: testimonio.estrellas ? parseInt(testimonio.estrellas) : null,
+
+      mascota_id: parseInt(testimonio.mascota_id),
+      fecha: new Date().toISOString().split("T")[0] // formato: YYYY-MM-DD
+    };
+
+    console.log("JSON que se envía:", payload);
+
+    const response = await fetch(`${BASE_URL}/admin/testimonios`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Respuesta del servidor:", data);
+      throw new Error("Error al crear testimonio");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error en crearTestimonio:", error);
+    throw error;
+  }
+}*/
 export async function crearTestimonio(testimonio) {
+  const token = localStorage.getItem("token");
+
   try {
     const formData = new FormData();
-    for (const key in testimonio) {
-      formData.append(key, testimonio[key]);
+
+    formData.append("comentario", testimonio.comentario);
+    formData.append("autor", testimonio.autor);
+    formData.append("estrellas", testimonio.estrellas ? parseInt(testimonio.estrellas) : '');
+    formData.append("mascota_id", parseInt(testimonio.mascota_id));
+    formData.append("fecha", new Date().toISOString().split("T")[0]); // YYYY-MM-DD
+
+    if (testimonio.foto) {
+      formData.append("foto", testimonio.foto);
     }
 
     const response = await fetch(`${BASE_URL}/admin/testimonios`, {
       method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       body: formData,
     });
 
-    if (!response.ok) throw new Error("Error al crear testimonio");
-    return await response.json();
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Respuesta del servidor:", data);
+      if (data.errors) {
+        console.error("Errores en el formulario:", JSON.stringify(data.errors, null, 2));
+      }
+      throw new Error("Error al crear testimonio");
+    }
+
+    return data;
   } catch (error) {
     console.error("Error en crearTestimonio:", error);
     throw error;
