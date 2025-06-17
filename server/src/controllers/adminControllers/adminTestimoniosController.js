@@ -27,8 +27,10 @@ module.exports = {
                     ].filter(Boolean));
                 }
 
-                // Construir ruta de la imagen relativa
-                const fotoPath = req.file ? `/images/testimonios/${req.file.filename}` : null;
+                // Construir URL completa de la imagen
+                const fotoPath = req.file
+                    ? `${req.protocol}://${req.get('host')}/public/images/testimonios/${req.file.filename}`
+                    : null;
 
                 // Crear el testimonio
                 const testimonio = await Testimonio.create({
@@ -39,7 +41,6 @@ module.exports = {
                     mascota_id,
                     admin_id
                 });
-
                 return endpointResponse({
                     res,
                     code: 201,
@@ -110,13 +111,13 @@ module.exports = {
                 // Eliminar la imagen anterior si existe
                 if (testimonio.foto) {
                     const fs = require('fs');
-                    const oldPath = path.join(__dirname, '../public', testimonio.foto);
+                    const oldPath = path.join(__dirname, '../../public/images/testimonios', path.basename(testimonio.foto));
                     if (fs.existsSync(oldPath)) {
                         fs.unlinkSync(oldPath);
                     }
                 }
-                // Asignar nueva ruta de imagen
-                fotoPath = `/images/testimonios/${req.file.filename}`;
+                // Asignar nueva URL pública
+                fotoPath = `${req.protocol}://${req.get('host')}/public/images/testimonios/${req.file.filename}`;
             }
 
             // Actualizar campos
@@ -169,10 +170,13 @@ module.exports = {
 
             // Eliminar la imagen asociada si existe
             if (testimonio.foto) {
-                const fs = require('fs');
-                const imagePath = path.join(__dirname, '../public', testimonio.foto);
-                if (fs.existsSync(imagePath)) {
-                    fs.unlinkSync(imagePath);
+                const pathToFile = path.join(
+                    __dirname,
+                    '../../public/images/testimonios',
+                    path.basename(testimonio.foto)
+                );
+                if (fs.existsSync(pathToFile)) {
+                    fs.unlinkSync(pathToFile);
                 }
             }
 
