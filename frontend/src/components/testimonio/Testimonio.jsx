@@ -23,14 +23,16 @@ export default function Testimonio({ testimonials }) {
                   mb-4shadow-md hover:scale-105 transition-transform duration-300"
                 >
                   {/* Estrellas */}
-                <div className="flex items-center mb-4 text-yellow-400 text-xl">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i}>{i < estrellas ? "★" : "☆"}</span>
-                  ))}
-                </div>
+                  <div className="flex items-center mb-4 text-yellow-400 text-xl">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i}>{i < estrellas ? "★" : "☆"}</span>
+                    ))}
+                  </div>
                   <div className="flex items-center mb-4 text-yellow-400 text-xl"></div>
 
-                  <p className="opacity-90 mb-6">"{comentario}"</p>
+                  <p className="opacity-90 mb-6 break-words">
+                    "{comentario}"
+                  </p>
 
                   <div className="flex items-center">
                     <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
@@ -40,7 +42,7 @@ export default function Testimonio({ testimonials }) {
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    
+
                     <div>
                       <h4 className="font-bold">{autor}</h4>
                       <p className="text-sm opacity-80">
@@ -51,9 +53,7 @@ export default function Testimonio({ testimonials }) {
                         })}
                       </p>
                     </div>
-                    
                   </div>
-                  
                 </div>
               );
             })}

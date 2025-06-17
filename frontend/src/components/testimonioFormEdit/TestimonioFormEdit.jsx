@@ -118,7 +118,7 @@ export default function TestimonioFormEdit() {
                 name="estrellas"
                 value={formData.estrellas}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-800"
               >
                 {[1, 2, 3, 4, 5].map((n) => (
                   <option key={n} value={n}>
@@ -144,7 +144,7 @@ export default function TestimonioFormEdit() {
                 name="mascota_id"
                 value={formData.mascota_id}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-800"
               >
                 <option value="">-- Seleccione una mascota --</option>
                 {mascotas.map((mascota) => (
