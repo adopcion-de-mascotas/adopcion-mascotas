@@ -78,7 +78,7 @@ export default function useTestimonioForm() {
       newErrors.comentario = "El comentario es requerido";
       valid = false;
     } else if (formData.comentario.trim().length < 50) {
-      newErrors.comentario = "El comentario debe tener al menos 150 caracteres";
+      newErrors.comentario = "El comentario debe tener al menos 50 caracteres";
       valid = false;
     }
 

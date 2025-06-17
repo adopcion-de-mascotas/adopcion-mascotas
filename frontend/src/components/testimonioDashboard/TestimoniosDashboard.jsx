@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useTestimonios } from "./useTestimonios"; // Ajusta la ruta según tu estructura
+import { useTestimonios } from "./useTestimonios";
 
 export default function TestimonioDashboard() {
   const {
