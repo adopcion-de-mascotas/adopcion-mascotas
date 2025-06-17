@@ -6,9 +6,14 @@ export default function NoticiaForm() {
     formData,
     mensaje,
     error,
+    errors,
     cargando,
     handleChange,
     handleSubmit,
+    handleImageChange,
+    handleDrop,
+    handleDragOver,
+    handleCancel,
   } = useNoticiaForm();
 
   return (
@@ -50,37 +55,65 @@ export default function NoticiaForm() {
           />
         </div>
 
-        {/* Fecha */}
-        <div>
-          <label htmlFor="fecha" className="block mb-2 font-semibold text-gray-700">
-            Fecha *
-          </label>
-          <input
-            id="fecha"
-            name="fecha"
-            type="date"
-            value={formData.fecha}
-            onChange={handleChange}
-            required
-            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-        </div>
-
         {/* Foto */}
-        <div>
-          <label htmlFor="foto" className="block mb-2 font-semibold text-gray-700">
-            URL de Foto
-          </label>
-          <input
-            id="foto"
-            name="foto"
-            type="url"
-            value={formData.foto}
-            onChange={handleChange}
-            placeholder="https://example.com/imagen.jpg"
-            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-        </div>
+        
+            {/* Foto */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Foto del Autor <span className="text-red-500">*</span>
+              </label>
+              <div
+                className={`dropzone rounded-lg p-8 text-center cursor-pointer ${
+                  errors.foto ? "border-red-500 bg-red-50" : ""
+                }`}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                onClick={() => document.getElementById("fileInput").click()}
+              >
+                <input
+                  type="file"
+                  id="fileInput"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+
+                {formData.fotoPreview ? (
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={formData.fotoPreview}
+                      alt="Preview"
+                      className="max-h-48 max-w-full mb-4 rounded-lg object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // Resetear foto
+                        handleCancel();
+                      }}
+                      className="text-sm text-red-500 hover:text-red-700"
+                    >
+                      <i className="fas fa-trash mr-1"></i> Cambiar foto
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <i className="fas fa-cloud-upload-alt text-3xl text-emerald-400"></i>
+                    <p className="text-sm font-medium text-gray-700">
+                      Arrastra y suelta una imagen aquí <br />o haz clic para
+                      seleccionar
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Formatos soportados: JPG, PNG, GIF (Máx. 5MB)
+                    </p>
+                  </div>
+                )}
+              </div>
+              {errors.foto && (
+                <p className="mt-1 text-sm text-red-600">{errors.foto}</p>
+              )}
+            </div>
 
         <button
           type="submit"

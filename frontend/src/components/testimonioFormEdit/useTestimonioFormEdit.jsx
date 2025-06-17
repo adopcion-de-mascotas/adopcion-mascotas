@@ -17,6 +17,7 @@ export default function useTestimonioFormEdit() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [mascotas, setMascotas] = useState([]);
 
   // Obtener datos del testimonio actual
   useEffect(() => {
@@ -143,8 +144,22 @@ export default function useTestimonioFormEdit() {
     setSubmitSuccess(false);
   };
 
+    useEffect(() => {
+    async function fetchMascotas() {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/mascotas`);
+        const data = await res.json();
+        setMascotas(data.data.items || []);
+      } catch (error) {
+        console.error("Error al cargar mascotas:", error);
+      }
+    }
+    fetchMascotas();
+  }, []);
+
   return {
     formData,
+    mascotas,
     errors,
     isSubmitting,
     submitSuccess,

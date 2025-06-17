@@ -132,8 +132,6 @@ export default function TestimonioForm() {
             </div>
 
             {/* Mascota ID (opcional) */}
-            {/* Mascota */}
-            {/* Mascotas */}
             <div className="mb-6">
               <label
                 htmlFor="mascota_id"
