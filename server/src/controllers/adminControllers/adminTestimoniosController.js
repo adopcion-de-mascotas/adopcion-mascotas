@@ -3,6 +3,7 @@ const { endpointError, CustomError } = require('../../utils/error');
 const { endpointResponse } = require('../../utils/success');
 const path = require('path');
 const { validationResult } = require('express-validator')
+const { fs } = require("fs")
 
 module.exports = {
     crearTestimonio: async (req, res) => {
@@ -29,7 +30,7 @@ module.exports = {
 
                 // Construir URL completa de la imagen
                 const fotoPath = req.file
-                    ? `${req.protocol}://${req.get('host')}/public/images/testimonios/${req.file.filename}`
+                    ? `${req.protocol}://${req.get('host')}/images/testimonios/${req.file.filename}`
                     : null;
 
                 // Crear el testimonio
@@ -111,13 +112,13 @@ module.exports = {
                 // Eliminar la imagen anterior si existe
                 if (testimonio.foto) {
                     const fs = require('fs');
-                    const oldPath = path.join(__dirname, '../../public/images/testimonios', path.basename(testimonio.foto));
+                    const oldPath = path.join(__dirname, '../../images/testimonios', path.basename(testimonio.foto));
                     if (fs.existsSync(oldPath)) {
                         fs.unlinkSync(oldPath);
                     }
                 }
                 // Asignar nueva URL pública
-                fotoPath = `${req.protocol}://${req.get('host')}/public/images/testimonios/${req.file.filename}`;
+                fotoPath = `${req.protocol}://${req.get('host')}/images/testimonios/${req.file.filename}`;
             }
 
             // Actualizar campos
@@ -170,11 +171,8 @@ module.exports = {
 
             // Eliminar la imagen asociada si existe
             if (testimonio.foto) {
-                const pathToFile = path.join(
-                    __dirname,
-                    '../../public/images/testimonios',
-                    path.basename(testimonio.foto)
-                );
+                const fileName = path.basename(new URL(testimonio.foto).pathname); // extrae solo "foto-123.jpg"
+                const pathToFile = path.join(__dirname, '../../public/images/testimonios', fileName);
                 if (fs.existsSync(pathToFile)) {
                     fs.unlinkSync(pathToFile);
                 }
