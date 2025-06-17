@@ -79,15 +79,20 @@ export async function crearTestimonio(testimonio) {
   try {
     const formData = new FormData();
 
-    formData.append("comentario", testimonio.comentario);
-    formData.append("autor", testimonio.autor);
-    formData.append("estrellas", testimonio.estrellas ? parseInt(testimonio.estrellas) : '');
-    formData.append("mascota_id", parseInt(testimonio.mascota_id));
-    formData.append("fecha", new Date().toISOString().split("T")[0]); // YYYY-MM-DD
+    formData.append("comentario", testimonio.comentario || "");
+    formData.append("autor", testimonio.autor || "");
+    formData.append("estrellas", testimonio.estrellas?.toString() || "");
+    formData.append("mascota_id", testimonio.mascota_id?.toString() || "");
+    formData.append("fecha", new Date().toISOString().split("T")[0]);
 
     if (testimonio.foto) {
       formData.append("foto", testimonio.foto);
     }
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
 
     const response = await fetch(`${BASE_URL}/admin/testimonios`, {
       method: "POST",
