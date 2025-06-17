@@ -9,7 +9,7 @@ const testimoniosValidator = require("../../validations/testimoniosValidator");
 router.post("/", upload.single('foto'), handleMulterErrors, testimonioController.crearTestimonio);
 
 /* Edita datos de testimonio (con imagen opcional) */
-router.put("/:id", testimoniosValidator, handleMulterErrors, testimonioController.actualizarTestimonio);
+router.put("/:id", upload.single('foto'), handleMulterErrors, testimonioController.actualizarTestimonio);
 
 /* Elimina datos de testimonio */
 router.delete("/:id", testimonioController.eliminarTestimonio);

@@ -1,80 +1,142 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import {
-  obtenerNoticiaPorId,
-  editarNoticia,
-} from "../../services/noticiaService";
+import { obtenerNoticiaPorId, editarNoticia } from "../../services/noticiaService";
 
 export function useNoticiaFormEdit(id) {
   const [formData, setFormData] = useState({
     titulo: "",
     texto: "",
-    fecha: "",
-    foto: "",
+    foto: null,
+    fotoPreview: null,
   });
 
-  const [mensaje, setMensaje] = useState("");
-  const [error, setError] = useState("");
-  const [cargando, setCargando] = useState(false);
-  const [cargandoDatos, setCargandoDatos] = useState(true);
+  const [errors, setErrors] = useState({});
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Cargar datos de la noticia por ID
   useEffect(() => {
     async function cargarNoticia() {
-      setCargandoDatos(true);
+      setIsLoading(true);
       try {
         const data = await obtenerNoticiaPorId(id);
         setFormData({
           titulo: data.titulo || "",
           texto: data.texto || "",
-          fecha: data.fecha ? data.fecha.slice(0, 10) : "",
-          foto: data.foto || "",
+          foto: null,
+          fotoPreview: data.foto || null,
         });
       } catch (e) {
-        setError("Error al cargar la noticia.");
+        setErrors((prev) => ({
+          ...prev,
+          general: "Error al cargar la noticia.",
+        }));
       } finally {
-        setCargandoDatos(false);
+        setIsLoading(false);
       }
     }
 
     if (id) cargarNoticia();
   }, [id]);
 
-  function handleChange(e) {
+  // Manejo de campos de texto
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  }
 
-  async function handleSubmit(e) {
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: null }));
+    }
+  };
+
+  // Manejo de imagen
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) previewImage(file);
+  };
+
+  const handleDrop = (e) => {
     e.preventDefault();
-    setMensaje("");
-    setError("");
-    setCargando(true);
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.match("image.*")) previewImage(file);
+  };
+
+  const handleDragOver = (e) => e.preventDefault();
+
+  const previewImage = (file) => {
+    setFormData((prev) => ({ ...prev, foto: file }));
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData((prev) => ({ ...prev, fotoPreview: reader.result }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    let valid = true;
+
+    if (!formData.titulo.trim()) {
+      newErrors.titulo = "El título es requerido";
+      valid = false;
+    }
+
+    if (!formData.texto.trim()) {
+      newErrors.texto = "El contenido es requerido";
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    setIsSubmitting(true);
+    setErrors({});
+    setSubmitSuccess(false);
 
     try {
-      if (!formData.titulo || !formData.texto || !formData.fecha) {
-        setError("Por favor completa todos los campos obligatorios.");
-        setCargando(false);
-        return;
-      }
-
       await editarNoticia(id, formData);
-      setMensaje("Noticia actualizada con éxito.");
-      return true;
-    } catch (err) {
-      setError("Error al actualizar la noticia. Intenta nuevamente.");
-      return false;
+      setSubmitSuccess(true);
+    } catch (error) {
+      console.error("Error al actualizar la noticia:", error);
+      setErrors((prev) => ({
+        ...prev,
+        general: "Error al actualizar la noticia.",
+      }));
     } finally {
-      setCargando(false);
+      setIsSubmitting(false);
     }
-  }
+  };
+
+  const handleCancel = () => {
+    setFormData({
+      titulo: "",
+      texto: "",
+      foto: null,
+      fotoPreview: null,
+    });
+    setErrors({});
+    setSubmitSuccess(false);
+  };
 
   return {
     formData,
-    mensaje,
-    error,
-    cargando,
-    cargandoDatos,
+    errors,
+    isSubmitting,
+    isLoading,
+    submitSuccess,
     handleChange,
+    handleImageChange,
+    handleDrop,
+    handleDragOver,
     handleSubmit,
+    handleCancel,
+    setFormData,
   };
 }

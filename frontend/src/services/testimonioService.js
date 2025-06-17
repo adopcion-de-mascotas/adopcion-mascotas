@@ -85,26 +85,48 @@ export async function crearTestimonio(testimonio) {
 }
 
 // Actualizar testimonio por ID
-export async function actualizarTestimonio(id, datosActualizados) {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) throw new Error("No hay token de autenticación disponible");
 
+export async function actualizarTestimonio(id, testimonio) {
+  const token = localStorage.getItem("token");
+  const decoded = jwtDecode(token);
+  const admin_id = decoded.id;
+
+  try {
     const formData = new FormData();
-    for (const key in datosActualizados) {
-      formData.append(key, datosActualizados[key]);
+    
+    formData.append("comentario", testimonio.comentario || "");
+    formData.append("autor", testimonio.autor || "");
+    formData.append("estrellas", testimonio.estrellas?.toString() || "");
+    formData.append("mascota_id", testimonio.mascota_id?.toString() || "");
+    
+    // Opcional, según cómo maneje el backend
+    formData.append("admin_id", admin_id);
+
+    if (testimonio.foto instanceof File) {
+      formData.append("foto", testimonio.foto); // solo si hay una nueva foto
+    }
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
     }
 
     const response = await fetch(`${BASE_URL}/admin/testimonios/${id}`, {
       method: "PUT",
       headers: {
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
+        // NO pongas Content-Type, fetch lo hace automáticamente con FormData
       },
       body: formData,
     });
 
-    if (!response.ok) throw new Error("Error al actualizar testimonio");
-    return await response.json();
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Respuesta del servidor:", data);
+      throw new Error("Error al actualizar testimonio");
+    }
+
+    return data;
   } catch (error) {
     console.error("Error en actualizarTestimonio:", error);
     throw error;
