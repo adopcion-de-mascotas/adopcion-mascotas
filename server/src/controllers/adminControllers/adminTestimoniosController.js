@@ -1,9 +1,10 @@
 const { Testimonio } = require('../../database/models');
 const { endpointError, CustomError } = require('../../utils/error');
 const { endpointResponse } = require('../../utils/success');
-const path = require('path');
 const { validationResult } = require('express-validator')
-const { fs } = require("fs")
+const fs = require('fs');
+const path = require('path');
+
 
 module.exports = {
     crearTestimonio: async (req, res) => {
@@ -14,7 +15,7 @@ module.exports = {
 
             if (errorsValidator.isEmpty()) {
 
-                const { comentario, autor, fecha, mascota_id, admin_id } = req.body;
+                const { comentario, autor, fecha, estrellas, mascota_id, admin_id } = req.body;
 
                 if (!comentario || !autor) {
                     // Si hay una imagen subida pero la validación falla, eliminarla
@@ -39,6 +40,7 @@ module.exports = {
                     autor,
                     fecha: fecha || new Date(),
                     foto: fotoPath,
+                    estrellas,
                     mascota_id,
                     admin_id
                 });
