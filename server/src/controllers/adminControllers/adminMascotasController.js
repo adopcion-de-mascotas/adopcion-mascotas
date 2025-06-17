@@ -38,9 +38,15 @@ module.exports = {
                 ]);
 
                 // 3. Manejo de la imagen principal
+                /*                 let imagenPrincipal = null;
+                                if (req.file) {
+                                    imagenPrincipal = req.file.filename;
+                                } */
+
                 let imagenPrincipal = null;
                 if (req.file) {
-                    imagenPrincipal = req.file.filename; // Asume que Multer guarda el nombre del archivo
+                    const baseUrl = `${req.protocol}://${req.get('host')}`;
+                    imagenPrincipal = `${baseUrl}/images/mascotas/${req.file.filename}`;
                 }
 
                 // 4. Crear la mascota
@@ -132,7 +138,9 @@ module.exports = {
                 let imagenAnterior = null;
                 if (req.file) {
                     imagenAnterior = mascota.imagen_principal;
-                    mascota.imagen_principal = req.file.filename;
+
+                    const baseUrl = `${req.protocol}://${req.get('host')}`;
+                    mascota.imagen_principal = `${baseUrl}/images/mascotas/${req.file.filename}`;
                 }
 
                 // 3. Actualización parcial
@@ -153,7 +161,9 @@ module.exports = {
 
                 // 4. Eliminar imagen anterior si se actualizó
                 if (imagenAnterior) {
-                    const imagePath = path.join(__dirname, '../../public/images/mascotas', imagenAnterior);
+                    const filename = path.basename(imagenAnterior); // Extraer el nombre del archivo desde la URL
+                    const imagePath = path.join(__dirname, '../../public/images/mascotas', filename);
+
                     if (fs.existsSync(imagePath)) {
                         fs.unlinkSync(imagePath);
                     }

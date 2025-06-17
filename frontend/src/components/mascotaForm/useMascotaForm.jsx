@@ -48,6 +48,7 @@ export function useMascotaForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const _token = localStorage.getItem("token")
     const form = new FormData();
     for (const key in formData) {
       if (key === "personalidad") {
@@ -60,7 +61,7 @@ export function useMascotaForm() {
     }
 
     try {
-      await crearMascota(form);
+      await crearMascota(form, _token);
       setMensaje("✅ Mascota creada exitosamente");
     } catch (error) {
       setMensaje("❌ Error al crear la mascota");

@@ -26,7 +26,8 @@ module.exports = {
             // Manejo de la imagen
             let fotoNombre = null;
             if (req.file) {
-                fotoNombre = req.file.filename;
+                const baseUrl = `${req.protocol}://${req.get('host')}`;
+                fotoNombre = `${baseUrl}/images/mascotas/${req.file.filename}`;
             }
 
             // Crear la noticia
@@ -80,11 +81,13 @@ module.exports = {
                 throw new CustomError('No autorizado para editar esta noticia', 403);
             }
 
-            // Manejo de la imagen
+            // 2. Manejo de la imagen principal
             let fotoAnterior = null;
             if (req.file) {
                 fotoAnterior = noticia.foto;
-                noticia.foto = req.file.filename;
+
+                const baseUrl = `${req.protocol}://${req.get('host')}`;
+                noticia.foto = `${baseUrl}/images/mascotas/${req.file.filename}`;
             }
 
             // Actualizar campos

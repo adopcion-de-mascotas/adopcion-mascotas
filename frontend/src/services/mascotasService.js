@@ -74,7 +74,7 @@ export async function obtenerMascotaPorId(id) {
 }
 
 
-export async function crearMascota(mascota) {
+export async function crearMascota(mascota, token) {
   try {
     const formData = new FormData();
 
@@ -125,6 +125,7 @@ export async function crearMascota(mascota) {
     const response = await fetch(`${BASE_URL}/admin/mascotas`, {
       method: "POST",
       body: formData,
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     if (!response.ok) throw new Error("Error al crear mascota");

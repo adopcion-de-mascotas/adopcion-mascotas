@@ -61,13 +61,13 @@ module.exports = {
             // Crear registros para cada foto
             const fotosSubidas = await Promise.all(
                 req.files.map(async (file) => {
+                    const urlCompleta = `${req.protocol}://${req.get('host')}/public/images/mascotas/${file.filename}`;
                     return await GaleriaMascota.create({
-                        foto: file.filename,
+                        foto: urlCompleta,
                         mascotaId
                     }, { transaction });
                 })
             );
-
             await transaction.commit();
 
             endpointResponse({
@@ -100,7 +100,6 @@ module.exports = {
         }
     },
 
-    // Eliminar foto de la galería
     delete: async (req, res) => {
         try {
             const { id } = req.params;
@@ -110,8 +109,11 @@ module.exports = {
                 throw new CustomError('Foto no encontrada', 404);
             }
 
+            // Obtener el nombre del archivo desde la URL
+            const filename = path.basename(foto.foto);
+
             // Eliminar el archivo físico
-            const filePath = path.join(__dirname, '../../public/images/mascotas', foto.foto);
+            const filePath = path.join(__dirname, '../../public/images/mascotas', filename);
             if (fs.existsSync(filePath)) {
                 fs.unlinkSync(filePath);
             }
@@ -132,4 +134,4 @@ module.exports = {
             });
         }
     }
-};
+}
