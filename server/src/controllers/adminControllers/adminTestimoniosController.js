@@ -1,8 +1,10 @@
 const { Testimonio } = require('../../database/models');
 const { endpointError, CustomError } = require('../../utils/error');
 const { endpointResponse } = require('../../utils/success');
-const path = require('path');
 const { validationResult } = require('express-validator')
+const fs = require('fs');
+const path = require('path');
+
 
 module.exports = {
     crearTestimonio: async (req, res) => {
