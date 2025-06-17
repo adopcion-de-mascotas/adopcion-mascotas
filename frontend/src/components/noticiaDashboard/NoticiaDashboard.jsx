@@ -91,13 +91,13 @@ export default function NoticiasDashboard() {
                       <Link
                         onClick={() => alert(`Editar noticia ID ${noticia.id}`)}
                         to={`/dashboard/noticiaFormEdit/${noticia.id}`}
-                        className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                      className="inline-flex items-center justify-center bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                       >
                         Editar
                       </Link>
                       <button
                         onClick={() => handleEliminar(noticia.id)}
-                        className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                      className="inline-flex items-center justify-center bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
                       >
                         Eliminar
                       </button>

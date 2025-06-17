@@ -1,4 +1,5 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
+import { jwtDecode } from "jwt-decode";
 
 // Obtener listado de mascotas con filtros
 export async function obtenerMascotas({ search, page, limit, tipo, raza, tamaño } = {}) {
@@ -53,6 +54,42 @@ export async function obtenerRefugios() {
   return await res.json();
 }
 
+export async function obtenerComportamientos() {
+  try {
+    const res = await fetch(`${BASE_URL}/admin/comportamientos`);
+    if (!res.ok) throw new Error("Error al obtener comportamientos");
+    const json = await res.json();
+    return json.data || [];
+  } catch (error) {
+    console.error("Error en comportamientos:", error);
+    throw error;
+  }
+}
+
+export async function obtenerDirecciones() {
+  try {
+    const res = await fetch(`${BASE_URL}/admin/direcciones`);
+    if (!res.ok) throw new Error("Error al obtener direcciones");
+    const json = await res.json();
+    return json.data || [];
+  } catch (error) {
+    console.error("Error en direcciones:", error);
+    throw error;
+  }
+}
+
+export async function obtenerPersonalidadPorId(id) {
+  try {
+    const res = await fetch(`${BASE_URL}/admin/personalidades/${id}`);
+    if (!res.ok) throw new Error("Error al obtener personalidad");
+    const json = await res.json();
+    return json.data;
+  } catch (error) {
+    console.error("Error en personalidad:", error);
+    throw error;
+  }
+}
+
 
 // Obtener detalle por ID
 export async function obtenerMascotaPorId(id) {
@@ -74,30 +111,140 @@ export async function obtenerMascotaPorId(id) {
 }
 
 
-export async function crearMascota(mascota, token) {
+export async function crearMascota(mascota) {
+  const token = localStorage.getItem("token");
+  const decoded = jwtDecode(token);
+  const admin_id = decoded.id;
+
   try {
     const formData = new FormData();
 
-    // Datos simples
-    formData.append("nombre", mascota.nombre);
-    formData.append("tipo", mascota.tipo);
-    formData.append("raza", mascota.raza);
-    formData.append("tamaño", mascota.tamaño);
-    formData.append("edad", mascota.edad);
-    formData.append("descripcion", mascota.descripcion);
-    formData.append("sexo", mascota.sexo);
-    formData.append("refugioId", mascota.refugioId);
+    formData.append("nombre", mascota.nombre || "");
+    formData.append("edad", mascota.edad || "");
+    formData.append("tipo", mascota.tipo || "");
+    formData.append("raza", mascota.raza || "");
+    formData.append("genero", mascota.genero || ""); // corregido
+    formData.append("tamanio", mascota.tamanio || ""); // corregido
+    formData.append("peso", mascota.peso?.toString() || "");
+    formData.append("esterelizado", mascota.esterelizado ? "true" : "false");
+    formData.append("estado", mascota.estado || "");
+    formData.append("ciudad", mascota.ciudad || "");
+    formData.append("descripcion", mascota.descripcion || "");
+    formData.append("historia", mascota.historia || "");
+    formData.append("refugioId", mascota.refugioId?.toString() || "");
+    formData.append("admin_id", admin_id);
 
     // Imagen principal
-    if (mascota.imagen) {
-      formData.append("imagen", mascota.imagen);
+    if (mascota.imagen_principal) {
+      formData.append("imagen_principal", mascota.imagen_principal);
     }
 
-    // Galería (múltiples archivos)
+    // Personalidad (array de ids)
+    if (mascota.personalidad && mascota.personalidad.length > 0) {
+      mascota.personalidad.forEach((id) => {
+        formData.append("personalidad[]", id.toString());
+      });
+    }
+
+    // Galería
     if (mascota.galeria && mascota.galeria.length > 0) {
-      for (const file of mascota.galeria) {
+      mascota.galeria.forEach((file) => {
         formData.append("galeria[]", file);
+      });
+    }
+
+    // Comportamiento
+    if (mascota.comportamiento) {
+      formData.append("comportamiento[niños]", mascota.comportamiento.niños || "");
+      formData.append("comportamiento[perros]", mascota.comportamiento.perros || "");
+      formData.append("comportamiento[gatos]", mascota.comportamiento.gatos || "");
+      formData.append("comportamiento[apartamento]", mascota.comportamiento.apartamento || "");
+    }
+
+    // Salud
+    if (mascota.salud) {
+      formData.append("salud[estado]", mascota.salud.estado || "");
+      formData.append("salud[tratamiento]", mascota.salud.tratamiento || "");
+      formData.append("salud[info_veterinaria]", mascota.salud.info_veterinaria || "");
+    }
+
+    // Vacunas (array de ids)
+    if (mascota.vacunas && mascota.vacunas.length > 0) {
+      mascota.vacunas.forEach((id) => {
+        formData.append("vacunas[]", id.toString());
+      });
+    }
+
+    // Debug del FormData
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    const response = await fetch(`${BASE_URL}/admin/mascotas`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Respuesta del servidor:", data);
+      if (data.errors) {
+        console.error("Errores del formulario:", JSON.stringify(data.errors, null, 2));
       }
+      throw new Error("Error al crear mascota");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error en crearMascota:", error);
+    throw error;
+  }
+}
+
+export async function actualizarMascota(mascota) {
+  const token = localStorage.getItem("token");
+  const decoded = jwtDecode(token);
+  const admin_id = decoded.id;
+
+  try {
+    const formData = new FormData();
+
+    formData.append("nombre", mascota.nombre || "");
+    formData.append("edad", mascota.edad || "");
+    formData.append("tipo", mascota.tipo || "");
+    formData.append("raza", mascota.raza || "");
+    formData.append("genero", mascota.genero || "");
+    formData.append("tamanio", mascota.tamanio || "");
+    formData.append("peso", mascota.peso?.toString() || "");
+    formData.append("esterelizado", mascota.esterelizado ? "true" : "false");
+    formData.append("estado", mascota.estado || "");
+    formData.append("ciudad", mascota.ciudad || "");
+    formData.append("descripcion", mascota.descripcion || "");
+    formData.append("historia", mascota.historia || "");
+    formData.append("refugioId", mascota.refugioId?.toString() || "");
+    formData.append("admin_id", admin_id);
+
+    // Imagen principal (opcional)
+    if (mascota.imagen_principal instanceof File) {
+      formData.append("imagen_principal", mascota.imagen_principal);
+    }
+
+    // Personalidad
+    if (mascota.personalidad && mascota.personalidad.length > 0) {
+      mascota.personalidad.forEach((id) => {
+        formData.append("personalidad[]", id.toString());
+      });
+    }
+
+    // Galería
+    if (mascota.galeria && mascota.galeria.length > 0) {
+      mascota.galeria.forEach((file) => {
+        formData.append("galeria[]", file);
+      });
     }
 
     // Comportamiento
@@ -117,76 +264,37 @@ export async function crearMascota(mascota, token) {
 
     // Vacunas
     if (mascota.vacunas && mascota.vacunas.length > 0) {
-      for (const vacuna of mascota.vacunas) {
-        formData.append("vacunas[]", vacuna);
-      }
+      mascota.vacunas.forEach((id) => {
+        formData.append("vacunas[]", id.toString());
+      });
     }
 
-    const response = await fetch(`${BASE_URL}/admin/mascotas`, {
-      method: "POST",
-      body: formData,
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    if (!response.ok) throw new Error("Error al crear mascota");
-    return await response.json();
-  } catch (error) {
-    console.error("Error al crear mascota:", error);
-    throw error;
-  }
-}
-
-export async function actualizarMascota(id, mascota) {
-  try {
-    const formData = new FormData();
-
-    formData.append("nombre", mascota.nombre);
-    formData.append("tipo", mascota.tipo);
-    formData.append("raza", mascota.raza);
-    formData.append("tamaño", mascota.tamaño);
-    formData.append("edad", mascota.edad);
-    formData.append("descripcion", mascota.descripcion);
-    formData.append("sexo", mascota.sexo);
-    formData.append("refugioId", mascota.refugioId);
-
-    if (mascota.imagen) {
-      formData.append("imagen", mascota.imagen);
+    // Debug
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
     }
 
-    if (mascota.galeria && mascota.galeria.length > 0) {
-      for (const file of mascota.galeria) {
-        formData.append("galeria[]", file);
-      }
-    }
-
-    if (mascota.comportamiento) {
-      formData.append("comportamiento[niños]", mascota.comportamiento.niños || "");
-      formData.append("comportamiento[perros]", mascota.comportamiento.perros || "");
-      formData.append("comportamiento[gatos]", mascota.comportamiento.gatos || "");
-      formData.append("comportamiento[apartamento]", mascota.comportamiento.apartamento || "");
-    }
-
-    if (mascota.salud) {
-      formData.append("salud[estado]", mascota.salud.estado || "");
-      formData.append("salud[tratamiento]", mascota.salud.tratamiento || "");
-      formData.append("salud[info_veterinaria]", mascota.salud.info_veterinaria || "");
-    }
-
-    if (mascota.vacunas && mascota.vacunas.length > 0) {
-      for (const vacuna of mascota.vacunas) {
-        formData.append("vacunas[]", vacuna);
-      }
-    }
-
-    const response = await fetch(`${BASE_URL}/admin/mascotas/${id}`, {
+    const response = await fetch(`${BASE_URL}/admin/mascotas/${mascota.id}`, {
       method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       body: formData,
     });
 
-    if (!response.ok) throw new Error("Error al actualizar mascota");
-    return await response.json();
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Respuesta del servidor:", data);
+      if (data.errors) {
+        console.error("Errores del formulario:", JSON.stringify(data.errors, null, 2));
+      }
+      throw new Error("Error al editar mascota");
+    }
+
+    return data;
   } catch (error) {
-    console.error("Error al actualizar mascota:", error);
+    console.error("Error en editarMascota:", error);
     throw error;
   }
 }
@@ -204,7 +312,6 @@ export async function eliminarMascota(id) {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json",
       },
     });
 

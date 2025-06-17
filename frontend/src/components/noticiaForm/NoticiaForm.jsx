@@ -77,8 +77,6 @@ export default function NoticiaForm() {
           </div>
 
           {/* Foto */}
-
-          {/* Foto */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Foto del Autor <span className="text-red-500">*</span>
