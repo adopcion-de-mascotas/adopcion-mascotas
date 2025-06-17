@@ -37,7 +37,7 @@ export async function agregarNoticia(noticia) {
     const formData = new FormData();
 
     formData.append("titulo", noticia.titulo || "");
-    formData.append("titulo", noticia.texto || "");
+    formData.append("texto", noticia.texto || "");
 
     formData.append("fecha", new Date().toISOString().split("T")[0]);
     formData.append("admin_id", admin_id);
