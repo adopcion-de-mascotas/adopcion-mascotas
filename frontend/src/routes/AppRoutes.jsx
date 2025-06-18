@@ -29,7 +29,7 @@ import TestimonioFormEdit from "../components/testimonioFormEdit/TestimonioFormE
 import MascotaDashboard from "../components/mascotaDashboard/MascotaDashboard";
 import MascotaForm from "../components/mascotaForm/MascotaForm";
 import { MascotaFormEdit } from "../components/mascotaFormEdit/MascotaFormEdit";
-
+import RefugioDashboard from "../components/refugioDashboard/RefugioDashboard";
 
 export default function AppRoutes() {
   return (
@@ -74,6 +74,7 @@ export default function AppRoutes() {
         <Route path="noticiaForm" element={<NoticiaForm />} />
         <Route path="noticiaFormEdit/:id" element={<NoticiaFormEdit />} />
 
+        <Route path="refugio" element={<RefugioDashboard />} />
 
         <Route path="settings" element={<Settings />} />
       </Route>

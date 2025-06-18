@@ -56,6 +56,29 @@ export async function obtenerRefugios() {
   return json.data;
 }
 
+export async function eliminarRefugio(id) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No hay token de autenticación disponible");
+  }
+  try {
+    const response = await fetch(`${BASE_URL}/admin/refugios/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) throw new Error("Error al eliminar refugios");
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error al eliminar refugios:", error);
+    throw error;
+  }
+}
+
 
 export async function obtenerComportamientos() {
   try {
@@ -80,6 +103,8 @@ export async function obtenerDirecciones() {
     throw error;
   }
 }
+
+
 
 export async function obtenerPersonalidadPorId(id) {
   try {

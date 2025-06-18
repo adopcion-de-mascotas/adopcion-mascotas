@@ -31,6 +31,15 @@ export default function Dashboard() {
           <nav className="mt-6">
             <div className="px-4 mt-2 ">
               <Link
+                to="/dashboard/refugio"
+                className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
+              >
+                <i className="fas fa-home mr-3"></i>
+                <span>Refugios</span>
+              </Link>
+            </div>
+            <div className="px-4 mt-2 ">
+              <Link
                 to="/dashboard/mascota"
                 className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
               >
