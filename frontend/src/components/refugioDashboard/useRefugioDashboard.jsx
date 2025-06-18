@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
-import { obtenerRefugios, eliminarRefugio } from "../../services/mascotasService";
+import { obtenerRefugios, eliminarRefugio } from "../../services/refugioService";
 
 export function useRefugioDashboard() {
   const [refugios, setRefugios] = useState([]);

@@ -2,11 +2,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import {
-  obtenerMascotas,
-  eliminarMascota,
-  obtenerRefugios,
-} from "../../services/mascotasService";
+import { obtenerMascotas, eliminarMascota } from "../../services/mascotasService";
+import { obtenerRefugios } from "../../services/refugioService";
+
 
 export function useMascotasDashboard() {
   const [searchParams, setSearchParams] = useSearchParams();

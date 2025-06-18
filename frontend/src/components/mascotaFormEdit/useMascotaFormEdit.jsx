@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
-import {
-  obtenerMascotaPorId,
-  actualizarMascota,
-  obtenerRefugios,
-} from "../../services/mascotasService";
+import { obtenerMascotaPorId, actualizarMascota } from "../../services/mascotasService";
+import { obtenerRefugios} from "../../services/refugioService";
 
 const initialFormData = {
   nombre: "",

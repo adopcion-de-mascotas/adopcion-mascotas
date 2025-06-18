@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import {
-  crearRefugio,
-  obtenerDirecciones,
-} from "../../services/mascotasService";
+import { obtenerDirecciones,} from "../../services/direccionesService";
+import { crearRefugio} from "../../services/refugioService";
 
 export default function useRefugioForm() {
   const [formData, setFormData] = useState({
