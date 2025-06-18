@@ -27,8 +27,8 @@ import TestimonioDashboard from "../components/testimonioDashboard/TestimoniosDa
 import TestimonioFormEdit from "../components/testimonioFormEdit/TestimonioFormEdit";
 
 import MascotaDashboard from "../components/mascotaDashboard/MascotaDashboard";
-import MascotaFormEdit from "../components/mascotaFormEdit/MascotaFormEdit";
 import MascotaForm from "../components/mascotaForm/MascotaForm";
+import { MascotaFormEdit } from "../components/mascotaFormEdit/MascotaFormEdit";
 
 
 export default function AppRoutes() {

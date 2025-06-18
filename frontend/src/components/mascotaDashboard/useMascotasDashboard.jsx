@@ -39,7 +39,7 @@ export function useMascotasDashboard() {
   const cargarRefugios = async () => {
     try {
       const respuesta = await obtenerRefugios();
-      setRefugios(respuesta.data);
+      setRefugios(respuesta);
     } catch (error) {
       console.error("Error al cargar refugios:", error);
     }
@@ -62,9 +62,11 @@ export function useMascotasDashboard() {
   };
 
   const obtenerNombreRefugio = (refugioId) => {
-    const refugio = refugios.find((r) => r.id === refugioId);
-    return refugio ? refugio.nombre : "-";
-  };
+  if (!Array.isArray(refugios)) return "-";
+  const refugio = refugios.find((r) => r.id === refugioId);
+  return refugio ? refugio.nombre : "-";
+};
+
 
   useEffect(() => {
     cargarRefugios();

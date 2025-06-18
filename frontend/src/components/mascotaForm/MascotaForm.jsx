@@ -9,6 +9,7 @@ export default function MascotaForm() {
     vacunasDisponibles,
     galeriaPreviews,
     errors,
+    isLoading,
     handleChange,
     handleSubmit,
     handleCancelImagen,
@@ -20,9 +21,6 @@ export default function MascotaForm() {
     handleDropGaleria,
     handleDragOverGaleria,
     handleImageChangeGaleria,
-    Input,
-    Select,
-    Textarea,
   } = useMascotaForm();
 
   return (
@@ -37,44 +35,225 @@ export default function MascotaForm() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Columna izquierda */}
         <div className="space-y-6">
-          <Input label="Nombre" name="nombre" onChange={handleChange} />
-          <Input label="Edad" name="edad" onChange={handleChange} />
-          <Input label="Tipo" name="tipo" onChange={handleChange} />
-          <Input label="Raza" name="raza" onChange={handleChange} />
-          <Select
-            label="Género"
-            name="genero"
-            onChange={handleChange}
-            options={[
-              { value: "", label: "Seleccionar" },
-              { value: "Macho", label: "Macho" },
-              { value: "Hembra", label: "Hembra" },
-            ]}
-          />
-          <Input label="Tamaño" name="tamanio" onChange={handleChange} />
-          <Input label="Peso" name="peso" type="number" onChange={handleChange} />
-          <Input label="Estado" name="estado" onChange={handleChange} />
-          <Input label="Ciudad" name="ciudad" onChange={handleChange} />
-          <Textarea label="Descripción" name="descripcion" onChange={handleChange} />
-          <Textarea label="Historia" name="historia" onChange={handleChange} />
-          
+          {/* Nombre */}
+          <div>
+            <label
+              className="block mb-1 font-semibold text-gray-700"
+              htmlFor="nombre"
+            >
+              Nombre
+            </label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              value={formData.nombre}
+              onChange={handleChange}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+
+          {/* Edad */}
+          <div>
+            <label
+              className="block mb-1 font-semibold text-gray-700"
+              htmlFor="edad"
+            >
+              Edad
+            </label>
+            <input
+              type="text"
+              id="edad"
+              name="edad"
+              value={formData.edad}
+              onChange={handleChange}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+
+          {/* Tipo */}
+          <div>
+            <label
+              className="block mb-1 font-semibold text-gray-700"
+              htmlFor="tipo"
+            >
+              Tipo
+            </label>
+            <input
+              type="text"
+              id="tipo"
+              name="tipo"
+              value={formData.tipo}
+              onChange={handleChange}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+
+          {/* Raza */}
+          <div>
+            <label
+              className="block mb-1 font-semibold text-gray-700"
+              htmlFor="raza"
+            >
+              Raza
+            </label>
+            <input
+              type="text"
+              id="raza"
+              name="raza"
+              value={formData.raza}
+              onChange={handleChange}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+
+          {/* Género */}
+          <div>
+            <label
+              className="block mb-1 font-semibold text-gray-700"
+              htmlFor="genero"
+            >
+              Género
+            </label>
+            <select
+              id="genero"
+              name="genero"
+              value={formData.genero}
+              onChange={handleChange}
+              className="w-full border rounded px-3 py-2"
+            >
+              <option value="">Seleccionar</option>
+              <option value="Macho">Macho</option>
+              <option value="Hembra">Hembra</option>
+            </select>
+          </div>
+
+          {/* Tamaño */}
+          <div>
+            <label
+              className="block mb-1 font-semibold text-gray-700"
+              htmlFor="tamanio"
+            >
+              Tamaño
+            </label>
+            <input
+              type="text"
+              id="tamanio"
+              name="tamanio"
+              value={formData.tamanio}
+              onChange={handleChange}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+
+          {/* Peso */}
+          <div>
+            <label
+              className="block mb-1 font-semibold text-gray-700"
+              htmlFor="peso"
+            >
+              Peso
+            </label>
+            <input
+              type="number"
+              id="peso"
+              name="peso"
+              value={formData.peso}
+              onChange={handleChange}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+
+          {/* Estado */}
+          <div>
+            <label
+              className="block mb-1 font-semibold text-gray-700"
+              htmlFor="estado"
+            >
+              Estado
+            </label>
+            <input
+              type="text"
+              id="estado"
+              name="estado"
+              value={formData.estado}
+              onChange={handleChange}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+
+          {/* Ciudad */}
+          <div>
+            <label
+              className="block mb-1 font-semibold text-gray-700"
+              htmlFor="ciudad"
+            >
+              Ciudad
+            </label>
+            <input
+              type="text"
+              id="ciudad"
+              name="ciudad"
+              value={formData.ciudad}
+              onChange={handleChange}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+
+          {/* Descripción */}
+          <div>
+            <label
+              htmlFor="descripcion"
+              className="block mb-1 font-semibold text-gray-700"
+            >
+              Descripción
+            </label>
+            <textarea
+              id="descripcion"
+              name="descripcion"
+              value={formData.descripcion}
+              onChange={handleChange}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+
+          {/* Historia */}
+          <div>
+            <label
+              htmlFor="historia"
+              className="block mb-1 font-semibold text-gray-700"
+            >
+              Historia
+            </label>
+            <textarea
+              id="historia"
+              name="historia"
+              value={formData.historia}
+              onChange={handleChange}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+
           {/* Esterilizado */}
           <div className="flex items-center gap-3">
             <input
               type="checkbox"
-              name="esterilizado"
+              id="esterelizado"
+              name="esterelizado"
+              checked={formData.esterelizado}
               onChange={handleChange}
               className="accent-blue-600"
-              id="esterilizado"
             />
-            <label htmlFor="esterilizado" className="text-gray-700">
-              ¿Está esterilizado?
+            <label htmlFor="esterelizado" className="text-gray-700">
+              ¿Está esterelizado?
             </label>
           </div>
 
           {/* Personalidades */}
           <div>
-            <label className="font-semibold text-gray-700 mb-2 block">Personalidad:</label>
+            <label className="font-semibold text-gray-700 mb-2 block">
+              Personalidad:
+            </label>
             <div className="flex flex-wrap gap-4">
               {personalidadesDisponibles.map((p) => (
                 <label key={p.id} className="flex items-center gap-2">
@@ -137,7 +316,8 @@ export default function MascotaForm() {
                 <div className="space-y-2">
                   <i className="fas fa-cloud-upload-alt text-3xl text-emerald-400"></i>
                   <p className="text-sm font-medium text-gray-700">
-                    Arrastra y suelta una imagen aquí <br />o haz clic para seleccionar
+                    Arrastra y suelta una imagen aquí <br />o haz clic para
+                    seleccionar
                   </p>
                   <p className="text-xs text-gray-500">
                     Formatos: JPG, PNG, GIF (Máx. 5MB)
@@ -161,7 +341,9 @@ export default function MascotaForm() {
               }`}
               onDrop={handleDropGaleria}
               onDragOver={handleDragOverGaleria}
-              onClick={() => document.getElementById("fileInputGaleria").click()}
+              onClick={() =>
+                document.getElementById("fileInputGaleria").click()
+              }
             >
               <input
                 type="file"
@@ -207,7 +389,8 @@ export default function MascotaForm() {
                 <div className="space-y-2">
                   <i className="fas fa-cloud-upload-alt text-3xl text-emerald-400"></i>
                   <p className="text-sm font-medium text-gray-700">
-                    Arrastra y suelta imágenes aquí <br />o haz clic para seleccionar
+                    Arrastra y suelta imágenes aquí <br />o haz clic para
+                    seleccionar
                   </p>
                   <p className="text-xs text-gray-500">
                     Formatos: JPG, PNG, GIF (Máx. 5MB cada uno)
@@ -221,39 +404,159 @@ export default function MascotaForm() {
           </div>
 
           {/* Refugio */}
-          <Select
-            label="Refugio"
-            name="refugioId"
-            onChange={handleChange}
-            options={[
-              { value: "", label: "Seleccionar refugio" },
-              ...(refugiosDisponibles || []).map((r) => ({
-                value: r.id.toString(),
-                label: r.nombre,
-              })),
-            ]}
-          />
+          <div>
+            <label
+              className="block mb-1 font-semibold text-gray-700"
+              htmlFor="refugioId"
+            >
+              Refugio
+            </label>
+            <select
+              id="refugioId"
+              name="refugioId"
+              value={formData.refugioId}
+              onChange={handleChange}
+              className="w-full border rounded px-3 py-2"
+            >
+              <option value="">Seleccionar refugio</option>
+              {(Array.isArray(refugiosDisponibles)
+                ? refugiosDisponibles
+                : []
+              ).map((refugio) => (
+                <option key={refugio.id} value={refugio.id}>
+                  {refugio.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
 
           {/* Comportamiento */}
           <div>
             <h3 className="font-semibold text-gray-700 mb-2">Comportamiento</h3>
-            <Input label="Niños" name="comportamiento_niños" onChange={handleChange} />
-            <Input label="Perros" name="comportamiento_perros" onChange={handleChange} />
-            <Input label="Gatos" name="comportamiento_gatos" onChange={handleChange} />
-            <Input label="Apartamento" name="comportamiento_apartamento" onChange={handleChange} />
+            <div>
+              <label
+                className="block mb-1 font-semibold text-gray-700"
+                htmlFor="comportamiento.niños"
+              >
+                Niños
+              </label>
+              <input
+                type="text"
+                id="comportamiento.niños"
+                name="comportamiento.niños"
+                value={formData.comportamiento.niños}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
+            <div>
+              <label
+                className="block mb-1 font-semibold text-gray-700"
+                htmlFor="comportamiento.perros"
+              >
+                Perros
+              </label>
+              <input
+                type="text"
+                id="comportamiento.perros"
+                name="comportamiento.perros"
+                value={formData.comportamiento.perros}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
+            <div>
+              <label
+                className="block mb-1 font-semibold text-gray-700"
+                htmlFor="comportamiento.gatos"
+              >
+                Gatos
+              </label>
+              <input
+                type="text"
+                id="comportamiento.gatos"
+                name="comportamiento.gatos"
+                value={formData.comportamiento.gatos}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
+            <div>
+              <label
+                className="block mb-1 font-semibold text-gray-700"
+                htmlFor="comportamiento.apartamento"
+              >
+                Apartamento
+              </label>
+              <input
+                type="text"
+                id="comportamiento.apartamento"
+                name="comportamiento.apartamento"
+                value={formData.comportamiento.apartamento}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
           </div>
 
           {/* Salud */}
           <div>
             <h3 className="font-semibold text-gray-700 mb-2">Salud</h3>
-            <Input label="Estado" name="salud_estado" onChange={handleChange} />
-            <Input label="Tratamiento" name="salud_tratamiento" onChange={handleChange} />
-            <Input label="Info Veterinaria" name="salud_info_veterinaria" onChange={handleChange} />
+            <div>
+              <label
+                className="block mb-1 font-semibold text-gray-700"
+                htmlFor="salud.estado"
+              >
+                Estado
+              </label>
+              <input
+                type="text"
+                id="salud.estado"
+                name="salud.estado"
+                value={formData.salud.estado}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
+            <div>
+              <label
+                className="block mb-1 font-semibold text-gray-700"
+                htmlFor="salud.tratamiento"
+              >
+                Tratamiento
+              </label>
+              <input
+                type="text"
+                id="salud.tratamiento"
+                name="salud.tratamiento"
+                value={formData.salud.tratamiento}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
+            <div>
+              <label
+                className="block mb-1 font-semibold text-gray-700"
+                htmlFor="salud.info_veterinaria"
+              >
+                Info Veterinaria
+              </label>
+              <input
+                type="text"
+                id="salud.info_veterinaria"
+                name="salud.info_veterinaria"
+                value={formData.salud.info_veterinaria}
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2"
+              />
+            </div>
           </div>
 
           {/* Vacunas */}
           <div>
-            <label className="font-semibold text-gray-700 mb-2 block">Vacunas:</label>
+            <label className="font-semibold text-gray-700 mb-2 block">
+              Vacunas:
+            </label>
             <div className="flex flex-wrap gap-4">
               {(vacunasDisponibles || []).map((v) => (
                 <label key={v.id} className="flex items-center gap-2">
@@ -277,9 +580,12 @@ export default function MascotaForm() {
       <div className="mt-8 text-center">
         <button
           type="submit"
-          className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
+          disabled={isLoading}
+          className={`bg-purple-600 text-white px-6 py-2 rounded-lg transition ${
+            isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-purple-700"
+          }`}
         >
-          Guardar Mascota
+          {isLoading ? "Guardando..." : "Guardar Mascota"}
         </button>
         {mensaje && (
           <p className="mt-4 text-sm text-center font-medium text-green-600">

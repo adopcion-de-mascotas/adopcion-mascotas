@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { crearMascota } from "../../services/mascotasService";
+import { crearMascota, obtenerRefugios } from "../../services/mascotasService";
 
-// Constante con valores iniciales para evitar duplicación en reseteo
 const initialFormData = {
   nombre: "",
   edad: "",
@@ -10,12 +9,12 @@ const initialFormData = {
   genero: "",
   tamanio: "",
   peso: "",
-  esterilizado: false,
+  esterelizado: false,
   estado: "",
   ciudad: "",
   descripcion: "",
   historia: "",
-  imagen: null,
+  imagen_principal: null,
   galeria: [],
   personalidad: [],
   comportamiento: {
@@ -30,14 +29,17 @@ const initialFormData = {
     info_veterinaria: "",
   },
   vacunas: [],
-  refugioId: "", // Debe asignarse en el formulario
+  refugioId: "",
 };
 
 export function useMascotaForm() {
   const [formData, setFormData] = useState(initialFormData);
   const [mensaje, setMensaje] = useState("");
+  const [errors, setErrors] = useState({});
   const [fotoPreview, setFotoPreview] = useState(null);
   const [galeriaPreviews, setGaleriaPreviews] = useState([]);
+  const [refugiosDisponibles, setRefugiosDisponibles] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const personalidadesDisponibles = [
     { id: 1, nombre: "Juguetón" },
@@ -45,6 +47,24 @@ export function useMascotaForm() {
     { id: 3, nombre: "Protector" },
     { id: 4, nombre: "Tranquilo" },
   ];
+
+  const vacunasDisponibles = [
+    { id: 1, nombre: "Parvovirus" },
+    { id: 2, nombre: "Rabia" },
+    { id: 3, nombre: "Moquillo" },
+  ];
+
+  useEffect(() => {
+    const cargarRefugios = async () => {
+      try {
+        const data = await obtenerRefugios();
+        setRefugiosDisponibles(data);
+      } catch (error) {
+        console.error("Error al cargar refugios:", error);
+      }
+    };
+    cargarRefugios();
+  }, []);
 
   // Limpieza de URLs para evitar memory leaks
   useEffect(() => {
@@ -59,37 +79,31 @@ export function useMascotaForm() {
 
     if (type === "file" && name === "galeria") {
       const filesArray = Array.from(files);
-      galeriaPreviews.forEach((url) => URL.revokeObjectURL(url)); // cleanup
+      galeriaPreviews.forEach((url) => URL.revokeObjectURL(url));
       const previews = filesArray.map((file) => URL.createObjectURL(file));
       setGaleriaPreviews(previews);
       setFormData((prev) => ({ ...prev, galeria: filesArray }));
-    }
-
-    else if (type === "file" && name === "imagen") {
-      if (fotoPreview) URL.revokeObjectURL(fotoPreview); // cleanup previa
+      setErrors((prev) => ({ ...prev, galeria: null }));
+    } else if (type === "file" && name === "imagen_principal") {
+      if (fotoPreview) URL.revokeObjectURL(fotoPreview);
       const file = files[0];
       const previewUrl = URL.createObjectURL(file);
       setFotoPreview(previewUrl);
-      setFormData((prev) => ({ ...prev, imagen: file }));
-    }
-
-    else if (type === "checkbox" && name === "personalidad") {
+      setFormData((prev) => ({ ...prev, imagen_principal: file }));
+      setErrors((prev) => ({ ...prev, imagen_principal: null }));
+    } else if (type === "checkbox" && name === "personalidad") {
       const id = parseInt(value);
       const newValues = checked
         ? [...formData.personalidad, id]
         : formData.personalidad.filter((pid) => pid !== id);
       setFormData((prev) => ({ ...prev, personalidad: newValues }));
-    }
-
-    else if (type === "checkbox" && name === "vacunas") {
+    } else if (type === "checkbox" && name === "vacunas") {
       const id = parseInt(value);
       const newValues = checked
         ? [...formData.vacunas, id]
         : formData.vacunas.filter((vid) => vid !== id);
       setFormData((prev) => ({ ...prev, vacunas: newValues }));
-    }
-
-    else if (name.startsWith("comportamiento.")) {
+    } else if (name.startsWith("comportamiento.")) {
       const field = name.split(".")[1];
       setFormData((prev) => ({
         ...prev,
@@ -98,9 +112,7 @@ export function useMascotaForm() {
           [field]: value,
         },
       }));
-    }
-
-    else if (name.startsWith("salud.")) {
+    } else if (name.startsWith("salud.")) {
       const field = name.split(".")[1];
       setFormData((prev) => ({
         ...prev,
@@ -109,13 +121,9 @@ export function useMascotaForm() {
           [field]: value,
         },
       }));
-    }
-
-    else if (type === "checkbox" && name === "esterilizado") {
-      setFormData((prev) => ({ ...prev, esterilizado: checked }));
-    }
-
-    else {
+    } else if (type === "checkbox" && name === "esterelizado") {
+      setFormData((prev) => ({ ...prev, esterelizado: checked }));
+    } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
@@ -123,7 +131,7 @@ export function useMascotaForm() {
   const handleCancelImagen = () => {
     if (fotoPreview) URL.revokeObjectURL(fotoPreview);
     setFotoPreview(null);
-    setFormData((prev) => ({ ...prev, imagen: null }));
+    setFormData((prev) => ({ ...prev, imagen_principal: null }));
   };
 
   const handleClearGaleria = () => {
@@ -132,92 +140,107 @@ export function useMascotaForm() {
     setFormData((prev) => ({ ...prev, galeria: [] }));
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.nombre) newErrors.nombre = "El nombre es requerido";
+    if (!formData.edad) newErrors.edad = "La edad es requerida";
+    if (!formData.tipo) newErrors.tipo = "El tipo es requerido";
+    if (!formData.refugioId) newErrors.refugioId = "El refugio es requerido";
+    if (!formData.imagen_principal)
+      newErrors.imagen_principal = "La imagen principal es requerida";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setMensaje("");
 
-    // Validación simple (podés mejorarla con una lib como Yup)
-    if (!formData.nombre || !formData.edad || !formData.tipo) {
-      setMensaje("❗ Por favor, completá los campos obligatorios.");
+    if (!validateForm()) {
+      setMensaje("❗ Por favor, completa todos los campos requeridos.");
+      setIsLoading(false);
       return;
     }
 
-    const token = localStorage.getItem("token");
-
     try {
-      await crearMascota(formData, token);
+      await crearMascota(formData);
       setMensaje("✅ Mascota creada exitosamente");
       setFormData(initialFormData);
       setFotoPreview(null);
       setGaleriaPreviews([]);
+      setErrors({});
     } catch (error) {
       console.error(error);
-      setMensaje("❌ Error al crear la mascota");
+      setMensaje("❌ Error al crear la mascota: " + error.message);
+      if (error.errors) {
+        setErrors(error.errors);
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
-
-  function Input({ label, name, onChange, type = "text", checked, value }) {
-    return (
-      <div>
-        <label className="block text-gray-700 mb-1">{label}</label>
-        <input
-          type={type}
-          name={name}
-          onChange={onChange}
-          {...(type === "checkbox" ? { checked } : { value })}
-          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-        />
-      </div>
-    );
-  }
-
-  function Select({ label, name, onChange, options, value }) {
-    return (
-      <div>
-        <label className="block text-gray-700 mb-1">{label}</label>
-        <select
-          name={name}
-          onChange={onChange}
-          value={value}
-          className="w-full border border-gray-300 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-        >
-          <option value="">Seleccione...</option>
-          {options.map((opt) => (
-            <option key={opt.value ?? opt.id} value={opt.value ?? opt.id}>
-              {opt.label ?? opt.nombre}
-            </option>
-          ))}
-        </select>
-      </div>
-    );
-  }
-
-  function Textarea({ label, name, onChange, value }) {
-    return (
-      <div className="col-span-1 md:col-span-2">
-        <label className="block text-gray-700 mb-1">{label}</label>
-        <textarea
-          name={name}
-          onChange={onChange}
-          rows={3}
-          value={value}
-          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-        ></textarea>
-      </div>
-    );
-  }
 
   return {
     formData,
     mensaje,
     personalidadesDisponibles,
+    vacunasDisponibles,
+    refugiosDisponibles,
     fotoPreview,
     galeriaPreviews,
+    errors,
+    isLoading,
     handleChange,
     handleSubmit,
     handleCancelImagen,
     handleClearGaleria,
-    Input,
-    Select,
-    Textarea,
+    handleDrop: (e) => {
+      e.preventDefault();
+      const file = e.dataTransfer.files[0];
+      if (file) {
+        const event = {
+          target: { name: "imagen_principal", files: [file], type: "file" },
+        };
+        handleChange(event);
+      }
+    },
+    handleDragOver: (e) => {
+      e.preventDefault();
+    },
+    handleImageChange: (e) => {
+      const event = { target: { ...e.target, name: "imagen_principal" } };
+      handleChange(event);
+    },
+    handleDropGaleria: (e) => {
+      e.preventDefault();
+      const files = e.dataTransfer.files;
+      if (files.length) {
+        const event = { target: { name: "galeria", files, type: "file" } };
+        handleChange(event);
+      }
+    },
+    handleDragOverGaleria: (e) => {
+      e.preventDefault();
+    },
+    handleImageChangeGaleria: (e) => {
+      const event = { target: { ...e.target, name: "galeria" } };
+      handleChange(event);
+    },
+    handleRemoveImagenGaleria: (index) => {
+      const newGaleria = [...formData.galeria];
+      const newPreviews = [...galeriaPreviews];
+
+      // Revocar URL del preview que se eliminará
+      URL.revokeObjectURL(newPreviews[index]);
+
+      newGaleria.splice(index, 1);
+      newPreviews.splice(index, 1);
+
+      setFormData((prev) => ({ ...prev, galeria: newGaleria }));
+      setGaleriaPreviews(newPreviews);
+    },
   };
 }

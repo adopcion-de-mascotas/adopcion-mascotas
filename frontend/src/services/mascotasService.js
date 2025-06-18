@@ -51,8 +51,11 @@ export async function obtenerMascotas2({ search, page, limit, tipo, raza, tamañ
 export async function obtenerRefugios() {
   const res = await fetch(`${BASE_URL}/refugios`);
   if (!res.ok) throw new Error("Error al obtener los refugios");
-  return await res.json();
+
+  const json = await res.json();
+  return json.data;
 }
+
 
 export async function obtenerComportamientos() {
   try {
@@ -147,11 +150,14 @@ export async function crearMascota(mascota) {
     }
 
     // Galería
-    if (mascota.galeria && mascota.galeria.length > 0) {
+    if (Array.isArray(mascota.galeria)) {
       mascota.galeria.forEach((file) => {
         formData.append("galeria[]", file);
       });
+    } else if (mascota.galeria) {
+      console.warn("La galería no es un array. Tipo recibido:", typeof mascota.galeria, mascota.galeria);
     }
+
 
     // Comportamiento
     if (mascota.comportamiento) {
