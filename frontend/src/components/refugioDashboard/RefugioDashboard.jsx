@@ -59,18 +59,18 @@ export default function RefugioDashboard() {
           <table className="min-w-full text-left border">
             <thead className="bg-gray-100 text-gray-600 uppercase text-sm">
               <tr>
-                <th className="px-4 py-3 border">ID</th>
-                <th className="px-4 py-3 border">Imagen</th>
-                <th className="px-4 py-3 border">Nombre</th>
-                <th className="px-4 py-3 border">Descripción</th>
-                <th className="px-4 py-3 border">Info</th>
-                <th className="px-4 py-3 border">Acciones</th>
+                <th className="px-4 py-3 border dark:text-black">ID</th>
+                <th className="px-4 py-3 border dark:text-black">Imagen</th>
+                <th className="px-4 py-3 border dark:text-black">Nombre</th>
+                <th className="px-4 py-3 border dark:text-black">Descripción</th>
+                <th className="px-4 py-3 border dark:text-black">Info</th>
+                <th className="px-4 py-3 border dark:text-black">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {refugios.length > 0 ? (
                 refugios.map((refugio) => (
-                  <tr key={refugio.id} className="hover:bg-gray-100">
+                  <tr key={refugio.id} className="hover:bg-gray-500">
                     <td className="px-4 py-3 border">{refugio.id}</td>
                     <td className="px-4 py-3 border">
                       <img

@@ -59,19 +59,19 @@ export default function DireccionesDashboard() {
           <table className="min-w-full text-left border">
             <thead className="bg-gray-100 text-gray-600 uppercase text-sm">
               <tr>
-                <th className="px-4 py-3 border">ID</th>
-                <th className="px-4 py-3 border">Calle</th>
-                <th className="px-4 py-3 border">Localidad</th>
-                <th className="px-4 py-3 border">Provincia</th>
-                <th className="px-4 py-3 border">País</th>
-                <th className="px-4 py-3 border">Código Postal</th>
-                <th className="px-4 py-3 border">Acciones</th>
+                <th className="px-4 py-3 border dark:text-black">ID</th>
+                <th className="px-4 py-3 border dark:text-black">Calle</th>
+                <th className="px-4 py-3 border dark:text-black">Localidad</th>
+                <th className="px-4 py-3 border dark:text-black">Provincia</th>
+                <th className="px-4 py-3 border dark:text-black">País</th>
+                <th className="px-4 py-3 border dark:text-black">Código Postal</th>
+                <th className="px-4 py-3 border dark:text-black">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {direcciones.length > 0 ? (
                 direcciones.map((direccion) => (
-                  <tr key={direccion.id} className="hover:bg-gray-100">
+                  <tr key={direccion.id} className="hover:bg-gray-500">
                     <td className="px-4 py-3 border">{direccion.id}</td>
                     <td className="px-4 py-3 border">{direccion.calle}</td>
                     <td className="px-4 py-3 border">{direccion.localidad}</td>
@@ -87,7 +87,7 @@ export default function DireccionesDashboard() {
                       </Link>
                       <button
                         onClick={() => eliminar(direccion.id)}
-                        className="inline-flex items-center justify-center bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                        className="inline-flex items-center justify-center bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 "
                       >
                         Eliminar
                       </button>
@@ -96,7 +96,7 @@ export default function DireccionesDashboard() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="7" className="text-center py-4 text-gray-500">
+                  <td colSpan="7" className="text-center py-4 text-gray-500 ">
                     No hay direcciones para mostrar.
                   </td>
                 </tr>
