@@ -6,7 +6,7 @@ const upload = require('../../middlewares/multerTestimonios')
 const testimoniosValidator = require("../../validations/testimoniosValidator");
 
 /* Agrega testimonio con imagen */
-router.post("/", upload.single('foto'), handleMulterErrors, testimonioController.crearTestimonio);
+router.post("/", upload.single('foto'), handleMulterErrors, testimoniosValidator, testimonioController.crearTestimonio);
 
 /* Edita datos de testimonio (con imagen opcional) */
 router.put("/:id", upload.single('foto'), handleMulterErrors, testimonioController.actualizarTestimonio);

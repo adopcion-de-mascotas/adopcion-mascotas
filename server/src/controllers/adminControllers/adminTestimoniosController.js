@@ -102,7 +102,6 @@ module.exports = {
             // Validación básica
             if (!comentario && !autor && !fecha && !req.file && mascota_id === undefined && admin_id === undefined) {
                 if (req.file) {
-                    const fs = require('fs');
                     fs.unlinkSync(req.file.path);
                 }
                 throw new CustomError('No hay datos para actualizar', 400);
@@ -113,8 +112,8 @@ module.exports = {
             if (req.file) {
                 // Eliminar la imagen anterior si existe
                 if (testimonio.foto) {
-                    const fs = require('fs');
-                    const oldPath = path.join(__dirname, '../../images/testimonios', path.basename(testimonio.foto));
+                    const fileName = path.basename(new URL(testimonio.foto).pathname);
+                    const oldPath = path.join(__dirname, '../../public/images/testimonios', fileName);
                     if (fs.existsSync(oldPath)) {
                         fs.unlinkSync(oldPath);
                     }
