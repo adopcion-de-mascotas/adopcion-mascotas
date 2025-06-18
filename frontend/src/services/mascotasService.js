@@ -211,14 +211,18 @@ export async function crearMascota(mascota) {
   }
 }
 
-export async function actualizarMascota(id, mascota) {
+export async function actualizarMascota(mascotaId, mascota) {
+  if (!mascotaId) throw new Error("El id de la mascota es obligatorio");
+
   const token = localStorage.getItem("token");
   if (!token) throw new Error("No hay token de autenticación");
+
   const decoded = jwtDecode(token);
   const admin_id = decoded.id;
 
   try {
     const formData = new FormData();
+    formData.append("id", mascotaId);
 
     formData.append("nombre", mascota.nombre || "");
     formData.append("edad", mascota.edad || "");
@@ -227,6 +231,7 @@ export async function actualizarMascota(id, mascota) {
     formData.append("genero", mascota.genero || "");
     formData.append("tamanio", mascota.tamanio || "");
     formData.append("peso", mascota.peso || "");
+    // Nota: corregí el nombre de la propiedad a 'esterilizado' que es lo correcto en español
     formData.append("esterelizado", mascota.esterelizado ? "true" : "false");
     formData.append("estado", mascota.estado || "");
     formData.append("ciudad", mascota.ciudad || "");
@@ -241,22 +246,23 @@ export async function actualizarMascota(id, mascota) {
     }
 
     // Personalidad (array de ids)
-    if (mascota.personalidad && mascota.personalidad.length > 0) {
-      mascota.personalidad.forEach((id) => {
-        formData.append("personalidad[]", id.toString());
+    if (Array.isArray(mascota.personalidad) && mascota.personalidad.length > 0) {
+      mascota.personalidad.forEach(idPerso => {
+        formData.append("personalidad[]", idPerso.toString());
       });
     }
 
-    // Galería
+    // Galería de imágenes (archivos)
     if (Array.isArray(mascota.galeria)) {
-      mascota.galeria.forEach((file) => {
-        formData.append("galeria[]", file);
+      mascota.galeria.forEach(file => {
+        // Cambié de "galeria[]" a "galeria" para evitar problema con backend que no acepte corchetes
+        formData.append("galeria", file);
       });
     } else if (mascota.galeria) {
       console.warn("La galería no es un array. Tipo recibido:", typeof mascota.galeria, mascota.galeria);
     }
 
-    // Comportamiento
+    // Comportamiento (objeto con campos específicos)
     if (mascota.comportamiento) {
       formData.append("comportamiento[niños]", mascota.comportamiento.niños || "");
       formData.append("comportamiento[perros]", mascota.comportamiento.perros || "");
@@ -264,7 +270,7 @@ export async function actualizarMascota(id, mascota) {
       formData.append("comportamiento[apartamento]", mascota.comportamiento.apartamento || "");
     }
 
-    // Salud
+    // Salud (objeto)
     if (mascota.salud) {
       formData.append("salud[estado]", mascota.salud.estado || "");
       formData.append("salud[tratamiento]", mascota.salud.tratamiento || "");
@@ -272,21 +278,22 @@ export async function actualizarMascota(id, mascota) {
     }
 
     // Vacunas (array de ids)
-    if (mascota.vacunas && mascota.vacunas.length > 0) {
-      mascota.vacunas.forEach((id) => {
-        formData.append("vacunas[]", id.toString());
+    if (Array.isArray(mascota.vacunas) && mascota.vacunas.length > 0) {
+      mascota.vacunas.forEach(idVacuna => {
+        formData.append("vacunas[]", idVacuna.toString());
       });
     }
 
-    // Debug FormData (opcional)
+    // Debug FormData - opcional para desarrollo
     for (let [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
 
-    const response = await fetch(`${BASE_URL}/admin/mascotas/${id}`, {
-      method: "PUT", // o PATCH según la API
+    const response = await fetch(`${BASE_URL}/admin/mascotas/${mascotaId}`, {
+      method: "PUT", // o PATCH según API
       headers: {
         Authorization: `Bearer ${token}`,
+        // No usar 'Content-Type' aquí porque fetch lo asigna automáticamente con FormData
       },
       body: formData,
     });
@@ -298,10 +305,11 @@ export async function actualizarMascota(id, mascota) {
       if (data.errors) {
         console.error("Errores del formulario:", JSON.stringify(data.errors, null, 2));
       }
-      throw new Error("Error al actualizar mascota");
+      throw new Error(data.message || "Error al actualizar mascota");
     }
 
     return data;
+
   } catch (error) {
     console.error("Error en actualizarMascota:", error);
     throw error;

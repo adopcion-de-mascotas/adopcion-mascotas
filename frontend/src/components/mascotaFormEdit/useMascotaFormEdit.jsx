@@ -36,7 +36,7 @@ const initialFormData = {
   refugioId: "",
 };
 
-export function useMascotaFormEdit(id) {
+export function useMascotaFormEdit(mascotaId) {
   const [formData, setFormData] = useState(initialFormData);
   const [mensaje, setMensaje] = useState("");
   const [fotoPreview, setFotoPreview] = useState(null);
@@ -66,15 +66,30 @@ export function useMascotaFormEdit(id) {
   }, []);
 
   useEffect(() => {
-    if (!id) return;
+    if (!mascotaId) return;
 
     setLoading(true);
-    obtenerMascotaPorId(id)
+    obtenerMascotaPorId(mascotaId)
       .then((data) => {
         setFormData({
           ...data,
-          imagen_principal: null,
+          imagen_principal: null, // No tenemos archivo original, dejamos null
           galeria: [],
+          vacunas: Array.isArray(data.vacunas) ? data.vacunas : [],
+          personalidad: Array.isArray(data.personalidad)
+            ? data.personalidad
+            : [],
+          comportamiento: data.comportamiento || {
+            niños: "",
+            perros: "",
+            gatos: "",
+            apartamento: "",
+          },
+          salud: data.salud || {
+            estado: "",
+            tratamiento: "",
+            info_veterinaria: "",
+          },
         });
 
         if (data.imagenUrl) setFotoPreview(data.imagenUrl);
@@ -86,7 +101,7 @@ export function useMascotaFormEdit(id) {
         setError("Error al cargar datos de la mascota");
         setLoading(false);
       });
-  }, [id]);
+  }, [mascotaId]);
 
   useEffect(() => {
     return () => {
@@ -115,18 +130,24 @@ export function useMascotaFormEdit(id) {
       const file = files[0];
       const previewUrl = URL.createObjectURL(file);
       setFotoPreview(previewUrl);
-      setFormData((prev) => ({ ...prev, imagen_principal: null }));
+      setFormData((prev) => ({ ...prev, imagen_principal: file }));
     } else if (type === "checkbox" && name === "personalidad") {
       const id = parseInt(value);
+      const currentPersonalidad = Array.isArray(formData.personalidad)
+        ? formData.personalidad
+        : [];
       const newValues = checked
-        ? [...formData.personalidad, id]
-        : formData.personalidad.filter((pid) => pid !== id);
+        ? [...currentPersonalidad, id]
+        : currentPersonalidad.filter((pid) => pid !== id);
       setFormData((prev) => ({ ...prev, personalidad: newValues }));
     } else if (type === "checkbox" && name === "vacunas") {
       const id = parseInt(value);
+      const currentVacunas = Array.isArray(formData.vacunas)
+        ? formData.vacunas
+        : [];
       const newValues = checked
-        ? [...formData.vacunas, id]
-        : formData.vacunas.filter((vid) => vid !== id);
+        ? [...currentVacunas, id]
+        : currentVacunas.filter((vid) => vid !== id);
       setFormData((prev) => ({ ...prev, vacunas: newValues }));
     } else if (name.startsWith("comportamiento.")) {
       const field = name.split(".")[1];
@@ -147,7 +168,7 @@ export function useMascotaFormEdit(id) {
         },
       }));
     } else if (type === "checkbox" && name === "esterilizado") {
-      setFormData((prev) => ({ ...prev, esterilizado: checked }));
+      setFormData((prev) => ({ ...prev, esterelizado: checked }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
@@ -157,7 +178,7 @@ export function useMascotaFormEdit(id) {
     if (fotoPreview && fotoPreview.startsWith("blob:"))
       URL.revokeObjectURL(fotoPreview);
     setFotoPreview(null);
-    setFormData((prev) => ({ ...prev, imagen_principal: [] }));
+    setFormData((prev) => ({ ...prev, imagen_principal: null }));
   };
 
   const handleClearGaleria = () => {
@@ -187,7 +208,7 @@ export function useMascotaFormEdit(id) {
     }
 
     try {
-      await actualizarMascota(id, formData);
+      await actualizarMascota(mascotaId, formData);
       setMensaje("✅ Mascota actualizada exitosamente");
     } catch (error) {
       console.error(error);
@@ -209,7 +230,7 @@ export function useMascotaFormEdit(id) {
       }
       const previewUrl = URL.createObjectURL(file);
       setFotoPreview(previewUrl);
-      setFormData((prev) => ({ ...prev, imagen_principal: null }));
+      setFormData((prev) => ({ ...prev, imagen_principal: file }));
     }
   };
 
@@ -225,7 +246,7 @@ export function useMascotaFormEdit(id) {
       }
       const previewUrl = URL.createObjectURL(file);
       setFotoPreview(previewUrl);
-      setFormData((prev) => ({ ...prev, imagen_principal: null }));
+      setFormData((prev) => ({ ...prev, imagen_principal: file }));
     }
   };
 

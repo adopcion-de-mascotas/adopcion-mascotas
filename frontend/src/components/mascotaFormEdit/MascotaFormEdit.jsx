@@ -1,6 +1,9 @@
 import { useMascotaFormEdit } from "./useMascotaFormEdit";
+import { useParams } from "react-router-dom";
 
-export function MascotaFormEdit({ id }) {
+export function MascotaFormEdit() {
+  const { id } = useParams();
+
   const {
     formData,
     mensaje,
@@ -615,7 +618,7 @@ export function MascotaFormEdit({ id }) {
                     type="checkbox"
                     name="vacunas"
                     value={vacuna.id}
-                    checked={formData.vacunas.includes(vacuna.id)}
+                    checked={formData.vacunas?.includes(vacuna.id) || false}
                     onChange={handleChange}
                     className="accent-green-600"
                   />
