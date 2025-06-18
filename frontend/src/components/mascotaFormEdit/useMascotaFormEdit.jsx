@@ -12,8 +12,8 @@ const initialFormData = {
   raza: "",
   genero: "",
   tamanio: "",
-  peso: "",
-  esterelizado: false,
+  peso: 0,
+  esterilizado: false,
   estado: "",
   ciudad: "",
   descripcion: "",
@@ -36,7 +36,7 @@ const initialFormData = {
   refugioId: "",
 };
 
-export function useMascotaFormEdit(mascotaId) {
+export function useMascotaFormEdit(id) {
   const [formData, setFormData] = useState(initialFormData);
   const [mensaje, setMensaje] = useState("");
   const [fotoPreview, setFotoPreview] = useState(null);
@@ -66,31 +66,35 @@ export function useMascotaFormEdit(mascotaId) {
   }, []);
 
   useEffect(() => {
-    if (!mascotaId) return;
+    if (!id) return;
 
     setLoading(true);
-    obtenerMascotaPorId(mascotaId)
+    obtenerMascotaPorId(id)
       .then((data) => {
-        setFormData({
+        const formattedData = {
+          ...initialFormData,
           ...data,
-          imagen_principal: null, // No tenemos archivo original, dejamos null
+          peso: data.peso || 0,
+          esterilizado: data.esterilizado || false,
+          imagen_principal: null,
           galeria: [],
           vacunas: Array.isArray(data.vacunas) ? data.vacunas : [],
           personalidad: Array.isArray(data.personalidad)
             ? data.personalidad
             : [],
-          comportamiento: data.comportamiento || {
-            niños: "",
-            perros: "",
-            gatos: "",
-            apartamento: "",
+          comportamiento: {
+            niños: data.comportamiento?.niños || "",
+            perros: data.comportamiento?.perros || "",
+            gatos: data.comportamiento?.gatos || "",
+            apartamento: data.comportamiento?.apartamento || "",
           },
-          salud: data.salud || {
-            estado: "",
-            tratamiento: "",
-            info_veterinaria: "",
+          salud: {
+            estado: data.salud?.estado || "",
+            tratamiento: data.salud?.tratamiento || "",
+            info_veterinaria: data.salud?.info_veterinaria || "",
           },
-        });
+        };
+        setFormData(formattedData);
 
         if (data.imagenUrl) setFotoPreview(data.imagenUrl);
         if (data.galeriaUrls) setGaleriaPreviews(data.galeriaUrls);
@@ -101,7 +105,7 @@ export function useMascotaFormEdit(mascotaId) {
         setError("Error al cargar datos de la mascota");
         setLoading(false);
       });
-  }, [mascotaId]);
+  }, [id]);
 
   useEffect(() => {
     return () => {
@@ -168,7 +172,7 @@ export function useMascotaFormEdit(mascotaId) {
         },
       }));
     } else if (type === "checkbox" && name === "esterilizado") {
-      setFormData((prev) => ({ ...prev, esterelizado: checked }));
+      setFormData((prev) => ({ ...prev, esterilizado: checked }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
@@ -196,23 +200,41 @@ export function useMascotaFormEdit(mascotaId) {
     setErrors({});
 
     const newErrors = {};
-    if (!formData.nombre) newErrors.nombre = "El nombre es requerido";
+    if (!formData.nombre?.trim()) newErrors.nombre = "El nombre es requerido";
     if (!formData.edad) newErrors.edad = "La edad es requerida";
-    if (!formData.tipo) newErrors.tipo = "El tipo es requerido";
+    if (!formData.tipo?.trim()) newErrors.tipo = "El tipo es requerido";
+    if (!formData.refugioId) newErrors.refugioId = "El refugio es requerido";
+
+    // Validar que peso sea un número válido
+    if (isNaN(formData.peso) || formData.peso < 0) {
+      newErrors.peso = "El peso debe ser un número válido";
+    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      setMensaje("❗ Por favor, completá los campos obligatorios.");
+      setMensaje(
+        "❗ Por favor, completá los campos obligatorios correctamente."
+      );
       setLoading(false);
       return;
     }
 
     try {
-      await actualizarMascota(mascotaId, formData);
+      const dataToSend = {
+        ...formData,
+        peso: Number(formData.peso),
+        edad: Number(formData.edad),
+        personalidad: Array.isArray(formData.personalidad)
+          ? formData.personalidad
+          : [],
+        vacunas: Array.isArray(formData.vacunas) ? formData.vacunas : [],
+      };
+
+      await actualizarMascota(id, dataToSend);
       setMensaje("✅ Mascota actualizada exitosamente");
     } catch (error) {
-      console.error(error);
-      setMensaje("❌ Error al actualizar la mascota");
+      console.error("Error al actualizar la mascota:", error);
+      setMensaje(error.message || "❌ Error al actualizar la mascota");
       if (error.errors) {
         setErrors(error.errors);
       }

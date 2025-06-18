@@ -231,8 +231,7 @@ export async function actualizarMascota(mascotaId, mascota) {
     formData.append("genero", mascota.genero || "");
     formData.append("tamanio", mascota.tamanio || "");
     formData.append("peso", mascota.peso || "");
-    // Nota: corregí el nombre de la propiedad a 'esterilizado' que es lo correcto en español
-    formData.append("esterelizado", mascota.esterelizado ? "true" : "false");
+    formData.append("esterilizado", mascota.esterilizado ? "true" : "false");
     formData.append("estado", mascota.estado || "");
     formData.append("ciudad", mascota.ciudad || "");
     formData.append("descripcion", mascota.descripcion || "");
@@ -241,7 +240,7 @@ export async function actualizarMascota(mascotaId, mascota) {
     formData.append("admin_id", admin_id);
 
     // Imagen principal (solo si hay una nueva para actualizar)
-    if (mascota.imagen_principal) {
+    if (mascota.imagen_principal instanceof File) {
       formData.append("imagen_principal", mascota.imagen_principal);
     }
 
@@ -255,11 +254,10 @@ export async function actualizarMascota(mascotaId, mascota) {
     // Galería de imágenes (archivos)
     if (Array.isArray(mascota.galeria)) {
       mascota.galeria.forEach(file => {
-        // Cambié de "galeria[]" a "galeria" para evitar problema con backend que no acepte corchetes
-        formData.append("galeria", file);
+        if (file instanceof File) {
+          formData.append("galeria", file);
+        }
       });
-    } else if (mascota.galeria) {
-      console.warn("La galería no es un array. Tipo recibido:", typeof mascota.galeria, mascota.galeria);
     }
 
     // Comportamiento (objeto con campos específicos)
