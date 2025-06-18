@@ -224,20 +224,26 @@ export async function actualizarMascota(mascotaId, mascota) {
     const formData = new FormData();
     formData.append("id", mascotaId);
 
-    formData.append("nombre", mascota.nombre || "");
-    formData.append("edad", mascota.edad || "");
-    formData.append("tipo", mascota.tipo || "");
-    formData.append("raza", mascota.raza || "");
-    formData.append("genero", mascota.genero || "");
-    formData.append("tamanio", mascota.tamanio || "");
-    formData.append("peso", mascota.peso || "");
+    // Campos obligatorios - validar y convertir
+    if (!mascota.nombre?.trim()) throw new Error("El nombre es obligatorio");
+    if (!mascota.tipo?.trim()) throw new Error("El tipo es obligatorio");
+    if (!mascota.refugioId) throw new Error("El refugio es obligatorio");
+
+    // Campos básicos con validación
+    formData.append("nombre", mascota.nombre.trim());
+    formData.append("edad", String(mascota.edad));
+    formData.append("tipo", mascota.tipo.trim());
+    formData.append("raza", mascota.raza?.trim() || "");
+    formData.append("genero", mascota.genero?.trim() || "");
+    formData.append("tamanio", mascota.tamanio?.trim() || "");
+    formData.append("peso", mascota.peso !== undefined && mascota.peso !== null ? String(mascota.peso) : "");
     formData.append("esterilizado", mascota.esterilizado ? "true" : "false");
-    formData.append("estado", mascota.estado || "");
-    formData.append("ciudad", mascota.ciudad || "");
-    formData.append("descripcion", mascota.descripcion || "");
-    formData.append("historia", mascota.historia || "");
-    formData.append("refugioId", mascota.refugioId?.toString() || "");
-    formData.append("admin_id", admin_id);
+    formData.append("estado", mascota.estado?.trim() || "");
+    formData.append("ciudad", mascota.ciudad?.trim() || "");
+    formData.append("descripcion", mascota.descripcion?.trim() || "");
+    formData.append("historia", mascota.historia?.trim() || "");
+    formData.append("refugioId", String(mascota.refugioId));
+    formData.append("admin_id", String(admin_id));
 
     // Imagen principal (solo si hay una nueva para actualizar)
     if (mascota.imagen_principal instanceof File) {
@@ -245,11 +251,10 @@ export async function actualizarMascota(mascotaId, mascota) {
     }
 
     // Personalidad (array de ids)
-    if (Array.isArray(mascota.personalidad) && mascota.personalidad.length > 0) {
-      mascota.personalidad.forEach(idPerso => {
-        formData.append("personalidad[]", idPerso.toString());
-      });
-    }
+    const personalidad = Array.isArray(mascota.personalidad) ? mascota.personalidad : [];
+    personalidad.forEach(idPerso => {
+      if (idPerso) formData.append("personalidad[]", String(idPerso));
+    });
 
     // Galería de imágenes (archivos)
     if (Array.isArray(mascota.galeria)) {
@@ -261,26 +266,23 @@ export async function actualizarMascota(mascotaId, mascota) {
     }
 
     // Comportamiento (objeto con campos específicos)
-    if (mascota.comportamiento) {
-      formData.append("comportamiento[niños]", mascota.comportamiento.niños || "");
-      formData.append("comportamiento[perros]", mascota.comportamiento.perros || "");
-      formData.append("comportamiento[gatos]", mascota.comportamiento.gatos || "");
-      formData.append("comportamiento[apartamento]", mascota.comportamiento.apartamento || "");
-    }
+    const comportamiento = mascota.comportamiento || {};
+    formData.append("comportamiento[niños]", comportamiento.niños?.trim() || "");
+    formData.append("comportamiento[perros]", comportamiento.perros?.trim() || "");
+    formData.append("comportamiento[gatos]", comportamiento.gatos?.trim() || "");
+    formData.append("comportamiento[apartamento]", comportamiento.apartamento?.trim() || "");
 
     // Salud (objeto)
-    if (mascota.salud) {
-      formData.append("salud[estado]", mascota.salud.estado || "");
-      formData.append("salud[tratamiento]", mascota.salud.tratamiento || "");
-      formData.append("salud[info_veterinaria]", mascota.salud.info_veterinaria || "");
-    }
+    const salud = mascota.salud || {};
+    formData.append("salud[estado]", salud.estado?.trim() || "");
+    formData.append("salud[tratamiento]", salud.tratamiento?.trim() || "");
+    formData.append("salud[info_veterinaria]", salud.info_veterinaria?.trim() || "");
 
     // Vacunas (array de ids)
-    if (Array.isArray(mascota.vacunas) && mascota.vacunas.length > 0) {
-      mascota.vacunas.forEach(idVacuna => {
-        formData.append("vacunas[]", idVacuna.toString());
-      });
-    }
+    const vacunas = Array.isArray(mascota.vacunas) ? mascota.vacunas : [];
+    vacunas.forEach(idVacuna => {
+      if (idVacuna) formData.append("vacunas[]", String(idVacuna));
+    });
 
     // Debug FormData - opcional para desarrollo
     for (let [key, value] of formData.entries()) {

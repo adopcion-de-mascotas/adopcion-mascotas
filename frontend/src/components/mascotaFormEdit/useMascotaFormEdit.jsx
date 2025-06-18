@@ -7,7 +7,7 @@ import {
 
 const initialFormData = {
   nombre: "",
-  edad: "",
+  edad: 0,
   tipo: "",
   raza: "",
   genero: "",
@@ -173,6 +173,9 @@ export function useMascotaFormEdit(id) {
       }));
     } else if (type === "checkbox" && name === "esterilizado") {
       setFormData((prev) => ({ ...prev, esterilizado: checked }));
+    } else if (name === "edad" || name === "peso") {
+      const numValue = value === "" ? 0 : Number(value);
+      setFormData((prev) => ({ ...prev, [name]: numValue }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
