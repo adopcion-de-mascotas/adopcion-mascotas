@@ -14,23 +14,23 @@ export function useDashboardMascotas() {
     const cargarDatos = async () => {
       try {
         const mascotasData = await obtenerMascotas({ limit: 1000 });
-        setMascotas(mascotasData);
-        setTotalMascotas(mascotasData.length);
+        setMascotas(mascotasData.data.items);
+        setTotalMascotas(mascotasData.data.items.length);
 
         // Mascotas adoptadas
-        const adoptionCount = mascotasData.filter(
+        const adoptionCount = mascotasData.data.items.filter(
           (m) => m.estado && m.estado.toLowerCase().includes("adop")
         ).length;
         setAvailableForAdoption(adoptionCount);
 
         // Mascotas disponibles
-        const disponiblesCount = mascotasData.filter(
+        const disponiblesCount = mascotasData.data.items.filter(
           (m) => m.estado && m.estado.toLowerCase().includes("disponible")
         ).length;
         setAvailableStatusCount(disponiblesCount);
 
         // Género
-        const generoCounts = mascotasData.reduce((acc, m) => {
+        const generoCounts = mascotasData.data.items.reduce((acc, m) => {
           const gen = m.genero ? m.genero.toLowerCase() : "desconocido";
           acc[gen] = (acc[gen] || 0) + 1;
           return acc;
@@ -38,7 +38,7 @@ export function useDashboardMascotas() {
         setGeneroData(generoCounts);
 
         // Tipo
-        const tipoCounts = mascotasData.reduce((acc, m) => {
+        const tipoCounts = mascotasData.data.items.reduce((acc, m) => {
           const tipo = m.tipo ? m.tipo.toLowerCase() : "otro";
           if (tipo.includes("perro")) acc["perro"] = (acc["perro"] || 0) + 1;
           else if (tipo.includes("gato")) acc["gato"] = (acc["gato"] || 0) + 1;
@@ -48,7 +48,7 @@ export function useDashboardMascotas() {
         setTipoData(tipoCounts);
 
         // Tamaño
-        const tamanioCounts = mascotasData.reduce((acc, m) => {
+        const tamanioCounts = mascotasData.data.items.reduce((acc, m) => {
           const t = m.tamanio ? m.tamanio.toLowerCase() : "desconocido";
           acc[t] = (acc[t] || 0) + 1;
           return acc;
