@@ -24,7 +24,7 @@ export function useMascotasDashboard() {
     setLoading(true);
     try {
       const mascotasData = await obtenerMascotas({ search, page, total, limit });
-      setMascotas(mascotasData);
+      setMascotas(mascotasData.data.items);
       setTotal(total)
       setTotalPages(Math.ceil(total / limit));
     } catch (error) {
