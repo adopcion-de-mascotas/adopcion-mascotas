@@ -8,7 +8,7 @@ export async function obtenerDirecciones() {
         throw new Error("No hay token de autenticación disponible");
     }
 
-    // Si más adelante necesitás el ID del admin, podés decodificarlo aquí.
+    // Si más adelante necesito el ID del admin, puedo decodificarlo aquí.
     // const decoded = jwtDecode(token);
     // const admin_id = decoded.id;
 
@@ -22,8 +22,8 @@ export async function obtenerDirecciones() {
 
         if (!res.ok) throw new Error("Error al obtener direcciones");
 
-        const json = await res.json();
-        return json.data || [];
+         
+        return res.json();
 
     } catch (error) {
         console.error("Error en obtenerDirecciones:", error);
