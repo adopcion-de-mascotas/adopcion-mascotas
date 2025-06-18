@@ -56,6 +56,65 @@ export async function obtenerRefugios() {
   return json.data;
 }
 
+export async function crearRefugio(refugio) {
+  const token = localStorage.getItem("token");
+  const decoded = jwtDecode(token);
+  const admin_id = decoded.id;
+
+  try {
+    const formData = new FormData();
+
+    formData.append("nombre", refugio.nombre || "");
+    formData.append("descripcion", refugio.descripcion || "");
+    formData.append("info", refugio.info || "");
+    formData.append("direccion_id", refugio.direccion_id?.toString() || "");
+    formData.append("admin_id", admin_id);
+
+    if (refugio.imagen) {
+      formData.append("imagen", refugio.imagen); // archivo
+    }
+
+    // Si vas a enviar también contacto:
+    if (refugio.contacto) {
+      if (refugio.contacto) {
+        formData.append("nombre", refugio.contacto.nombre || "");
+        formData.append("telefono", refugio.contacto.telefono || "");
+        formData.append("email", refugio.contacto.email || "");
+        formData.append("web", refugio.contacto.web || "");
+      }
+
+    }
+
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    const response = await fetch(`${BASE_URL}/admin/refugios`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Respuesta del servidor:", data);
+      if (data.errors) {
+        console.error("Errores del formulario:", JSON.stringify(data.errors, null, 2));
+      }
+      throw new Error("Error al crear refugio");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error en crearRefugio:", error);
+    throw error;
+  }
+}
+
 export async function eliminarRefugio(id) {
   const token = localStorage.getItem("token");
 
@@ -81,9 +140,22 @@ export async function eliminarRefugio(id) {
 
 
 export async function obtenerComportamientos() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No hay token de autenticación disponible");
+  }
+
   try {
-    const res = await fetch(`${BASE_URL}/admin/comportamientos`);
+    const res = await fetch(`${BASE_URL}/admin/comportamientos`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
     if (!res.ok) throw new Error("Error al obtener comportamientos");
+
     const json = await res.json();
     return json.data || [];
   } catch (error) {
@@ -93,11 +165,27 @@ export async function obtenerComportamientos() {
 }
 
 export async function obtenerDirecciones() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No hay token de autenticación disponible");
+  }
+
   try {
-    const res = await fetch(`${BASE_URL}/admin/direcciones`);
+    const res = await fetch(`${BASE_URL}/admin/direcciones`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
     if (!res.ok) throw new Error("Error al obtener direcciones");
+
     const json = await res.json();
+    console.log("Direcciones desde el backend:", json.data); // 👀
+
     return json.data || [];
+
   } catch (error) {
     console.error("Error en direcciones:", error);
     throw error;
@@ -107,8 +195,19 @@ export async function obtenerDirecciones() {
 
 
 export async function obtenerPersonalidadPorId(id) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("No hay token de autenticación disponible");
+  }
+
   try {
-    const res = await fetch(`${BASE_URL}/admin/personalidades/${id}`);
+    const res = await fetch(`${BASE_URL}/admin/personalidades/${id}`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
     if (!res.ok) throw new Error("Error al obtener personalidad");
     const json = await res.json();
     return json.data;
@@ -117,6 +216,7 @@ export async function obtenerPersonalidadPorId(id) {
     throw error;
   }
 }
+
 
 
 // Obtener detalle por ID
@@ -177,11 +277,12 @@ export async function crearMascota(mascota) {
     // Galería
     if (Array.isArray(mascota.galeria)) {
       mascota.galeria.forEach((file) => {
-        formData.append("galeria[]", file);
+    formData.append("galeria[]", file); // <--- ESTE CAMBIO
       });
     } else if (mascota.galeria) {
       console.warn("La galería no es un array. Tipo recibido:", typeof mascota.galeria, mascota.galeria);
     }
+
 
 
     // Comportamiento

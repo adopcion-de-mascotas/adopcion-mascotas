@@ -147,8 +147,6 @@ export function useMascotaForm() {
     if (!formData.edad) newErrors.edad = "La edad es requerida";
     if (!formData.tipo) newErrors.tipo = "El tipo es requerido";
     if (!formData.refugioId) newErrors.refugioId = "El refugio es requerido";
-    if (!formData.imagen_principal)
-      newErrors.imagen_principal = "La imagen principal es requerida";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;

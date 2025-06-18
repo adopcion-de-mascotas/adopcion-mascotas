@@ -9,7 +9,7 @@ const mascotaValidator = require("../../validations/mascotasValidator")
 router.use("/galeria", adminGaleriaRouter)
 
 /* Agrega mascota */
-router.post("/", singleUpload, handleMulterErrors, mascotaValidator, create)
+router.post("/", singleUpload, handleMulterErrors, create)
 
 /* Edita datos de mascota */
 router.put("/:id",singleUpload, handleMulterErrors, update)

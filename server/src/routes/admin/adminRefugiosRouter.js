@@ -5,7 +5,7 @@ const { singleUpload, handleMulterErrors } = require("../../middlewares/imageMid
 const refugioValidator = require('../../validations/refugioValidator');
 
 
-router.post('/', refugioValidator, singleUpload, handleMulterErrors, refugioController.create);
+router.post('/', singleUpload, handleMulterErrors, refugioController.create);
 router.put('/:id', refugioValidator, singleUpload, handleMulterErrors, refugioController.update);
 router.delete('/:id', refugioController.delete);
 
