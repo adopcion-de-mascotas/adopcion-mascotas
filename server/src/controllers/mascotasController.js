@@ -10,6 +10,7 @@ module.exports = {
             limit = 10,
             tipo,
             raza,
+            edad,
             tamanio,
             genero,
             estado,
@@ -23,6 +24,7 @@ module.exports = {
 
         if (tipo) filters.tipo = tipo;
         if (raza) filters.raza = raza;
+        if (edad) filters.edad = edad;
         if (tamanio) filters.tamanio = tamanio;
         if (genero) filters.genero = genero;
         if (estado) filters.estado = estado;
@@ -57,6 +59,7 @@ module.exports = {
                     filters: {
                         tipo: tipo || null,
                         raza: raza || null,
+                        edad: edad || null,
                         tamanio: tamanio || null,
                         genero: genero || null,
                         estado: estado || null,

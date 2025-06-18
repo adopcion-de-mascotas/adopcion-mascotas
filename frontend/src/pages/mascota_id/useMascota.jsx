@@ -27,7 +27,7 @@ export function useMascota(id) {
   useEffect(() => {
     obtenerMascotas()
       .then((data) => {
-        setMascotas(data);
+        setMascotas(data.data.items);
       })
       .catch(() => {
         // No hacemos nada con el error aquí

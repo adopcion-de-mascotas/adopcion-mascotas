@@ -1,40 +1,21 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 import { jwtDecode } from "jwt-decode";
 
-// Obtener listado de mascotas con filtros
-export async function obtenerMascotas({ search, page, limit, tipo, raza, tamaño } = {}) {
+
+export async function obtenerMascotas({ search, page, limit, tipo, raza, edad, tamanio, estado, ciudad, genero } = {}) {
   try {
     const params = new URLSearchParams();
 
-    if (search) params.append("search", search);
     if (page) params.append("page", page);
     if (limit) params.append("limit", limit);
     if (tipo) params.append("tipo", tipo);
     if (raza) params.append("raza", raza);
-    if (tamaño) params.append("tamaño", tamaño);
-
-    const url = `${BASE_URL}/mascotas?${params}`;
-
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("Error en la respuesta del servidor");
-    const json = await response.json()
-    return json.data.items
-  } catch (error) {
-    console.error("Error al obtener mascotas:", error);
-    throw error;
-  }
-}
-
-export async function obtenerMascotas2({ search, page, limit, tipo, raza, tamaño } = {}) {
-  try {
-    const params = new URLSearchParams();
-
+    if (edad) params.append("edad", edad);
+    if (tamanio) params.append("tamanio", tamanio);
+    if (genero) params.append("genero", genero);
+    if (estado) params.append("estado", estado);
+    if (ciudad) params.append("ciudad", ciudad);
     if (search) params.append("search", search);
-    if (page) params.append("page", page);
-    if (limit) params.append("limit", limit);
-    if (tipo) params.append("tipo", tipo);
-    if (raza) params.append("raza", raza);
-    if (tamaño) params.append("tamaño", tamaño);
 
     const url = `${BASE_URL}/mascotas?${params}`;
 
@@ -47,7 +28,6 @@ export async function obtenerMascotas2({ search, page, limit, tipo, raza, tamañ
     throw error;
   }
 }
-
 
 // Obtener detalle por ID
 export async function obtenerMascotaPorId(id) {
@@ -81,8 +61,8 @@ export async function crearMascota(mascota) {
     formData.append("edad", mascota.edad || "");
     formData.append("tipo", mascota.tipo || "");
     formData.append("raza", mascota.raza || "");
-    formData.append("genero", mascota.genero || ""); // corregido
-    formData.append("tamanio", mascota.tamanio || ""); // corregido
+    formData.append("genero", mascota.genero || "");
+    formData.append("tamanio", mascota.tamanio || "");
     formData.append("peso", mascota.peso?.toString() || "");
     formData.append("esterelizado", mascota.esterelizado ? "true" : "false");
     formData.append("estado", mascota.estado || "");
@@ -107,7 +87,7 @@ export async function crearMascota(mascota) {
     // Galería
     if (Array.isArray(mascota.galeria)) {
       mascota.galeria.forEach((file) => {
-    formData.append("galeria[]", file); // <--- ESTE CAMBIO
+        formData.append("galeria[]", file);
       });
     } else if (mascota.galeria) {
       console.warn("La galería no es un array. Tipo recibido:", typeof mascota.galeria, mascota.galeria);

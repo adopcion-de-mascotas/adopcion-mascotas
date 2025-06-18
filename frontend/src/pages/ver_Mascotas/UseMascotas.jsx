@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { obtenerMascotas2 } from "../../services/mascotasService";
+import { obtenerMascotas } from "../../services/mascotasService";
 
 export default function UseMascotas() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -38,7 +38,7 @@ export default function UseMascotas() {
       search: busqueda.trim() !== "" ? busqueda.trim() : undefined,
     };
 
-    obtenerMascotas2(filtros)
+    obtenerMascotas(filtros)
       .then((respuesta) => {
         if (respuesta.status && respuesta.data) {
           setMascotas(respuesta.data.items);
