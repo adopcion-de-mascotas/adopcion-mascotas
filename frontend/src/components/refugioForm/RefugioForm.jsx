@@ -4,7 +4,6 @@ import useRefugioForm from "./useRefugioForm";
 export default function RefugioForm() {
   const {
     formData,
-    direcciones,
     errors,
     isSubmitting,
     submitSuccess,
@@ -15,6 +14,13 @@ export default function RefugioForm() {
     handleSubmit,
     handleCancel,
   } = useRefugioForm();
+
+  const resetImagen = (e) => {
+    e.stopPropagation();
+    // Solo reseteamos la imagen, no el resto del formulario
+    handleChange({ target: { name: "imagen", value: null } });
+    handleChange({ target: { name: "imagenPreview", value: null } });
+  };
 
   return (
     <div className="">
@@ -119,41 +125,40 @@ export default function RefugioForm() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                 placeholder="Detalles extra como horarios, condiciones, etc."
               ></textarea>
+              {errors.info && (
+                <p className="mt-1 text-sm text-red-600">{errors.info}</p>
+              )}
             </div>
 
-            {/* Dirección */}
+            {/* Dirección manual */}
             <div className="mb-6">
-              <label
-                htmlFor="direccion_id"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+              <label className="block text-sm font-medium text-gray-700 mb-1">
                 Dirección <span className="text-red-500">*</span>
               </label>
-              <select
-                id="direccion_id"
-                name="direccion_id"
-                value={formData.direccion_id}
-                onChange={handleChange}
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${
-                  errors.direccion_id
-                    ? "border-red-500 bg-red-50"
-                    : "border-gray-300"
-                }`}
-              >
-                <option className="text-black" value="">
-                  -- Seleccione una dirección --
-                </option>
-                {(direcciones || []).map((dir) => (
-                  <option className="dark:text-black" key={dir.id} value={dir.id}>
-                    {`${dir.calle}, ${dir.localidad}, ${dir.provincia}, ${dir.pais}`}
-                  </option>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[
+                  "calle",
+                  "barrio",
+                  "localidad",
+                  "provincia",
+                  "pais",
+                  "codigo_postal",
+                ].map((field) => (
+                  <input
+                    key={field}
+                    type="text"
+                    name={`direccion.${field}`}
+                    placeholder={field.replace("_", " ").toUpperCase()}
+                    value={formData.direccion[field]}
+                    onChange={handleChange}
+                    className={`px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 ${
+                      errors[`direccion.${field}`]
+                        ? "border-red-500 bg-red-50"
+                        : "border-gray-300"
+                    }`}
+                  />
                 ))}
-              </select>
-              {errors.direccion_id && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.direccion_id}
-                </p>
-              )}
+              </div>
             </div>
 
             {/* Imagen */}
@@ -176,7 +181,6 @@ export default function RefugioForm() {
                   accept="image/*"
                   onChange={handleImageChange}
                 />
-
                 {formData.imagenPreview ? (
                   <div className="flex flex-col items-center">
                     <img
@@ -186,10 +190,7 @@ export default function RefugioForm() {
                     />
                     <button
                       type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCancel();
-                      }}
+                      onClick={resetImagen}
                       className="text-sm text-red-500 hover:text-red-700"
                     >
                       <i className="fas fa-trash mr-1"></i> Cambiar imagen
@@ -218,82 +219,32 @@ export default function RefugioForm() {
               <legend className="text-sm font-medium text-gray-700 mb-3">
                 Datos de Contacto (opcional)
               </legend>
-
-              {/* Nombre */}
-              <div className="mb-4">
-                <label
-                  htmlFor="nombre"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Nombre
-                </label>
-                <input
-                  type="text"
-                  id="nombre"
-                  name="contacto.nombre"
-                  value={formData.contacto.nombre || ""}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                  placeholder="nombre"
-                />
-              </div>
-
-              {/* Teléfono */}
-              <div className="mb-4">
-                <label
-                  htmlFor="telefono"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Teléfono
-                </label>
-                <input
-                  type="text"
-                  id="telefono"
-                  name="contacto.telefono"
-                  value={formData.contacto.telefono}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                  placeholder="Ej: +54 9 11 1234 5678"
-                />
-              </div>
-
-              {/* Email */}
-              <div className="mb-4">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="contacto.email"
-                  value={formData.contacto.email}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                  placeholder="ejemplo@email.com"
-                />
-              </div>
-
-              {/* Web */}
-              <div>
-                <label
-                  htmlFor="web"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Página Web
-                </label>
-                <input
-                  type="url"
-                  id="web"
-                  name="contacto.web"
-                  value={formData.contacto.web}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                  placeholder="https://mi-refugio.com"
-                />
-              </div>
+              {["nombre", "telefono", "email", "web"].map((field) => (
+                <div key={field} className="mb-4">
+                  <label
+                    htmlFor={field}
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    {field[0].toUpperCase() + field.slice(1)}
+                  </label>
+                  <input
+                    type="text"
+                    id={field}
+                    name={`contacto.${field}`}
+                    value={formData.contacto[field]}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    placeholder={
+                      field === "web" ? "https://mi-refugio.com" : field
+                    }
+                  />
+                  {errors[`contacto.${field}`] && (
+                    <p className="text-sm text-red-600 mt-1">
+                      {errors[`contacto.${field}`]}
+                    </p>
+                  )}
+                </div>
+              ))}
             </fieldset>
 
             {/* Botones */}

@@ -39,64 +39,40 @@ export async function obtenerRefugioPorId(id) {
     }
 }
 
-export async function crearRefugio(refugio) {
-    const token = sessionStorage.getItem("token");
-    const decoded = jwtDecode(token);
-    const admin_id = decoded.id;
+export async function crearRefugio(formData) {
 
-    try {
-        const formData = new FormData();
+  const token = sessionStorage.getItem("token");
+  const decoded = jwtDecode(token);
+  const admin_id = decoded.id;
 
-        formData.append("nombre", refugio.nombre || "");
-        formData.append("descripcion", refugio.descripcion || "");
-        formData.append("info", refugio.info || "");
-        formData.append("direccion_id", refugio.direccion_id?.toString() || "");
-        formData.append("admin_id", admin_id);
+  // Aseguramos que tenga admin_id
+  formData.append("admin_id", admin_id);
 
-        if (refugio.imagen) {
-            formData.append("imagen", refugio.imagen); // archivo
-        }
+  try {
+    const response = await fetch(`${BASE_URL}/admin/refugios`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // ¡NO pongas 'Content-Type'! fetch lo maneja con FormData automáticamente
+      },
+      body: formData,
+    });
 
-        // Si vas a enviar también contacto:
-        if (refugio.contacto) {
-            if (refugio.contacto) {
-                formData.append("nombre", refugio.contacto.nombre || "");
-                formData.append("telefono", refugio.contacto.telefono || "");
-                formData.append("email", refugio.contacto.email || "");
-                formData.append("web", refugio.contacto.web || "");
-            }
+    const data = await response.json();
 
-        }
-
-
-        for (let [key, value] of formData.entries()) {
-            console.log(`${key}:`, value);
-        }
-
-        const response = await fetch(`${BASE_URL}/admin/refugios`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            console.error("Respuesta del servidor:", data);
-            if (data.errors) {
-                console.error("Errores del formulario:", JSON.stringify(data.errors, null, 2));
-            }
-            throw new Error("Error al crear refugio");
-        }
-
-        return data;
-    } catch (error) {
-        console.error("Error en crearRefugio:", error);
-        throw error;
+    if (!response.ok) {
+      console.error("Error en la respuesta:", data);
+      throw new Error(data.message || "Error al crear el refugio");
     }
+
+    return data;
+  } catch (error) {
+    console.error("Error en crearRefugio:", error);
+    throw error;
+  }
 }
+
+
 
 export async function actualizarRefugio(id, refugio) {
     const token = sessionStorage.getItem("token");
@@ -113,14 +89,14 @@ export async function actualizarRefugio(id, refugio) {
         formData.append("admin_id", admin_id);
 
         if (refugio.imagen) {
-            formData.append("imagen", refugio.imagen); // archivo
+            formData.append("imagen", refugio.imagen);
         }
 
         if (refugio.contacto) {
-            formData.append("nombre", refugio.contacto.nombre || "");
-            formData.append("telefono", refugio.contacto.telefono || "");
-            formData.append("email", refugio.contacto.email || "");
-            formData.append("web", refugio.contacto.web || "");
+            formData.append("contacto_nombre", refugio.contacto.nombre || "");
+            formData.append("contacto_telefono", refugio.contacto.telefono || "");
+            formData.append("contacto_email", refugio.contacto.email || "");
+            formData.append("contacto_web", refugio.contacto.web || "");
         }
 
         for (let [key, value] of formData.entries()) {
@@ -128,7 +104,7 @@ export async function actualizarRefugio(id, refugio) {
         }
 
         const response = await fetch(`${BASE_URL}/admin/refugios/${id}`, {
-            method: "PUT", // o "PATCH", según tu backend
+            method: "PUT",
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -151,7 +127,6 @@ export async function actualizarRefugio(id, refugio) {
         throw error;
     }
 }
-
 
 export async function eliminarRefugio(id) {
     const token = sessionStorage.getItem("token");

@@ -1,38 +1,35 @@
 import { useState, useEffect } from "react";
-import { obtenerDirecciones,} from "../../services/direccionesService";
-import { crearRefugio} from "../../services/refugioService";
+import { obtenerDirecciones } from "../../services/direccionesService";
+import { crearRefugio } from "../../services/refugioService";
 
 export default function useRefugioForm() {
   const [formData, setFormData] = useState({
-  nombre: "",
-  descripcion: "",
-  info: "",
-  imagen: null,
-  imagenPreview: null,
-  direccion: {
-    calle: "",
-    barrio: "",
-    localidad: "",
-    provincia: "",
-    pais: "Argentina",
-    codigo_postal: "",
-  },
-  contacto: {
     nombre: "",
-    telefono: "",
-    email: "",
-    web: "",
-  }
-});
+    descripcion: "",
+    info: "",
+    imagen: null,
+    imagenPreview: null,
+    direccion: {
+      calle: "",
+      barrio: "",
+      localidad: "",
+      provincia: "",
+      pais: "Argentina",
+      codigo_postal: "",
+    },
+    contacto: {
+      nombre: "",
+      telefono: "",
+      email: "",
+      web: "",
+    },
+  });
 
-
-  const [direcciones, setDirecciones] = useState([]); // <-- nuevo estado para direcciones
-
+  const [direcciones, setDirecciones] = useState([]);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  // Carga direcciones al montar el hook
   useEffect(() => {
     async function cargarDirecciones() {
       try {
@@ -45,45 +42,41 @@ export default function useRefugioForm() {
     cargarDirecciones();
   }, []);
 
-  // El resto de tu código de funciones (handleChange, handleImageChange, etc.) queda igual
   const handleChange = (e) => {
-  const { name, value } = e.target;
+    const { name, value } = e.target;
 
-  if (name.startsWith("direccion.")) {
-    const field = name.split(".")[1];
-    setFormData((prev) => ({
-      ...prev,
-      direccion: {
-        ...prev.direccion,
-        [field]: value,
-      }
-    }));
-  } else if (name.startsWith("contacto.")) {
-    const field = name.split(".")[1];
-    setFormData((prev) => ({
-      ...prev,
-      contacto: {
-        ...prev.contacto,
-        [field]: value,
-      }
-    }));
-  } else {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }
+    if (name.startsWith("direccion.")) {
+      const field = name.split(".")[1];
+      setFormData((prev) => ({
+        ...prev,
+        direccion: {
+          ...prev.direccion,
+          [field]: value,
+        },
+      }));
+    } else if (name.startsWith("contacto.")) {
+      const field = name.split(".")[1];
+      setFormData((prev) => ({
+        ...prev,
+        contacto: {
+          ...prev.contacto,
+          [field]: value,
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
 
-  // Limpio error si había
-  if (errors[name]) setErrors((prev) => ({ ...prev, [name]: null }));
-};
-
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: null }));
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setFormData((prev) => ({ ...prev, imagen: file }));
-
       const reader = new FileReader();
       reader.onloadend = () => {
         setFormData((prev) => ({ ...prev, imagenPreview: reader.result }));
@@ -97,7 +90,6 @@ export default function useRefugioForm() {
     const file = e.dataTransfer.files[0];
     if (file && file.type.startsWith("image/")) {
       setFormData((prev) => ({ ...prev, imagen: file }));
-
       const reader = new FileReader();
       reader.onloadend = () => {
         setFormData((prev) => ({ ...prev, imagenPreview: reader.result }));
@@ -118,28 +110,14 @@ export default function useRefugioForm() {
       newErrors.nombre = "El nombre es requerido";
       valid = false;
     }
-
     if (!formData.descripcion.trim()) {
       newErrors.descripcion = "La descripción es requerida";
       valid = false;
     }
-
     if (!formData.info.trim()) {
       newErrors.info = "La información adicional es requerida";
       valid = false;
     }
-
-   // if (!formData.direccion_id) {
-    //  newErrors.direccion_id = "La dirección es requerida";
-    //  valid = false;
-   // }
-
-   // if (!formData.imagen) {
-   //   newErrors.imagen = "Selecciona una imagen";
-   //   valid = false;
-  //  }
-
-    // Validación de contacto
     if (!formData.contacto.nombre.trim()) {
       newErrors["contacto.nombre"] = "Nombre requerido";
       valid = false;
@@ -148,12 +126,10 @@ export default function useRefugioForm() {
       newErrors["contacto.telefono"] = "Teléfono requerido";
       valid = false;
     }
-
     if (!formData.contacto.email.trim()) {
       newErrors["contacto.email"] = "Email requerido";
       valid = false;
     }
-
     if (!formData.contacto.web.trim()) {
       newErrors["contacto.web"] = "Web requerida";
       valid = false;
@@ -165,7 +141,6 @@ export default function useRefugioForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
     setIsSubmitting(true);
@@ -173,17 +148,47 @@ export default function useRefugioForm() {
     setSubmitSuccess(false);
 
     try {
-      await crearRefugio(formData);
+      const formToSend = new FormData();
+      formToSend.append("nombre", formData.nombre);
+      formToSend.append("descripcion", formData.descripcion);
+      formToSend.append("info", formData.info);
+      if (formData.imagen) {
+        formToSend.append("imagen", formData.imagen);
+      }
+
+      if (formData.direccion && typeof formData.direccion === "object") {
+        Object.entries(formData.direccion).forEach(([key, value]) => {
+          formToSend.append(`direccion[${key}]`, value);
+        });
+      }
+
+      if (formData.contacto && typeof formData.contacto === "object") {
+        Object.entries(formData.contacto).forEach(([key, value]) => {
+          formToSend.append(`contacto_${key}`, value);
+        });
+      }
+
+      for (let [key, value] of formToSend.entries()) {
+        console.log(`${key}:`, value);
+      }
+
+      await crearRefugio(formToSend);
       setSubmitSuccess(true);
 
-      // Reset form
       setFormData({
         nombre: "",
         descripcion: "",
         info: "",
-        direccion_id: "",
         imagen: null,
         imagenPreview: null,
+        direccion: {
+          calle: "",
+          barrio: "",
+          localidad: "",
+          provincia: "",
+          pais: "Argentina",
+          codigo_postal: "",
+        },
         contacto: {
           nombre: "",
           telefono: "",
@@ -207,9 +212,16 @@ export default function useRefugioForm() {
       nombre: "",
       descripcion: "",
       info: "",
-      direccion_id: "",
       imagen: null,
       imagenPreview: null,
+      direccion: {
+        calle: "",
+        barrio: "",
+        localidad: "",
+        provincia: "",
+        pais: "Argentina",
+        codigo_postal: "",
+      },
       contacto: {
         nombre: "",
         telefono: "",
@@ -223,7 +235,7 @@ export default function useRefugioForm() {
 
   return {
     formData,
-    direcciones, // <-- retorno direcciones para usar en el componente
+    direcciones,
     errors,
     isSubmitting,
     submitSuccess,
