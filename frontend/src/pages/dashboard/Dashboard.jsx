@@ -1,7 +1,9 @@
+/* eslint-disable no-undef */
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { logout } from "../../services/authService";
 import "./Dashboard.css";
+import Settings from "../../components/settings/Settings";
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -86,7 +88,7 @@ export default function Dashboard() {
 
             <div className="px-4 mt-2">
               <Link
-                to="/dashboard/settings"
+                        to={`/dashboard/settings`}
                 className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
               >
                 <i className="fas fa-cog mr-3"></i>

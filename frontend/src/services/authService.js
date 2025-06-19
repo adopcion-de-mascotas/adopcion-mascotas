@@ -30,7 +30,6 @@ export function isAuthenticated() {
   return !!sessionStorage.getItem("token");
 }
 
-// ✅ Registro de usuario
 export async function registerUser(userData) {
   try {
     const res = await fetch(`${BASE_URL}/admin/session/create`, {
@@ -51,32 +50,26 @@ export async function registerUser(userData) {
   }
 }
 
-// ✏️ Editar usuario (requiere token)
-export async function editUser(updatedData) {
-  try {
-    const token = sessionStorage.getItem("token");
-    const res = await fetch(`${BASE_URL}/admin/session/editar`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(updatedData),
-    });
+export async function editUser(data, id) {
+  const token = sessionStorage.getItem("token");
 
-    const data = await res.json();
+  const response = await fetch(`${BASE_URL}/admin/session/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
 
-    if (!res.ok) {
-      throw new Error(data.message || "Error al actualizar usuario");
-    }
-
-    return data;
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Error al actualizar");
   }
+
+  return response.json();
 }
 
-// 🧾 Obtener usuario actual (perfil)
 export async function getCurrentUser() {
   try {
     const token = sessionStorage.getItem("token");
@@ -98,11 +91,10 @@ export async function getCurrentUser() {
   }
 }
 
-// 🗑️ Eliminar cuenta de usuario
 export async function deleteUser() {
   try {
     const token = sessionStorage.getItem("token");
-    const res = await fetch(`${BASE_URL}/admin/session/deleted`, {
+    const res = await fetch(`${BASE_URL}/admin/session/:id`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

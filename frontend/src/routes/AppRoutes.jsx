@@ -16,7 +16,6 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Register from "../pages/register/Register";
 import DashboardFirts from "../pages/dashboard/dashboardFirts/DashboardFirts";
 import AdoptionFormPage from "../components/adopcionForm/AdoptionFormPage";
-import Settings from "../pages/settings/Settings";
 
 import NoticiaForm from "../components/noticiaForm/NoticiaForm";
 import NoticiasDashboard from "../components/noticiaDashboard/NoticiaDashboard";
@@ -34,6 +33,7 @@ import RefugioForm from "../components/refugioForm/RefugioForm";
 import DireccionesDashboard from "../components/direccionesDashboard/DireccionesDashboard";
 import DireccionForm from "../components/direccionesForm/direccionesForm";
 import DireccionFormEdit from "../components/direccionesFormEdit/direccionesFormEdit";
+import Settings from "../components/settings/Settings";
 
 export default function AppRoutes() {
   return (

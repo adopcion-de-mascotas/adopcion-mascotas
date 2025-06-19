@@ -1,49 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
+import useSettings from "./useSettings";
 
 export default function Settings() {
-  const [nombre, setNombre] = useState("Sarah Miller"); // Nombre actual
-  const [passwordActual, setPasswordActual] = useState("");
-  const [passwordNueva, setPasswordNueva] = useState("");
-  const [confirmacion, setConfirmacion] = useState("");
-  const [mensaje, setMensaje] = useState("");
-
-  const handleGuardarCambios = (e) => {
-    e.preventDefault();
-
-    // Simulación de actualización de nombre
-    setMensaje("Nombre actualizado correctamente.");
-    // Aquí deberías hacer una llamada a la API con fetch o axios
-  };
-
-  const handleCambiarPassword = (e) => {
-    e.preventDefault();
-
-    if (passwordNueva !== confirmacion) {
-      setMensaje("Las contraseñas no coinciden.");
-      return;
-    }
-
-    // Simulación de cambio de contraseña
-    setMensaje("Contraseña actualizada correctamente.");
-    // Aquí también deberías llamar a la API
-  };
-
-  const handleEliminarCuenta = () => {
-    const confirmar = window.confirm("¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.");
-
-    if (confirmar) {
-      // Simulación de eliminación
-      setMensaje("Cuenta eliminada.");
-      sessionStorage.removeItem("token");
-      window.location.href = "/login";
-
-      // En producción, llama a tu API para eliminar el usuario
-    }
-  };
+  const {
+    nombre,
+    setNombre,
+    apellido,
+    setApellido,
+    email,
+    setEmail,
+    Password,
+    setPassword,
+    newPassword,
+    setNewPassword,
+    confirmacion,
+    setConfirmacion,
+    mensaje,
+    handleGuardarCambios,
+    handleCambiarPassword,
+    handleEliminarCuenta,
+  } = useSettings();
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">Configuración de la cuenta</h2>
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">
+        Configuración de la cuenta
+      </h2>
 
       {mensaje && (
         <div className="bg-green-100 text-green-800 px-4 py-2 rounded mb-4">
@@ -51,7 +33,7 @@ export default function Settings() {
         </div>
       )}
 
-      {/* Cambiar nombre */}
+      {/* Formulario de datos personales */}
       <form onSubmit={handleGuardarCambios} className="space-y-4 mb-8">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
@@ -62,6 +44,27 @@ export default function Settings() {
             className="w-full px-4 py-2 border border-gray-300 rounded-md"
           />
         </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Apellido</label>
+          <input
+            type="text"
+            value={apellido}
+            onChange={(e) => setApellido(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
         <button
           type="submit"
           className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition-colors"
@@ -70,14 +73,14 @@ export default function Settings() {
         </button>
       </form>
 
-      {/* Cambiar contraseña */}
+      {/* Formulario de cambio de contraseña */}
       <form onSubmit={handleCambiarPassword} className="space-y-4 mb-8">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña actual</label>
           <input
             type="password"
-            value={passwordActual}
-            onChange={(e) => setPasswordActual(e.target.value)}
+            value={Password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-md"
             required
           />
@@ -86,8 +89,8 @@ export default function Settings() {
           <label className="block text-sm font-medium text-gray-700 mb-1">Nueva contraseña</label>
           <input
             type="password"
-            value={passwordNueva}
-            onChange={(e) => setPasswordNueva(e.target.value)}
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-md"
             required
           />
