@@ -78,7 +78,7 @@ export function useMascotaForm() {
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
 
-    if (type === "file" && name === "galeria") {
+    if (type === "file" && name === "fotos") {
       const filesArray = Array.from(files);
       galeriaPreviews.forEach((url) => URL.revokeObjectURL(url));
       const previews = filesArray.map((file) => URL.createObjectURL(file));
@@ -155,6 +155,7 @@ export function useMascotaForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData, "Dataaaaaaaaaaaaaaaaaaaaaaaaa")
     setIsLoading(true);
     setMensaje("");
 
@@ -209,15 +210,23 @@ export function useMascotaForm() {
     handleDragOver: (e) => {
       e.preventDefault();
     },
+    /*     handleImageChange: (e) => {
+          const event = { target: { ...e.target, name: "imagen_principal" } };
+          handleChange(event);
+        }, */
     handleImageChange: (e) => {
-      const event = { target: { ...e.target, name: "imagen_principal" } };
-      handleChange(event);
+      const file = e.target.files[0];
+      if (file) {
+        const previewUrl = URL.createObjectURL(file);
+        setFotoPreview(previewUrl);
+        setFormData((prev) => ({ ...prev, imagen_principal: file }));
+      }
     },
     handleDropGaleria: (e) => {
       e.preventDefault();
       const files = e.dataTransfer.files;
       if (files.length) {
-        const event = { target: { name: "galeria", files, type: "file" } };
+        const event = { target: { name: "fotos", files, type: "file" } };
         handleChange(event);
       }
     },
@@ -225,7 +234,7 @@ export function useMascotaForm() {
       e.preventDefault();
     },
     handleImageChangeGaleria: (e) => {
-      const event = { target: { ...e.target, name: "galeria" } };
+      const event = { target: { ...e.target, name: "fotos" } };
       handleChange(event);
     },
     handleRemoveImagenGaleria: (index) => {

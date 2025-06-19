@@ -3,6 +3,7 @@ import { useMascotaForm } from "./useMascotaForm";
 export default function MascotaForm() {
   const {
     formData,
+    fotoPreview,
     mensaje,
     personalidadesDisponibles,
     refugiosDisponibles,
@@ -276,7 +277,7 @@ export default function MascotaForm() {
         <div className="space-y-6">
           {/* Imagen Principal */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="fileInputFoto">
               Imagen Principal <span className="text-red-500">*</span>
             </label>
             <div
@@ -290,14 +291,15 @@ export default function MascotaForm() {
               <input
                 type="file"
                 id="fileInputFoto"
+                name="imagen_principal"
                 className="hidden"
                 accept="image/*"
                 onChange={handleImageChange}
               />
-              {formData.fotoPreview ? (
+              {fotoPreview ? (
                 <div className="flex flex-col items-center">
                   <img
-                    src={formData.fotoPreview}
+                    src={fotoPreview}
                     alt="Preview"
                     className="max-h-48 max-w-full mb-4 rounded-lg object-cover"
                   />
@@ -352,6 +354,7 @@ export default function MascotaForm() {
                 accept="image/*"
                 multiple
                 onChange={handleImageChangeGaleria}
+                name="fotos"
               />
               {galeriaPreviews?.length > 0 ? (
                 <div className="flex flex-wrap gap-2 justify-center">
