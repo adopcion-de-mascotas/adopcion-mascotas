@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
-import { obtenerMascotaPorId, actualizarMascota } from "../../services/mascotasService";
-import { obtenerRefugios} from "../../services/refugioService";
+import {
+  obtenerMascotaPorId,
+  actualizarMascota,
+} from "../../services/mascotasService";
+import { obtenerRefugios } from "../../services/refugioService";
+import { obtenerPersonalidades } from "../../services/personalidadesService";
 
 const initialFormData = {
   nombre: "",
-  edad: 0,
+  edad: "",
   tipo: "",
   raza: "",
   genero: "",
   tamanio: "",
   peso: 0,
-  esterilizado: false,
+  esterelizado: false,
   estado: "",
   ciudad: "",
   descripcion: "",
@@ -42,13 +46,9 @@ export function useMascotaFormEdit(id) {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const personalidadesDisponibles = [
-    { id: 1, nombre: "Juguetón" },
-    { id: 2, nombre: "Cariñoso" },
-    { id: 3, nombre: "Protector" },
-    { id: 4, nombre: "Tranquilo" },
-  ];
+  const [personalidadesDisponibles, setPersonalidadesDisponibles] = useState(
+    []
+  );
 
   useEffect(() => {
     const cargarRefugios = async () => {
@@ -59,7 +59,16 @@ export function useMascotaFormEdit(id) {
         console.error("Error al cargar refugios:", error);
       }
     };
+    const cargarPersonalidades = async () => {
+      try {
+        const data = await obtenerPersonalidades();
+        setPersonalidadesDisponibles(data);
+      } catch (error) {
+        console.error("Error al cargar personalidades:", error);
+      }
+    };
     cargarRefugios();
+    cargarPersonalidades();
   }, []);
 
   useEffect(() => {
@@ -71,14 +80,19 @@ export function useMascotaFormEdit(id) {
         const formattedData = {
           ...initialFormData,
           ...data,
+          refugioId: data.refugio?.id || "", // 👈 Agregá esta línea
+
           peso: data.peso || 0,
-          esterilizado: data.esterilizado || false,
+          esterelizado: data.esterelizado || false,
           imagen_principal: null,
           galeria: [],
-          vacunas: Array.isArray(data.vacunas) ? data.vacunas : [],
-          personalidad: Array.isArray(data.personalidad)
-            ? data.personalidad
+          vacunas: Array.isArray(data.salud?.vacunas)
+            ? data.salud.vacunas.map((v) => v.id)
             : [],
+          personalidad: Array.isArray(data.personalidad)
+            ? data.personalidad.map((p) => p.id)
+            : [],
+
           comportamiento: {
             niños: data.comportamiento?.niños || "",
             perros: data.comportamiento?.perros || "",
@@ -168,11 +182,10 @@ export function useMascotaFormEdit(id) {
           [field]: value,
         },
       }));
-    } else if (type === "checkbox" && name === "esterilizado") {
-      setFormData((prev) => ({ ...prev, esterilizado: checked }));
+    } else if (type === "checkbox" && name === "esterelizado") {
+      setFormData((prev) => ({ ...prev, esterelizado: checked }));
     } else if (name === "edad" || name === "peso") {
-      const numValue = value === "" ? 0 : Number(value);
-      setFormData((prev) => ({ ...prev, [name]: numValue }));
+      setFormData((prev) => ({ ...prev, [name]: value }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
@@ -204,11 +217,8 @@ export function useMascotaFormEdit(id) {
     if (!formData.edad) newErrors.edad = "La edad es requerida";
     if (!formData.tipo?.trim()) newErrors.tipo = "El tipo es requerido";
     if (!formData.refugioId) newErrors.refugioId = "El refugio es requerido";
-
-    // Validar que peso sea un número válido
-    if (isNaN(formData.peso) || formData.peso < 0) {
-      newErrors.peso = "El peso debe ser un número válido";
-    }
+    if (!formData.edad?.trim()) newErrors.edad = "La edad es requerida";
+    if (!formData.peso?.trim()) newErrors.peso = "El peso es requerido";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -222,8 +232,8 @@ export function useMascotaFormEdit(id) {
     try {
       const dataToSend = {
         ...formData,
-        peso: Number(formData.peso),
-        edad: Number(formData.edad),
+        peso: formData.peso,
+        edad: formData.edad,
         personalidad: Array.isArray(formData.personalidad)
           ? formData.personalidad
           : [],

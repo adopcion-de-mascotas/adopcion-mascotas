@@ -173,7 +173,7 @@ export async function actualizarMascota(mascotaId, mascota) {
     formData.append("genero", mascota.genero?.trim() || "");
     formData.append("tamanio", mascota.tamanio?.trim() || "");
     formData.append("peso", mascota.peso !== undefined && mascota.peso !== null ? String(mascota.peso) : "");
-    formData.append("esterilizado", mascota.esterilizado ? "true" : "false");
+    formData.append("esterelizado", mascota.esterelizado ? "true" : "false");
     formData.append("estado", mascota.estado?.trim() || "");
     formData.append("ciudad", mascota.ciudad?.trim() || "");
     formData.append("descripcion", mascota.descripcion?.trim() || "");

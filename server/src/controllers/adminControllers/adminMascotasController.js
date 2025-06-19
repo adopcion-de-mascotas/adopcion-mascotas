@@ -105,12 +105,11 @@ module.exports = {
     },
 
     update: async (req, res) => {
-
         let errorsValidator = validationResult(req);
 
         if (errorsValidator.isEmpty()) {
-
             const transaction = await sequelize.transaction();
+
             try {
                 const mascota = await Mascota.findByPk(req.params.id, { transaction });
 
@@ -118,23 +117,21 @@ module.exports = {
                     throw new CustomError("Mascota no encontrada", 404);
                 }
 
-                // 1. Validar referencias si se están actualizando
+                // Validar referencias (refugio, salud, comportamiento)
                 if (req.body.refugioId) {
                     const refugio = await Refugio.findByPk(req.body.refugioId, { transaction });
                     if (!refugio) throw new CustomError("Refugio no encontrado", 404);
                 }
-
                 if (req.body.saludId) {
                     const salud = await Salud.findByPk(req.body.saludId, { transaction });
                     if (!salud) throw new CustomError("Registro de salud no encontrado", 404);
                 }
-
                 if (req.body.comportamientoId) {
                     const comportamiento = await Comportamiento.findByPk(req.body.comportamientoId, { transaction });
                     if (!comportamiento) throw new CustomError("Comportamiento no encontrado", 404);
                 }
 
-                // 2. Manejo de la imagen principal
+                // Manejo imagen principal
                 let imagenAnterior = null;
                 if (req.file) {
                     imagenAnterior = mascota.imagen_principal;
@@ -143,7 +140,7 @@ module.exports = {
                     mascota.imagen_principal = `${baseUrl}/images/mascotas/${req.file.filename}`;
                 }
 
-                // 3. Actualización parcial
+                // Campos a actualizar
                 const camposActualizables = [
                     'nombre', 'edad', 'tipo', 'raza', 'genero', 'tamanio', 'peso',
                     'esterelizado', 'estado', 'ciudad', 'descripcion', 'historia',
@@ -156,12 +153,20 @@ module.exports = {
                     }
                 });
 
-                const mascotaUpdated = await mascota.save({ transaction });
+                // Guardar cambios básicos
+                await mascota.save({ transaction });
+
+                // **ACTUALIZAR RELACIÓN DE PERSONALIDADES**
+                // Suponiendo que te llega un array de IDs en req.body.personalidad
+                if (Array.isArray(req.body.personalidad)) {
+                    await mascota.setPersonalidad(req.body.personalidad, { transaction });
+                }
+
                 await transaction.commit();
 
-                // 4. Eliminar imagen anterior si se actualizó
+                // Borrar imagen anterior si se actualizó
                 if (imagenAnterior) {
-                    const filename = path.basename(imagenAnterior); // Extraer el nombre del archivo desde la URL
+                    const filename = path.basename(imagenAnterior);
                     const imagePath = path.join(__dirname, '../../public/images/mascotas', filename);
 
                     if (fs.existsSync(imagePath)) {
@@ -174,11 +179,11 @@ module.exports = {
                     code: 200,
                     status: true,
                     message: "Mascota actualizada correctamente",
-                    body: mascotaUpdated
+                    body: mascota
                 });
 
             } catch (error) {
-                // Eliminar la nueva imagen si hubo error
+                // Borrar imagen nueva si hubo error
                 if (req.file && req.file.path) {
                     fs.unlinkSync(req.file.path);
                 }
@@ -198,7 +203,6 @@ module.exports = {
                 errors: errorsValidator.mapped()
             });
         }
-
     },
 
     remove: async (req, res) => {

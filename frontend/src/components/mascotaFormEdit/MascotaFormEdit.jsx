@@ -233,18 +233,18 @@ export function MascotaFormEdit() {
             )}
           </div>
 
-          {/* Esterilizado */}
+          {/* Esterelizado */}
           <div className="flex items-center gap-3">
             <input
               type="checkbox"
-              id="esterilizado"
-              name="esterilizado"
-              checked={formData.esterilizado} // ojo que aquí había typo: 'esterelizado' => 'esterilizado'
+              id="esterelizado"
+              name="esterelizado"
+              checked={formData.esterelizado} // ojo que aquí había typo: 'esterelizado' => 'esterelizado'
               onChange={handleChange}
               className="accent-blue-600"
             />
-            <label htmlFor="esterilizado" className="text-gray-700">
-              ¿Está esterilizado?
+            <label htmlFor="esterelizado" className="text-gray-700">
+              ¿Está esterelizado?
             </label>
           </div>
 
@@ -581,28 +581,6 @@ export function MascotaFormEdit() {
               {errors?.salud?.info_veterinaria && (
                 <p className="text-red-600 text-sm">
                   {errors.salud.info_veterinaria}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label
-                className="block font-semibold mb-1"
-                htmlFor="salud.observaciones"
-              >
-                Observaciones
-              </label>
-              <textarea
-                id="salud.observaciones"
-                name="salud.observaciones"
-                value={formData.salud.observaciones}
-                onChange={handleChange}
-                className="w-full border rounded px-3 py-2"
-                rows={2}
-              />
-              {errors?.salud?.observaciones && (
-                <p className="text-red-600 text-sm">
-                  {errors.salud.observaciones}
                 </p>
               )}
             </div>
