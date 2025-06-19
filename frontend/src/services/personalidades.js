@@ -1,7 +1,7 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export async function obtenerPersonalidades() {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (!token) {
         throw new Error("No hay token de autenticación disponible");
@@ -27,7 +27,7 @@ export async function obtenerPersonalidades() {
 
 
 export async function obtenerPersonalidadPorId(id) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (!token) {
         throw new Error("No hay token de autenticación disponible");
@@ -50,7 +50,7 @@ export async function obtenerPersonalidadPorId(id) {
 }
 
 export async function crearPersonalidad(nombre) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (!token) {
         throw new Error("No hay token de autenticación disponible");
@@ -81,7 +81,7 @@ export async function crearPersonalidad(nombre) {
 }
 
 export async function editarPersonalidad(id, nombre) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (!token) {
         throw new Error("No hay token de autenticación disponible");
@@ -112,7 +112,7 @@ export async function editarPersonalidad(id, nombre) {
 }
 
 export async function eliminarPersonalidad(id) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (!token) {
         throw new Error("No hay token de autenticación disponible");

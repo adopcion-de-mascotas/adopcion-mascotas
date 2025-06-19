@@ -11,7 +11,7 @@ export const useHomeData = () => {
 
   useEffect(() => {
     obtenerMascotas()
-      .then(setMascotas)
+      .then((res) => setMascotas(res.data.items))
       .catch(setError);
   }, []);
 

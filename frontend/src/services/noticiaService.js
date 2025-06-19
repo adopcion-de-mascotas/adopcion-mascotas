@@ -29,7 +29,7 @@ export async function obtenerNoticiaPorId(id) {
 
 
 export async function agregarNoticia(noticia) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const decoded = jwtDecode(token);
   const admin_id = decoded.id;  // o el campo que uses en tu token
 
@@ -80,7 +80,7 @@ export async function agregarNoticia(noticia) {
 // Editar una noticia existente
 
 export async function editarNoticia(id, noticia) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const decoded = jwtDecode(token);
   const admin_id = decoded.id;
 
@@ -131,7 +131,7 @@ export async function editarNoticia(id, noticia) {
 
 // Eliminar testimonio por ID
 export async function eliminarNoticia(id) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   if (!token) {
     throw new Error("No hay token de autenticación disponible");

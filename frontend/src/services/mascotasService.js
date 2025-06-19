@@ -50,7 +50,7 @@ export async function obtenerMascotaPorId(id) {
 
 
 export async function crearMascota(mascota) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const decoded = jwtDecode(token);
   const admin_id = decoded.id;
 
@@ -150,7 +150,7 @@ export async function crearMascota(mascota) {
 export async function actualizarMascota(mascotaId, mascota) {
   if (!mascotaId) throw new Error("El id de la mascota es obligatorio");
 
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   if (!token) throw new Error("No hay token de autenticación");
 
   const decoded = jwtDecode(token);
@@ -254,7 +254,7 @@ export async function actualizarMascota(mascotaId, mascota) {
 
 // Eliminar mascota por ID
 export async function eliminarMascota(id) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   if (!token) {
     throw new Error("No hay token de autenticación disponible");

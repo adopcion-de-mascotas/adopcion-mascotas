@@ -11,7 +11,7 @@ export async function obtenerRefugios() {
 }
 
 export async function obtenerRefugioPorId(id) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (!token) {
         throw new Error("No hay token de autenticación disponible");
@@ -40,7 +40,7 @@ export async function obtenerRefugioPorId(id) {
 }
 
 export async function crearRefugio(refugio) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const decoded = jwtDecode(token);
     const admin_id = decoded.id;
 
@@ -99,7 +99,7 @@ export async function crearRefugio(refugio) {
 }
 
 export async function actualizarRefugio(id, refugio) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const decoded = jwtDecode(token);
     const admin_id = decoded.id;
 
@@ -154,7 +154,7 @@ export async function actualizarRefugio(id, refugio) {
 
 
 export async function eliminarRefugio(id) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (!token) {
         throw new Error("No hay token de autenticación disponible");

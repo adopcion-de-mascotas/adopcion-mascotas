@@ -17,7 +17,7 @@ export default function Navbar() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    return !!localStorage.getItem("token");
+    return !!sessionStorage.getItem("token");
   });
 
   useEffect(() => {

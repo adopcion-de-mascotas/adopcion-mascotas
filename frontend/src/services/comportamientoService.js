@@ -1,7 +1,7 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export async function obtenerComportamientos() {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   if (!token) {
     throw new Error("No hay token de autenticación disponible");
@@ -26,7 +26,7 @@ export async function obtenerComportamientos() {
 }
 
 export async function obtenerComportamientoPorId(id) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   if (!token) throw new Error("No hay token de autenticación disponible");
 
   try {
@@ -48,7 +48,7 @@ export async function obtenerComportamientoPorId(id) {
 }
 
 export async function crearComportamiento({ niños, perros, gatos, apartamento }) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   if (!token) throw new Error("No hay token de autenticación disponible");
 
   try {
@@ -76,7 +76,7 @@ export async function crearComportamiento({ niños, perros, gatos, apartamento }
 }
 
 export async function editarComportamiento(id, { niños, perros, gatos, apartamento }) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   if (!token) throw new Error("No hay token de autenticación disponible");
 
   try {
@@ -104,7 +104,7 @@ export async function editarComportamiento(id, { niños, perros, gatos, apartame
 }
 
 export async function eliminarComportamiento(id) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   if (!token) throw new Error("No hay token de autenticación disponible");
 
   try {

@@ -37,7 +37,7 @@ export async function obtenerTestimonioPorId(id) {
 }
 
 export async function crearTestimonio(testimonio) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const decoded = jwtDecode(token);
   const admin_id = decoded.id;  // o el campo que uses en tu token
 
@@ -88,7 +88,7 @@ export async function crearTestimonio(testimonio) {
 // Actualizar testimonio por ID
 
 export async function actualizarTestimonio(id, testimonio) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const decoded = jwtDecode(token);
   const admin_id = decoded.id;
 
@@ -137,7 +137,7 @@ export async function actualizarTestimonio(id, testimonio) {
 
 // Eliminar testimonio por ID
 export async function eliminarTestimonio(id) {
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
 
   if (!token) {
     throw new Error("No hay token de autenticación disponible");

@@ -22,12 +22,12 @@ export async function login({ email, password, rememberMe }) {
 }
 
 export function logout() {
-  localStorage.removeItem("token");
+  sessionStorage.removeItem("token");
   window.location.href = "/";
 }
 
 export function isAuthenticated() {
-  return !!localStorage.getItem("token");
+  return !!sessionStorage.getItem("token");
 }
 
 // ✅ Registro de usuario
@@ -54,7 +54,7 @@ export async function registerUser(userData) {
 // ✏️ Editar usuario (requiere token)
 export async function editUser(updatedData) {
   try {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const res = await fetch(`${BASE_URL}/admin/session/editar`, {
       method: "PUT",
       headers: {
@@ -79,7 +79,7 @@ export async function editUser(updatedData) {
 // 🧾 Obtener usuario actual (perfil)
 export async function getCurrentUser() {
   try {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const res = await fetch(`${BASE_URL}/admin/session/:id`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -101,7 +101,7 @@ export async function getCurrentUser() {
 // 🗑️ Eliminar cuenta de usuario
 export async function deleteUser() {
   try {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const res = await fetch(`${BASE_URL}/admin/session/deleted`, {
       method: "DELETE",
       headers: {

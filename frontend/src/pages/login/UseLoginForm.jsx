@@ -33,7 +33,7 @@ export function useLoginForm() {
 
     try {
       const data = await login(form);
-      localStorage.setItem("token", data.token);
+      sessionStorage.setItem("token", data.token);
 
       await Swal.fire({
         icon: "success",
