@@ -2,7 +2,7 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 //import { jwtDecode } from "jwt-decode";
 
 export async function obtenerDirecciones() {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (!token) {
         throw new Error("No hay token de autenticación disponible");
@@ -32,7 +32,7 @@ export async function obtenerDirecciones() {
 }
 
 export async function obtenerDireccionPorId(id) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (!token) {
         throw new Error("No hay token de autenticación disponible");
@@ -58,7 +58,7 @@ export async function obtenerDireccionPorId(id) {
 }
 
 export async function crearDireccion(direccion) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (!token) throw new Error("No hay token de autenticación disponible");
 
@@ -87,7 +87,7 @@ export async function crearDireccion(direccion) {
 }
 
 export async function editarDireccion(id, direccion) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (!token) throw new Error("No hay token de autenticación disponible");
 
@@ -116,7 +116,7 @@ export async function editarDireccion(id, direccion) {
 }
 
 export async function eliminarDireccion(id) {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (!token) throw new Error("No hay token de autenticación disponible");
 

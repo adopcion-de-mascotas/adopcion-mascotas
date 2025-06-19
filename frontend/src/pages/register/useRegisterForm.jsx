@@ -32,7 +32,7 @@ export function useRegisterForm() {
 
     try {
       const data = await registerUser(form);
-      localStorage.setItem("token", data.token);
+      sessionStorage.setItem("token", data.token);
 
       // Usar SweetAlert para éxito
       await Swal.fire({

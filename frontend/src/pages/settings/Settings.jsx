@@ -34,7 +34,7 @@ export default function Settings() {
     if (confirmar) {
       // Simulación de eliminación
       setMensaje("Cuenta eliminada.");
-      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
       window.location.href = "/login";
 
       // En producción, llama a tu API para eliminar el usuario

@@ -4,19 +4,27 @@ import { crearRefugio} from "../../services/refugioService";
 
 export default function useRefugioForm() {
   const [formData, setFormData] = useState({
+  nombre: "",
+  descripcion: "",
+  info: "",
+  imagen: null,
+  imagenPreview: null,
+  direccion: {
+    calle: "",
+    barrio: "",
+    localidad: "",
+    provincia: "",
+    pais: "Argentina",
+    codigo_postal: "",
+  },
+  contacto: {
     nombre: "",
-    descripcion: "",
-    info: "",
-    direccion_id: "",
-    imagen: null,
-    imagenPreview: null,
-    contacto: {
-      nombre: "",
-      telefono: "",
-      email: "",
-      web: "",
-    },
-  });
+    telefono: "",
+    email: "",
+    web: "",
+  }
+});
+
 
   const [direcciones, setDirecciones] = useState([]); // <-- nuevo estado para direcciones
 
@@ -29,7 +37,7 @@ export default function useRefugioForm() {
     async function cargarDirecciones() {
       try {
         const data = await obtenerDirecciones();
-        setDirecciones(data);
+        setDirecciones(data.data);
       } catch (error) {
         console.error("Error al cargar direcciones:", error);
       }
@@ -39,28 +47,37 @@ export default function useRefugioForm() {
 
   // El resto de tu código de funciones (handleChange, handleImageChange, etc.) queda igual
   const handleChange = (e) => {
-    const { name, value } = e.target;
+  const { name, value } = e.target;
 
-    if (name.startsWith("contacto.")) {
-      const field = name.split(".")[1];
-      setFormData((prev) => ({
-        ...prev,
-        contacto: {
-          ...prev.contacto,
-          [field]: value,
-        },
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
+  if (name.startsWith("direccion.")) {
+    const field = name.split(".")[1];
+    setFormData((prev) => ({
+      ...prev,
+      direccion: {
+        ...prev.direccion,
+        [field]: value,
+      }
+    }));
+  } else if (name.startsWith("contacto.")) {
+    const field = name.split(".")[1];
+    setFormData((prev) => ({
+      ...prev,
+      contacto: {
+        ...prev.contacto,
+        [field]: value,
+      }
+    }));
+  } else {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
 
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: null }));
-    }
-  };
+  // Limpio error si había
+  if (errors[name]) setErrors((prev) => ({ ...prev, [name]: null }));
+};
+
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];

@@ -9,4 +9,9 @@ router.post('/', singleUpload, handleMulterErrors, refugioController.create);
 router.put('/:id', refugioValidator, singleUpload, handleMulterErrors, refugioController.update);
 router.delete('/:id', refugioController.delete);
 
+
+// Nuevas rutas GET
+router.get('/', refugioController.getAll);       // Obtener todos los refugios
+router.get('/:id', refugioController.getById);   // Obtener refugio por ID
+
 module.exports = router;

@@ -4,6 +4,84 @@ const { endpointResponse } = require('../../utils/success');
 const { Op } = require('sequelize');
 
 module.exports = {
+
+    // Obtener todos los refugios
+    getAll: async (req, res) => {
+        try {
+            const refugios = await Refugio.findAll({
+                attributes: ['id', 'nombre', 'descripcion', 'info', 'imagen'],
+                include: [
+                    {
+                        association: 'direccion',
+                        attributes: ['id', 'calle', 'barrio', 'localidad', 'provincia', 'pais', 'codigo_postal']
+                    },
+                    {
+                        association: 'contacto',
+                        attributes: ['id', 'nombre', 'telefono', 'email', 'web']
+                    }
+                ],
+                order: [['nombre', 'ASC']]
+            });
+
+            endpointResponse({
+                res,
+                message: 'Listado de refugios obtenido exitosamente',
+                body: refugios
+            });
+        } catch (error) {
+            endpointError({
+                res,
+                message: 'Error al obtener los refugios',
+                errors: [error.message]
+            });
+        }
+    },
+
+    // Obtener refugio por ID
+    getById: async (req, res) => {
+        try {
+            const { id } = req.params;
+
+            const refugio = await Refugio.findByPk(id, {
+                attributes: ['id', 'nombre', 'descripcion', 'info', 'imagen'],
+                include: [
+                    {
+                        association: 'direccion',
+                        attributes: ['id', 'calle', 'barrio', 'localidad', 'provincia', 'pais', 'codigo_postal']
+                    },
+                    {
+                        association: 'contacto',
+                        attributes: ['id', 'nombre', 'telefono', 'email', 'web']
+                    },
+                    {
+                        association: 'mascotas',
+                        attributes: ['id', 'nombre', 'edad', 'especie', 'raza']
+                    }
+                ]
+            });
+
+            if (!refugio) {
+                throw new CustomError('Refugio no encontrado', 404);
+            }
+
+            endpointResponse({
+                res,
+                message: 'Detalles del refugio obtenidos exitosamente',
+                body: refugio
+            });
+        } catch (error) {
+            endpointError({
+                res,
+                code: error.code || 500,
+                message: error.message || 'Error al obtener el refugio',
+                errors: error.errors || [error.message]
+            });
+        }
+    },
+
+    // Resto de métodos que ya tenés: create, update, delete ...
+
+
     // Crear refugio con dirección (en un solo paso)
     create: async (req, res) => {
         const transaction = await sequelize.transaction();

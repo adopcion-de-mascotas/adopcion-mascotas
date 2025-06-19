@@ -144,7 +144,7 @@ export default function RefugioForm() {
                   -- Seleccione una dirección --
                 </option>
                 {(direcciones || []).map((dir) => (
-                  <option key={dir.id} value={dir.id}>
+                  <option className="dark:text-black" key={dir.id} value={dir.id}>
                     {`${dir.calle}, ${dir.localidad}, ${dir.provincia}, ${dir.pais}`}
                   </option>
                 ))}
