@@ -106,9 +106,8 @@ export function useMascotaFormEdit(id) {
           },
         };
         setFormData(formattedData);
-
-        if (data.imagenUrl) setFotoPreview(data.imagenUrl);
-        if (data.galeriaUrls) setGaleriaPreviews(data.galeriaUrls);
+        if (data.imagen_principal) setFotoPreview(data.imagen_principal);
+        if (data.galeria) setGaleriaPreviews(data.galeria);
 
         setLoading(false);
       })
@@ -120,10 +119,17 @@ export function useMascotaFormEdit(id) {
 
   useEffect(() => {
     return () => {
-      if (fotoPreview && fotoPreview.startsWith("blob:"))
+      if (
+        fotoPreview &&
+        typeof fotoPreview === "string" &&
+        fotoPreview.startsWith("blob:")
+      )
         URL.revokeObjectURL(fotoPreview);
+
       galeriaPreviews.forEach((url) => {
-        if (url.startsWith("blob:")) URL.revokeObjectURL(url);
+        if (typeof url === "string" && url.startsWith("blob:")) {
+          URL.revokeObjectURL(url);
+        }
       });
     };
   }, [fotoPreview, galeriaPreviews]);
