@@ -34,6 +34,7 @@ import DireccionesDashboard from "../components/direccionesDashboard/Direcciones
 import DireccionForm from "../components/direccionesForm/direccionesForm";
 import DireccionFormEdit from "../components/direccionesFormEdit/direccionesFormEdit";
 import Settings from "../components/settings/Settings";
+import RefugioFormEdit from "../components/refugioFormEdit/refugioFormEdit";
 
 export default function AppRoutes() {
   return (
@@ -80,6 +81,7 @@ export default function AppRoutes() {
 
         <Route path="refugio" element={<RefugioDashboard />} />
         <Route path="refugioForm" element={<RefugioForm />} />
+        <Route path="refugioFormEdit/:id" element={<RefugioFormEdit />} />
 
         <Route path="direcciones" element={<DireccionesDashboard />} />
         <Route path="direccionForm" element={<DireccionForm />} />

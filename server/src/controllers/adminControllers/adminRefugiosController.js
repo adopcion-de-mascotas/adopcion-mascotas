@@ -38,6 +38,7 @@ module.exports = {
     },
 
     // Obtener refugio por ID
+
     getById: async (req, res) => {
         try {
             const { id } = req.params;
@@ -52,10 +53,6 @@ module.exports = {
                     {
                         association: 'contacto',
                         attributes: ['id', 'nombre', 'telefono', 'email', 'web']
-                    },
-                    {
-                        association: 'mascotas',
-                        attributes: ['id', 'nombre', 'edad', 'especie', 'raza']
                     }
                 ]
             });
@@ -78,9 +75,6 @@ module.exports = {
             });
         }
     },
-
-    // Resto de métodos que ya tenés: create, update, delete ...
-
 
     // Crear refugio con dirección (en un solo paso)
     create: async (req, res) => {
