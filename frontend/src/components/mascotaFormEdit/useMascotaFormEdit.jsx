@@ -85,7 +85,9 @@ export function useMascotaFormEdit(id) {
           peso: data.peso || 0,
           esterelizado: data.esterelizado || false,
           imagen_principal: null,
-          galeria: [],
+          galeria: Array.isArray(data.galeria)
+            ? data.galeria.map((img) => img.id)
+            : [],
           vacunas: Array.isArray(data.salud?.vacunas)
             ? data.salud.vacunas.map((v) => v.id)
             : [],
@@ -107,7 +109,13 @@ export function useMascotaFormEdit(id) {
         };
         setFormData(formattedData);
         if (data.imagen_principal) setFotoPreview(data.imagen_principal);
-        if (data.galeria) setGaleriaPreviews(data.galeria);
+        if (Array.isArray(data.galeria)) {
+          // Tomamos el campo 'foto' para cada imagen
+          const urls = data.galeria.map((img) => img.foto).filter(Boolean);
+          setGaleriaPreviews(urls);
+        } else {
+          setGaleriaPreviews([]);
+        }
 
         setLoading(false);
       })
