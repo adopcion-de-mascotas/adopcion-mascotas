@@ -108,7 +108,7 @@ export async function editarDireccion(id, direccion) {
             throw new Error("Error al editar la dirección");
         }
 
-        return data.data;
+        return data;
     } catch (error) {
         console.error("Error en editarDireccion:", error);
         throw error;

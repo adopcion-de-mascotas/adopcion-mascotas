@@ -80,7 +80,7 @@ export default function DireccionesDashboard() {
                     <td className="px-4 py-3 border">{direccion.codigo_postal}</td>
                     <td className="px-4 py-3 border space-x-2">
                       <Link
-                        to={`/dashboard/direcciones/${direccion.id}`}
+                        to={`/dashboard/direccionFormEdit/${direccion.id}`}
                         className="inline-flex items-center justify-center bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                       >
                         Editar

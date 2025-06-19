@@ -32,6 +32,8 @@ import { MascotaFormEdit } from "../components/mascotaFormEdit/MascotaFormEdit";
 import RefugioDashboard from "../components/refugioDashboard/RefugioDashboard";
 import RefugioForm from "../components/refugioForm/RefugioForm";
 import DireccionesDashboard from "../components/direccionesDashboard/DireccionesDashboard";
+import DireccionForm from "../components/direccionesForm/direccionesForm";
+import DireccionFormEdit from "../components/direccionesFormEdit/direccionesFormEdit";
 
 export default function AppRoutes() {
   return (
@@ -80,6 +82,8 @@ export default function AppRoutes() {
         <Route path="refugioForm" element={<RefugioForm />} />
 
         <Route path="direcciones" element={<DireccionesDashboard />} />
+        <Route path="direccionForm" element={<DireccionForm />} />
+        <Route path="direccionFormEdit/:id" element={<DireccionFormEdit />} />
 
         <Route path="settings" element={<Settings />} />
       </Route>
