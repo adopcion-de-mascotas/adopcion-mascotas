@@ -96,18 +96,25 @@ export async function crearMascota(mascota) {
 
 
     // Comportamiento
-    if (mascota.comportamiento) {
-      formData.append("comportamiento[niños]", mascota.comportamiento.niños || "");
-      formData.append("comportamiento[perros]", mascota.comportamiento.perros || "");
-      formData.append("comportamiento[gatos]", mascota.comportamiento.gatos || "");
-      formData.append("comportamiento[apartamento]", mascota.comportamiento.apartamento || "");
+    /*     if (mascota.comportamiento) {
+          formData.append("comportamiento[niños]", mascota.comportamiento.niños || "");
+          formData.append("comportamiento[perros]", mascota.comportamiento.perros || "");
+          formData.append("comportamiento[gatos]", mascota.comportamiento.gatos || "");
+          formData.append("comportamiento[apartamento]", mascota.comportamiento.apartamento || "");
+        } */
+
+    if (mascota.comportamientoId) {
+      formData.append("comportamientoId", mascota.comportamientoId || "")
     }
 
     // Salud
-    if (mascota.salud) {
-      formData.append("salud[estado]", mascota.salud.estado || "");
-      formData.append("salud[tratamiento]", mascota.salud.tratamiento || "");
-      formData.append("salud[info_veterinaria]", mascota.salud.info_veterinaria || "");
+    /*     if (mascota.salud) {
+          formData.append("salud[estado]", mascota.salud.estado || "");
+          formData.append("salud[tratamiento]", mascota.salud.tratamiento || "");
+          formData.append("salud[info_veterinaria]", mascota.salud.info_veterinaria || "");
+        } */
+    if (mascota.saludId) {
+      formData.append("saludId", mascota.saludId || "")
     }
 
     // Vacunas (array de ids)

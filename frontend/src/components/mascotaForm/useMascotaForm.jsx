@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { crearMascota } from "../../services/mascotasService";
 import { obtenerRefugios } from "../../services/refugioService";
+import { addSaludMascota } from "../../services/saludService";
+import { crearComportamiento } from "../../services/comportamientoService";
 
 const initialFormData = {
   nombre: "",
@@ -166,6 +168,25 @@ export function useMascotaForm() {
     }
 
     try {
+
+      const salud = await addSaludMascota(formData.salud)
+      if (salud && salud.data.id) {
+        formData["saludId"] = salud.data.id;
+        delete formData.salud;
+      } else {
+        console.error("No se pudo obtener un ID de salud válido");
+      }
+
+      const comportamiento = await crearComportamiento(formData.comportamiento)
+      console.log(comportamiento);
+      
+      if (comportamiento && comportamiento.data.id) {
+        formData["comportamientoId"] = comportamiento.data.id;
+        delete formData.comportamiento;
+      } else {
+        console.error("No se pudo obtener un ID de salud válido");
+      }
+
       await crearMascota(formData);
       setMensaje("✅ Mascota creada exitosamente");
       setFormData(initialFormData);

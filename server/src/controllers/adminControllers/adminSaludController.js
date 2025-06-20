@@ -7,7 +7,6 @@ const { validationResult } = require('express-validator')
 module.exports = {
     // Crear registro de salud
     create: async (req, res) => {
-
         const errorsValidator = validationResult(req);
         if (errorsValidator.isEmpty()) {
 
