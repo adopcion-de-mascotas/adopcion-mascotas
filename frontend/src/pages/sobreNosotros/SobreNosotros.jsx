@@ -3,6 +3,7 @@ import { teamMembers } from "../../data/team";
 import Project from "./project/Project";
 import Contact from "../../components/contact/Contact";
 import Carrousel from "../../components/carrousel/Carrousel";
+import RefugiosList from "./cardRefugio/RefugiosList";
 
 export default function SobreNosotros() {
   return (
@@ -10,7 +11,6 @@ export default function SobreNosotros() {
       <Carrousel />
       {/* Team section */}
       <main className="container mx-auto px-4 py-8">
-      
         <section id="team" className=" ">
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
@@ -66,6 +66,7 @@ export default function SobreNosotros() {
 
       {/* Project section */}
       <Project />
+      <RefugiosList />
     </>
   );
 }
