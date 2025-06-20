@@ -1,14 +1,15 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { obtenerRefugios, obtenerRefugioPorId } from "../../../services/refugioService";
+import { obtenerDireccionPorId } from "../../../services/direccionesService";
 
 export default function RefugiosList() {
-  const [refugiosConContacto, setRefugiosConContacto] = useState([]);
+  const [refugiosConDatos, setRefugiosConDatos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchRefugiosConContacto = async () => {
+    const fetchRefugiosConDatos = async () => {
       try {
         const refugios = await obtenerRefugios();
 
@@ -16,15 +17,20 @@ export default function RefugiosList() {
           refugios.map(async (r) => {
             try {
               const detallado = await obtenerRefugioPorId(r.id);
-              return { ...r, contacto: detallado.contacto || null };
+              const direccion = await obtenerDireccionPorId(r.direccion_id);
+              return {
+                ...r,
+                contacto: detallado.contacto || null,
+                direccion: direccion || null,
+              };
             } catch (err) {
-              console.warn("No se pudo obtener contacto de", r.nombre);
+              console.warn("No se pudo obtener datos completos de", r.nombre);
               return r;
             }
           })
         );
 
-        setRefugiosConContacto(refugiosDetallados);
+        setRefugiosConDatos(refugiosDetallados);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -32,19 +38,20 @@ export default function RefugiosList() {
       }
     };
 
-    fetchRefugiosConContacto();
+    fetchRefugiosConDatos();
   }, []);
 
-  if (loading) return <p className="text-center">Cargando refugios...</p>;
-  if (error) return <p className="text-center text-red-500">{error}</p>;
+  if (loading) return <p className="text-center mt-6">Cargando refugios...</p>;
+  if (error) return <p className="text-center text-red-500 mt-6">{error}</p>;
 
   return (
     <section className="container mx-auto px-4 py-12">
       <h2 className="text-4xl font-extrabold text-center text-indigo-700 mb-12">
         Refugios que apoyamos
       </h2>
+
       <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {refugiosConContacto.map((refugio) => (
+        {refugiosConDatos.map((refugio) => (
           <div
             key={refugio.id}
             className="bg-white dark:bg-gray-900 shadow-xl rounded-2xl overflow-hidden hover:scale-[1.02] transition-all border border-gray-200 dark:border-gray-700"
@@ -68,9 +75,16 @@ export default function RefugiosList() {
               <p className="text-gray-600 dark:text-gray-300 italic mb-2">
                 {refugio.descripcion}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
                 {refugio.info}
               </p>
+
+              {/* Dirección */}
+              {refugio.direccion && (
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                  📍 {refugio.direccion.calle}, {refugio.direccion.barrio}
+                </p>
+              )}
 
               {/* Contacto */}
               {refugio.contacto && (
