@@ -73,6 +73,7 @@ export default function Navbar() {
   // Links a mostrar si NO está logueado
   const publicLinks = (
     <>
+    
       <a
         href="/mascotas"
         className="text-gray-700 hover:text-indigo-600 font-medium"

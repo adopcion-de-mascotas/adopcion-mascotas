@@ -1,10 +1,47 @@
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { logout } from "../../services/authService";
+import {
+  logout as cerrarSesion,
+  isAuthenticated,
+} from "../../services/authService";
+import SnowfallEffect from "./climas/SnowfallEffect"; // Asegurate que esté creado
 import "./Dashboard.css";
+import RainEffect from "./climas/RainEffect";
+import SunnyEffect from "./climas/SunnyEffect";
+import MoonEffect from "./climas/MoonEffect";
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Leé el estado de la nieve desde localStorage al iniciar
+  const [nieveActiva, setNieveActiva] = useState(() => {
+    return localStorage.getItem("nieveActiva") === "true";
+  });
+
+  const [lluviaActiva, setLluviaActiva] = useState(() => {
+    return localStorage.getItem("lluviaActiva") === "true";
+  });
+
+  const [solActivo, setSolActivo] = useState(() => {
+    return localStorage.getItem("solActivo") === "true";
+  });
+
+  const [lunaActiva, setLunaActiva] = useState(() => {
+    return localStorage.getItem("lunaActiva") === "true";
+  });
+
+  const toggleNieve = () => {
+    const nuevaNieve = !nieveActiva;
+    setNieveActiva(nuevaNieve);
+    localStorage.setItem("nieveActiva", nuevaNieve);
+  };
+
+  const usuarioLogueado = isAuthenticated();
+
+  const handleLogout = () => {
+    setNieveActiva(false); // Opcional: quitar nieve al salir
+    cerrarSesion();
+  };
 
   return (
     <>
@@ -29,7 +66,7 @@ export default function Dashboard() {
 
           {/* Navegación */}
           <nav className="mt-6">
-            <div className="px-4 mt-2 ">
+            <div className="px-4 mt-2">
               <Link
                 to="/dashboard/direcciones"
                 className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
@@ -38,7 +75,7 @@ export default function Dashboard() {
                 <span>Direcciones</span>
               </Link>
             </div>
-            <div className="px-4 mt-2 ">
+            <div className="px-4 mt-2">
               <Link
                 to="/dashboard/refugio"
                 className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
@@ -47,7 +84,7 @@ export default function Dashboard() {
                 <span>Refugios</span>
               </Link>
             </div>
-            <div className="px-4 mt-2 ">
+            <div className="px-4 mt-2">
               <Link
                 to="/dashboard/mascota"
                 className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
@@ -83,28 +120,92 @@ export default function Dashboard() {
                 <span>Register</span>
               </Link>
             </div>
-
             <div className="px-4 mt-2">
               <Link
-                to={`/dashboard/settings`}
+                to="/dashboard/settings"
                 className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
               >
                 <i className="fas fa-cog mr-3"></i>
                 <span>Settings</span>
               </Link>
             </div>
+
+            {/* Botón activar nieve solo visible si el usuario está logueado */}
+            {usuarioLogueado && (
+              <div className="px-4 mt-2">
+                <button
+                  onClick={toggleNieve}
+                  className="w-full flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
+                >
+                  <i className="fas fa-snowflake mr-3"></i>
+                  <span>{nieveActiva ? "Quitar Nieve" : "Activar Nieve"}</span>
+                </button>
+              </div>
+            )}
+
+            {usuarioLogueado && (
+              <div className="px-4 mt-2">
+                <button
+                  onClick={() => {
+                    const nuevo = !solActivo;
+                    setSolActivo(nuevo);
+                    localStorage.setItem("solActivo", nuevo);
+                  }}
+                  className="w-full flex items-center px-4 py-3 text-yellow-600 hover:bg-yellow-100 rounded-lg dark:hover:bg-yellow-400"
+                >
+                  <i className="fas fa-sun mr-3"></i>
+                  <span>{solActivo ? "Quitar Sol" : "Activar Sol"}</span>
+                </button>
+              </div>
+            )}
+
+            {usuarioLogueado && (
+              <div className="px-4 mt-2">
+                <button
+                  onClick={() => {
+                    const nuevo = !lunaActiva;
+                    setLunaActiva(nuevo);
+                    localStorage.setItem("lunaActiva", nuevo);
+                  }}
+                  className="w-full flex items-center px-4 py-3 text-gray-400 hover:bg-gray-700 rounded-lg dark:hover:bg-gray-600"
+                >
+                  <i className="fas fa-moon mr-3"></i>
+                  <span>{lunaActiva ? "Quitar Luna" : "Activar Luna"}</span>
+                </button>
+              </div>
+            )}
+
+            {usuarioLogueado && (
+              <div className="px-4 mt-2">
+                <button
+                  onClick={() => {
+                    const nueva = !lluviaActiva;
+                    setLluviaActiva(nueva);
+                    localStorage.setItem("lluviaActiva", nueva);
+                  }}
+                  className="w-full flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
+                >
+                  <i className="fas fa-cloud-showers-heavy mr-3"></i>
+                  <span>
+                    {lluviaActiva ? "Quitar Lluvia" : "Activar Lluvia"}
+                  </span>
+                </button>
+              </div>
+            )}
           </nav>
 
           {/* Cerrar sesión */}
-          <div className="px-4 mt-2">
-            <button
-              onClick={logout}
-              className="w-full flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
-            >
-              <i className="fas fa-sign-out-alt mr-3"></i>
-              <span>Cerrar sesión</span>
-            </button>
-          </div>
+          {usuarioLogueado && (
+            <div className="px-4 mt-2">
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
+              >
+                <i className="fas fa-sign-out-alt mr-3"></i>
+                <span>Cerrar sesión</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Contenido principal */}
@@ -130,11 +231,17 @@ export default function Dashboard() {
         {/* Overlay para móviles */}
         {sidebarOpen && (
           <div
-            className=" inset-0 bg-black bg-opacity-40 w-auto h-auto z-20 md:hidden"
+            className="inset-0 bg-black bg-opacity-40 w-auto h-auto z-20 md:hidden"
             onClick={() => setSidebarOpen(false)}
           ></div>
         )}
       </div>
+
+      {/* Efecto de nieve visible para todos si está activado */}
+      {nieveActiva && <SnowfallEffect />}
+      {lluviaActiva && <RainEffect />}
+      {solActivo && <SunnyEffect />}
+      {lunaActiva && <MoonEffect />}
     </>
   );
 }

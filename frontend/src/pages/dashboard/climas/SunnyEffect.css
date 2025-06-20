@@ -1,0 +1,33 @@
+.sun-icon {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 3rem;
+  z-index: 9998;
+  animation: pulse 4s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.sun-sparkle {
+  position: fixed;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle, rgba(255,255,150,0.8), transparent);
+  border-radius: 50%;
+  animation: rise linear;
+  z-index: 9997;
+  pointer-events: none;
+}
+
+@keyframes rise {
+  to {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
+}

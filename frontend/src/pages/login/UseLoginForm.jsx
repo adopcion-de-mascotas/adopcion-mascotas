@@ -39,7 +39,7 @@ export function useLoginForm() {
         icon: "success",
         title: "¡Inicio exitoso!",
         text: "Bienvenido/a nuevamente.",
-        timer: 2000,
+        timer: 700,
         showConfirmButton: false,
       });
 
