@@ -256,7 +256,7 @@ export default function MascotaForm() {
               Personalidad:
             </label>
             <div className="flex flex-wrap gap-4">
-              {personalidadesDisponibles.map((p) => (
+              {personalidadesDisponibles?.map((p) => (
                 <label key={p.id} className="flex items-center gap-2">
                   <input
                     type="checkbox"

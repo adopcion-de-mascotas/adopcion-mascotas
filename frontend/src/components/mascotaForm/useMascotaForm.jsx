@@ -3,6 +3,7 @@ import { crearMascota } from "../../services/mascotasService";
 import { obtenerRefugios } from "../../services/refugioService";
 import { addSaludMascota } from "../../services/saludService";
 import { crearComportamiento } from "../../services/comportamientoService";
+import { obtenerPersonalidades } from "../../services/personalidadesService";
 
 const initialFormData = {
   nombre: "",
@@ -43,13 +44,8 @@ export function useMascotaForm() {
   const [galeriaPreviews, setGaleriaPreviews] = useState([]);
   const [refugiosDisponibles, setRefugiosDisponibles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [personalidadesDisponibles, setPersonalidadesDisponibles] = useState([])
 
-  const personalidadesDisponibles = [
-    { id: 1, nombre: "Juguetón" },
-    { id: 2, nombre: "Cariñoso" },
-    { id: 3, nombre: "Protector" },
-    { id: 4, nombre: "Tranquilo" },
-  ];
 
   const vacunasDisponibles = [
     { id: 1, nombre: "Parvovirus" },
@@ -66,6 +62,17 @@ export function useMascotaForm() {
         console.error("Error al cargar refugios:", error);
       }
     };
+
+    const personalidades = async () => {
+      try {
+        const data = await obtenerPersonalidades()
+        setPersonalidadesDisponibles(data)
+      } catch (error) {
+        console.error("Error al cargar refugios:", error);
+      }
+    }
+
+    personalidades()
     cargarRefugios();
   }, []);
 
@@ -179,7 +186,7 @@ export function useMascotaForm() {
 
       const comportamiento = await crearComportamiento(formData.comportamiento)
       console.log(comportamiento);
-      
+
       if (comportamiento && comportamiento.data.id) {
         formData["comportamientoId"] = comportamiento.data.id;
         delete formData.comportamiento;
