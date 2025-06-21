@@ -16,8 +16,8 @@ export function useMascotasDashboard() {
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(initialPage);
-  const [total, setTotal] = useState(18)
-  const [limit, setLimit] = useState(5);
+  const [total, setTotal] = useState(null)
+  const [limit, setLimit] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
 
   const cargarMascotas = async () => {
@@ -25,8 +25,9 @@ export function useMascotasDashboard() {
     try {
       const mascotasData = await obtenerMascotas({ search, page, total, limit });
       setMascotas(mascotasData.data.items);
+      setLimit(mascotasData.data.pagination.limit)
       setTotal(total)
-      setTotalPages(Math.ceil(total / limit));
+      setTotalPages(mascotasData.data.pagination.pages);
     } catch (error) {
       console.error("Error al cargar mascotas:", error);
     } finally {
@@ -60,10 +61,10 @@ export function useMascotasDashboard() {
   };
 
   const obtenerNombreRefugio = (refugioId) => {
-  if (!Array.isArray(refugios)) return "-";
-  const refugio = refugios.find((r) => r.id === refugioId);
-  return refugio ? refugio.nombre : "-";
-};
+    if (!Array.isArray(refugios)) return "-";
+    const refugio = refugios.find((r) => r.id === refugioId);
+    return refugio ? refugio.nombre : "-";
+  };
 
 
   useEffect(() => {
