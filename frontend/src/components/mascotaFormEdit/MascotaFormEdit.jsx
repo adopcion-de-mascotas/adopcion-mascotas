@@ -254,7 +254,7 @@ export function MascotaFormEdit() {
               Personalidad:
             </label>
             <div className="flex flex-wrap gap-4">
-              {personalidadesDisponibles.map((p) => (
+              {personalidadesDisponibles?.map((p) => (
                 <label key={p.id} className="flex items-center gap-2">
                   <input
                     type="checkbox"
@@ -590,7 +590,7 @@ export function MascotaFormEdit() {
           <div>
             <label className="block font-semibold mb-1">Vacunas</label>
             <div className="flex flex-wrap gap-4">
-              {(vacunasDisponibles ?? []).map((vacuna) => (
+              {vacunasDisponibles?.map((vacuna) => (
                 <label key={vacuna.id} className="flex items-center gap-2">
                   <input
                     type="checkbox"

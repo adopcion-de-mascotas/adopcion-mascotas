@@ -111,7 +111,7 @@ export default function Mascota_Id() {
 
                 <h3 className="font-bold text-gray-800 mb-2">Personalidad</h3>
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {mascota.personalidad?.map((item, i) => (
+                  {mascota.personalidades?.map((item, i) => (
                     <span key={i} className="bg-gray-100 px-2 py-1 rounded text-sm dark:text-black">{item.nombre}</span>
                   ))}
                 </div>

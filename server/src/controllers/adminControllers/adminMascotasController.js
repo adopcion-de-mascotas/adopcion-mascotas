@@ -7,9 +7,6 @@ const path = require('path');
 
 module.exports = {
     create: async (req, res) => {
-
-        console.log(req.body, "CASASD")
-
         let errorsValidator = validationResult(req);
 
         if (errorsValidator.isEmpty()) {
@@ -26,7 +23,6 @@ module.exports = {
 
                 // 2. Verificar referencias existentes
                 const { refugioId, saludId, comportamientoId, vacunas, personalidad } = req.body;
-
 
                 await Promise.all([
                     Refugio.findByPk(refugioId, { transaction }).then(refugio => {

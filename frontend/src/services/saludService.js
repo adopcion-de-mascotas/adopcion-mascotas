@@ -26,3 +26,19 @@ export const addSaludMascota = (data) => {
         body: JSON.stringify(data)
     });
 };
+
+export const updateSalud = (id, data) => {
+    const token = sessionStorage.getItem("token");
+
+    console.log(data)
+
+    return fetchData(
+        `${saludUrl}/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data)
+    });
+}   

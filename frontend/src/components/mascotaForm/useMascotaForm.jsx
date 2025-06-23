@@ -198,8 +198,6 @@ export function useMascotaForm() {
         console.error("No se pudo obtener un ID de salud válido");
       }
 
-      console.log(formData, "Datos enviados a API")
-
       await crearMascota(formData);
 
       setMensaje("✅ Mascota creada exitosamente");
