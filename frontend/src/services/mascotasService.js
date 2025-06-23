@@ -211,6 +211,7 @@ export async function actualizarMascota(mascotaId, mascota) {
     formData.append("salud[estado]", salud.estado?.trim() || "");
     formData.append("salud[tratamiento]", salud.tratamiento?.trim() || "");
     formData.append("salud[info_veterinaria]", salud.info_veterinaria?.trim() || "");
+    formData.append("saludId", mascota.saludId || "");
 
     // Vacunas (array de ids)
     const vacunas = Array.isArray(mascota.vacunas) ? mascota.vacunas : [];

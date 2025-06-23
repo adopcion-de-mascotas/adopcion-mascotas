@@ -272,13 +272,10 @@ export function useMascotaFormEdit(id) {
         vacunas: Array.isArray(formData.vacunas) ? formData.vacunas : [],
       };
 
-      const comportamientoUpdated = await editarComportamiento(formData.comportamientoId, dataToSend.comportamiento);
-      const saludUpdated = await updateSalud(formData.saludId, dataToSend.salud)
+      await editarComportamiento(formData.comportamientoId, dataToSend.comportamiento);
+      await updateSalud(formData.saludId, dataToSend.salud)
 
-      console.log(comportamientoUpdated.data.id)
-      console.log(saludUpdated.data)
-
-      //await actualizarMascota(id, dataToSend);
+      await actualizarMascota(id, dataToSend);
       setMensaje("✅ Mascota actualizada exitosamente");
     } catch (error) {
       console.error("Error al actualizar la mascota:", error);
