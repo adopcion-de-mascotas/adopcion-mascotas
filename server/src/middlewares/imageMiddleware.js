@@ -69,6 +69,6 @@ const handleMulterErrors = (err, req, res, next) => {
 
 module.exports = {
     singleUpload: upload.single('imagen_principal'), // Para subida única
-    multiUpload: upload.array('fotos', 10), // Para subida múltiple (máx 10)
+    multiUpload: upload.array('galeria', 3), // Para subida múltiple (máx 10)
     handleMulterErrors
 };

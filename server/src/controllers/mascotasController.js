@@ -92,13 +92,13 @@ module.exports = {
                 include: [
                     {
                         model: Personalidad,
-                        as: "personalidad",
+                        as: "personalidades",
                         attributes: ["id", "nombre"],
                         through: { attributes: [] }
                     },
                     {
                         model: GaleriaMascota,
-                        as: 'galeria', // Asegúrate que este alias coincida con tu asociación en el modelo Mascota
+                        as: 'galeria',
                         attributes: ['id', 'foto'],
                         order: [['id', 'ASC']]
                     },
@@ -161,15 +161,15 @@ module.exports = {
             const mascotaData = mascota.get({ plain: true });
 
             // Agregar URL base a las fotos (ajusta según tu configuración)
-            mascotaData.galeria = mascotaData.galeria.map(foto => ({
+ /*            mascotaData.galeria = mascotaData.galeria.map(foto => ({
                 ...foto,
                 url: `${req.protocol}://${req.get('host')}/images/mascotas/${foto.foto}`
             }));
-
+ */
             // Agregar URL para la imagen principal si existe
-            if (mascotaData.imagen_principal) {
+/*             if (mascotaData.imagen_principal) {
                 mascotaData.imagen_principal_url = `${req.protocol}://${req.get('host')}/images/mascotas/${mascotaData.imagen_principal}`;
-            }
+            } */
 
             endpointResponse({
                 res,

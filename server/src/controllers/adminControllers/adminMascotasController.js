@@ -8,6 +8,8 @@ const path = require('path');
 module.exports = {
     create: async (req, res) => {
 
+        console.log(req.body, "CASASD")
+
         let errorsValidator = validationResult(req);
 
         if (errorsValidator.isEmpty()) {
@@ -23,7 +25,8 @@ module.exports = {
                 }
 
                 // 2. Verificar referencias existentes
-                const { refugioId, saludId, comportamientoId } = req.body;
+                const { refugioId, saludId, comportamientoId, vacunas, personalidad } = req.body;
+
 
                 await Promise.all([
                     Refugio.findByPk(refugioId, { transaction }).then(refugio => {
@@ -38,11 +41,6 @@ module.exports = {
                 ]);
 
                 // 3. Manejo de la imagen principal
-                /*                 let imagenPrincipal = null;
-                                if (req.file) {
-                                    imagenPrincipal = req.file.filename;
-                                } */
-
                 let imagenPrincipal = null;
                 if (req.file) {
                     const baseUrl = `${req.protocol}://${req.get('host')}`;
@@ -71,6 +69,24 @@ module.exports = {
                     saludId
                 }, { transaction });
 
+                // 1. Buscás la instancia de Salud
+                const salud = await Salud.findByPk(saludId, { transaction });
+
+                if (!salud) {
+                    throw new Error('No se encontró la instancia de Salud');
+                }
+
+                // 2. Asociás las vacunas a la salud
+                if (Array.isArray(vacunas) && vacunas.length > 0) {
+                    await salud.addVacunas(vacunas.map(id => parseInt(id)), { transaction });
+                }
+
+                // 3. Asociás las personalidades a la mascota
+                if (Array.isArray(personalidad) && personalidad.length > 0) {
+                    await nuevaMascota.addPersonalidades(personalidad.map(id => parseInt(id)), { transaction });
+                }
+
+                // 4. Confirmás la transacción
                 await transaction.commit();
 
                 endpointResponse({
@@ -206,7 +222,6 @@ module.exports = {
     },
 
     remove: async (req, res) => {
-        console.log('remove controller')
         const transaction = await sequelize.transaction();
         try {
             const mascota = await Mascota.findByPk(req.params.id, {
@@ -217,7 +232,6 @@ module.exports = {
             if (!mascota) {
                 throw new CustomError("Mascota no encontrada", 404);
             }
-            console.log('llego')
 
             // 1. Eliminar imagen principal
             if (mascota.imagen_principal) {

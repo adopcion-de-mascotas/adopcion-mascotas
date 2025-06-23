@@ -8,15 +8,15 @@ module.exports = {
     // Obtener todas las fotos de una mascota
     getByMascota: async (req, res) => {
         try {
-            const { mascotaId } = req.params;
+            const { id } = req.params;
 
-            const mascota = await Mascota.findByPk(mascotaId);
+            const mascota = await Mascota.findByPk(id);
             if (!mascota) {
                 throw new CustomError('Mascota no encontrada', 404);
             }
 
             const fotos = await GaleriaMascota.findAll({
-                where: { mascotaId },
+                where: { id },
                 attributes: ['id', 'foto'],
                 order: [['id', 'ASC']]
             });
@@ -45,13 +45,13 @@ module.exports = {
     create: async (req, res) => {
         const transaction = await sequelize.transaction();
         try {
-            const { mascotaId } = req.params;
+            const { id } = req.params;
 
             if (!req.files || req.files.length === 0) {
                 throw new CustomError('No se han subido imágenes', 400);
             }
 
-            const mascota = await Mascota.findByPk(mascotaId, { transaction });
+            const mascota = await Mascota.findByPk(id, { transaction });
             if (!mascota) {
                 // Eliminar todos los archivos subidos si la mascota no existe
                 req.files.forEach(file => fs.unlinkSync(file.path));
@@ -61,10 +61,10 @@ module.exports = {
             // Crear registros para cada foto
             const fotosSubidas = await Promise.all(
                 req.files.map(async (file) => {
-                    const urlCompleta = `${req.protocol}://${req.get('host')}/public/images/mascotas/${file.filename}`;
+                    const urlCompleta = `${req.protocol}://${req.get('host')}/images/mascotas/${file.filename}`;
                     return await GaleriaMascota.create({
                         foto: urlCompleta,
-                        mascotaId
+                        mascotaId: id
                     }, { transaction });
                 })
             );

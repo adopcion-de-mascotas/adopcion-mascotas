@@ -56,10 +56,10 @@ module.exports = (sequelize, DataTypes) => {
 
     // Relación muchos a muchos con personalidad
     Mascota.belongsToMany(models.Personalidad, {
-      through: 'MascotaPersonalidad',
-      foreignKey: 'mascotaId',
-      otherKey: 'personalidadId',
-      as: "personalidad"
+      through: 'mascota_personalidad', // nombre exacto de la tabla pivote en la DB
+      foreignKey: 'mascotaId',         // columna FK hacia Mascota en la tabla pivote
+      otherKey: 'personalidadId',      // columna FK hacia Personalidad en la tabla pivote
+      as: 'personalidades',            // alias para la relación
     });
   };
 

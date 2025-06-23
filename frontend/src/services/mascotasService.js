@@ -1,5 +1,6 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
 import { jwtDecode } from "jwt-decode";
+import { postGalery } from "./galeriaService";
 
 
 export async function obtenerMascotas({ search, page, limit, tipo, raza, edad, tamanio, estado, ciudad, genero } = {}) {
@@ -51,7 +52,7 @@ export async function obtenerMascotaPorId(id) {
 }
 
 
-export async function crearMascota(mascota) {
+/* export async function crearMascota(mascota) {
   const token = sessionStorage.getItem("token");
   const decoded = jwtDecode(token);
   const admin_id = decoded.id;
@@ -89,32 +90,16 @@ export async function crearMascota(mascota) {
     // Galería
     if (Array.isArray(mascota.galeria)) {
       mascota.galeria.forEach((file) => {
-        formData.append("galeria[]", file);
+        formData.append("galeria", file);
       });
     } else if (mascota.galeria) {
       console.warn("La galería no es un array. Tipo recibido:", typeof mascota.galeria, mascota.galeria);
     }
 
-
-
-    // Comportamiento
-    /*     if (mascota.comportamiento) {
-          formData.append("comportamiento[niños]", mascota.comportamiento.niños || "");
-          formData.append("comportamiento[perros]", mascota.comportamiento.perros || "");
-          formData.append("comportamiento[gatos]", mascota.comportamiento.gatos || "");
-          formData.append("comportamiento[apartamento]", mascota.comportamiento.apartamento || "");
-        } */
-
     if (mascota.comportamientoId) {
       formData.append("comportamientoId", mascota.comportamientoId || "")
     }
 
-    // Salud
-    /*     if (mascota.salud) {
-          formData.append("salud[estado]", mascota.salud.estado || "");
-          formData.append("salud[tratamiento]", mascota.salud.tratamiento || "");
-          formData.append("salud[info_veterinaria]", mascota.salud.info_veterinaria || "");
-        } */
     if (mascota.saludId) {
       formData.append("saludId", mascota.saludId || "")
     }
@@ -131,6 +116,10 @@ export async function crearMascota(mascota) {
       console.log(`${key}:`, value);
     }
 
+    
+
+    console.log(formData, "Datos enviados al servicio de API")
+
     const response = await fetch(`${BASE_URL}/admin/mascotas`, {
       method: "POST",
       headers: {
@@ -141,6 +130,9 @@ export async function crearMascota(mascota) {
 
     const data = await response.json();
 
+    const responseGaleria = await postGalery(data.data.id, formData.galeria)
+    console.log(responseGaleria)
+
     if (!response.ok) {
       console.error("Respuesta del servidor:", data);
       if (data.errors) {
@@ -150,6 +142,100 @@ export async function crearMascota(mascota) {
     }
 
     return data;
+  } catch (error) {
+    console.error("Error en crearMascota:", error);
+    throw error;
+  }
+} */
+
+export async function crearMascota(mascota) {
+  const token = sessionStorage.getItem("token");
+  const decoded = jwtDecode(token);
+  const admin_id = decoded.id;
+
+  try {
+    // 1. Crear FormData sin galería
+    const formDataSinGaleria = new FormData();
+
+    const agregarCampo = (key, valor) => {
+      if (valor !== undefined && valor !== null) {
+        formDataSinGaleria.append(key, valor);
+      }
+    };
+
+    agregarCampo("nombre", mascota.nombre);
+    agregarCampo("edad", mascota.edad);
+    agregarCampo("tipo", mascota.tipo);
+    agregarCampo("raza", mascota.raza);
+    agregarCampo("genero", mascota.genero);
+    agregarCampo("tamanio", mascota.tamanio);
+    agregarCampo("peso", mascota.peso?.toString());
+    agregarCampo("esterelizado", mascota.esterelizado ? "true" : "false");
+    agregarCampo("estado", mascota.estado);
+    agregarCampo("ciudad", mascota.ciudad);
+    agregarCampo("descripcion", mascota.descripcion);
+    agregarCampo("historia", mascota.historia);
+    agregarCampo("refugioId", mascota.refugioId?.toString());
+    agregarCampo("admin_id", admin_id);
+
+    if (mascota.imagen_principal) {
+      formDataSinGaleria.append("imagen_principal", mascota.imagen_principal);
+    }
+
+    if (mascota.personalidad?.length) {
+      mascota.personalidad.forEach(id => {
+        formDataSinGaleria.append("personalidad[]", id.toString());
+      });
+    }
+
+    if (mascota.comportamientoId) {
+      agregarCampo("comportamientoId", mascota.comportamientoId);
+    }
+
+    if (mascota.saludId) {
+      agregarCampo("saludId", mascota.saludId);
+    }
+
+    if (mascota.vacunas?.length) {
+      mascota.vacunas.forEach(id => {
+        formDataSinGaleria.append("vacunas[]", id.toString());
+      });
+    }
+
+    // 2. Enviar datos al backend (sin galería)
+    const response = await fetch(`${BASE_URL}/admin/mascotas`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formDataSinGaleria,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Error al crear mascota:", data);
+      throw new Error("Error al crear la mascota");
+    }
+
+    // 3. Enviar galería si existe
+    if (Array.isArray(mascota.galeria) && mascota.galeria.length > 0) {
+      const mascotaId = data.data.id;
+
+      try {
+        const galeriaResponse = await postGalery(mascotaId, mascota.galeria);
+
+        if (!galeriaResponse || galeriaResponse.error) {
+          console.error("Error al subir galería:", galeriaResponse);
+          throw new Error("Error al subir la galería de imágenes");
+        }
+      } catch (error) {
+        console.error("Error subiendo galería:", error);
+        throw new Error("No se pudo subir la galería de imágenes");
+      }
+    }
+    return data;
+
   } catch (error) {
     console.error("Error en crearMascota:", error);
     throw error;

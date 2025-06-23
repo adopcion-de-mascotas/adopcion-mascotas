@@ -5,8 +5,10 @@ module.exports = (sequelize, DataTypes) => {
 
     Personalidad.associate = models => {
         Personalidad.belongsToMany(models.Mascota, {
-            as: "mascotas",
-            through: 'MascotaPersonalidad'
+            through: 'mascota_personalidad',
+            foreignKey: 'personalidadId',
+            otherKey: 'mascotaId',
+            as: 'mascotas',
         });
     };
 

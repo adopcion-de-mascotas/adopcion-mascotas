@@ -1,5 +1,5 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
-const saludUrl = `${BASE_URL}/admin/salud`;
+const vacunaUrl = `${BASE_URL}/admin/vacunas`
 
 const fetchData = async (url, options = {}) => {
     try {
@@ -15,14 +15,17 @@ const fetchData = async (url, options = {}) => {
     }
 };
 
-export const addSaludMascota = (data) => {
+
+export const getAllVacunas = async () => {
     const token = sessionStorage.getItem("token");
-    return fetchData(saludUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data)
-    });
-};
+
+    return fetchData(
+        vacunaUrl,
+        {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }
+    )
+}

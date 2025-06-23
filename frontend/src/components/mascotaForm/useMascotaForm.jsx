@@ -4,6 +4,8 @@ import { obtenerRefugios } from "../../services/refugioService";
 import { addSaludMascota } from "../../services/saludService";
 import { crearComportamiento } from "../../services/comportamientoService";
 import { obtenerPersonalidades } from "../../services/personalidadesService";
+import { getAllVacunas } from "../../services/vacunaService";
+
 
 const initialFormData = {
   nombre: "",
@@ -45,13 +47,7 @@ export function useMascotaForm() {
   const [refugiosDisponibles, setRefugiosDisponibles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [personalidadesDisponibles, setPersonalidadesDisponibles] = useState([])
-
-
-  const vacunasDisponibles = [
-    { id: 1, nombre: "Parvovirus" },
-    { id: 2, nombre: "Rabia" },
-    { id: 3, nombre: "Moquillo" },
-  ];
+  const [vacunasDisponibles, setVacunasDisponibles] = useState([])
 
   useEffect(() => {
     const cargarRefugios = async () => {
@@ -68,12 +64,22 @@ export function useMascotaForm() {
         const data = await obtenerPersonalidades()
         setPersonalidadesDisponibles(data)
       } catch (error) {
-        console.error("Error al cargar refugios:", error);
+        console.error("Error al cargar personalidades:", error);
       }
     }
 
-    personalidades()
+    const vacunas = async () => {
+      try {
+        const data = await getAllVacunas()
+        setVacunasDisponibles(data.data)
+      } catch (error) {
+        console.error("Error al cargar vacunas:", error);
+      }
+    }
+
+    personalidades();
     cargarRefugios();
+    vacunas();
   }, []);
 
   // Limpieza de URLs para evitar memory leaks
@@ -164,7 +170,6 @@ export function useMascotaForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData, "Dataaaaaaaaaaaaaaaaaaaaaaaaa")
     setIsLoading(true);
     setMensaje("");
 
@@ -185,7 +190,6 @@ export function useMascotaForm() {
       }
 
       const comportamiento = await crearComportamiento(formData.comportamiento)
-      console.log(comportamiento);
 
       if (comportamiento && comportamiento.data.id) {
         formData["comportamientoId"] = comportamiento.data.id;
@@ -194,7 +198,10 @@ export function useMascotaForm() {
         console.error("No se pudo obtener un ID de salud válido");
       }
 
+      console.log(formData, "Datos enviados a API")
+
       await crearMascota(formData);
+
       setMensaje("✅ Mascota creada exitosamente");
       setFormData(initialFormData);
       setFotoPreview(null);
@@ -238,10 +245,6 @@ export function useMascotaForm() {
     handleDragOver: (e) => {
       e.preventDefault();
     },
-    /*     handleImageChange: (e) => {
-          const event = { target: { ...e.target, name: "imagen_principal" } };
-          handleChange(event);
-        }, */
     handleImageChange: (e) => {
       const file = e.target.files[0];
       if (file) {
@@ -262,8 +265,24 @@ export function useMascotaForm() {
       e.preventDefault();
     },
     handleImageChangeGaleria: (e) => {
-      const event = { target: { ...e.target, name: "fotos" } };
-      handleChange(event);
+      const files = e.target.files;
+
+      if (!files || !files.length) return;
+
+      const filesArray = Array.from(files);
+
+      // Crear URLs para previsualización
+      const newPreviews = filesArray.map((file) => URL.createObjectURL(file));
+
+      // Acumular las nuevas imágenes y previews
+      setGaleriaPreviews((prev) => [...prev, ...newPreviews]);
+
+      setFormData((prev) => ({
+        ...prev,
+        galeria: [...prev.galeria, ...filesArray],
+      }));
+
+      setErrors((prev) => ({ ...prev, galeria: null }));
     },
     handleRemoveImagenGaleria: (index) => {
       const newGaleria = [...formData.galeria];

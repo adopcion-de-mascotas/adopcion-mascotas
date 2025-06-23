@@ -281,9 +281,8 @@ export default function MascotaForm() {
               Imagen Principal <span className="text-red-500">*</span>
             </label>
             <div
-              className={`dropzone rounded-lg p-8 text-center cursor-pointer ${
-                errors?.foto ? "border-red-500 bg-red-50" : ""
-              }`}
+              className={`dropzone rounded-lg p-8 text-center cursor-pointer ${errors?.foto ? "border-red-500 bg-red-50" : ""
+                }`}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onClick={() => document.getElementById("fileInputFoto").click()}
@@ -338,10 +337,13 @@ export default function MascotaForm() {
               Galería de imágenes <span className="text-red-500">*</span>
             </label>
             <div
-              className={`dropzone rounded-lg p-8 text-center cursor-pointer ${
-                errors?.galeria ? "border-red-500 bg-red-50" : ""
-              }`}
-              onDrop={handleDropGaleria}
+              className={`dropzone rounded-lg p-8 text-center cursor-pointer ${errors?.galeria ? "border-red-500 bg-red-50" : ""
+                }`}
+              onDrop={(e) => {
+                e.preventDefault();
+                e.stopPropagation(); // detener propagación para que no active onChange
+                handleDropGaleria(e);
+              }}
               onDragOver={handleDragOverGaleria}
               onClick={() =>
                 document.getElementById("fileInputGaleria").click()
@@ -355,6 +357,7 @@ export default function MascotaForm() {
                 multiple
                 onChange={handleImageChangeGaleria}
                 name="fotos"
+                disabled={formData.galeria.length >= 3}
               />
               {galeriaPreviews?.length > 0 ? (
                 <div className="flex flex-wrap gap-2 justify-center">
@@ -561,7 +564,7 @@ export default function MascotaForm() {
               Vacunas:
             </label>
             <div className="flex flex-wrap gap-4">
-              {(vacunasDisponibles || []).map((v) => (
+              {vacunasDisponibles?.map((v) => (
                 <label key={v.id} className="flex items-center gap-2">
                   <input
                     type="checkbox"
@@ -584,9 +587,8 @@ export default function MascotaForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className={`bg-purple-600 text-white px-6 py-2 rounded-lg transition ${
-            isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-purple-700"
-          }`}
+          className={`bg-purple-600 text-white px-6 py-2 rounded-lg transition ${isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-purple-700"
+            }`}
         >
           {isLoading ? "Guardando..." : "Guardar Mascota"}
         </button>
