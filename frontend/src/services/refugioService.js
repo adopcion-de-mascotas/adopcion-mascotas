@@ -53,7 +53,6 @@ export async function crearRefugio(formData) {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,
-                // ¡NO pongas 'Content-Type'! fetch lo maneja con FormData automáticamente
             },
             body: formData,
         });

@@ -99,8 +99,88 @@ module.exports = {
             });
         }
     },
+    update: async (req, res) => {
+        const transaction = await sequelize.transaction();
+        try {
+            const { id } = req.params;
 
-    delete: async (req, res) => {
+            //Si no llegan imágenes nuevas, no hacer nada
+            if (!req.files || req.files.length === 0) {
+                return endpointResponse({
+                    res,
+                    code: 200,
+                    message: "No se enviaron nuevas imágenes. Galería no modificada.",
+                    body: [],
+                });
+            }
+
+            // Verificar si existe la mascota
+            const mascota = await Mascota.findByPk(id, { transaction });
+            if (!mascota) {
+                // Eliminar archivos subidos si la mascota no existe
+                req.files.forEach(file => fs.unlinkSync(file.path));
+                throw new CustomError("Mascota no encontrada", 404);
+            }
+
+            // 1️⃣ Eliminar las imágenes anteriores (BD + archivos)
+            const fotosAnteriores = await GaleriaMascota.findAll({ where: { mascotaId: id }, transaction });
+
+            for (const foto of fotosAnteriores) {
+                // Extraer nombre de archivo
+                const filename = path.basename(foto.foto);
+                const filePath = path.join(__dirname, "../../public/images/mascotas", filename);
+
+                // Eliminar archivo físico si existe
+                if (fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath);
+                }
+
+                // Eliminar de la base
+                await foto.destroy({ transaction });
+            }
+
+            // 2️⃣ Subir las nuevas imágenes
+            const nuevasFotos = await Promise.all(
+                req.files.map(async (file) => {
+                    const urlCompleta = `${req.protocol}://${req.get('host')}/images/mascotas/${file.filename}`;
+                    return await GaleriaMascota.create({
+                        foto: urlCompleta,
+                        mascotaId: id
+                    }, { transaction });
+                })
+            );
+
+            await transaction.commit();
+
+            return endpointResponse({
+                res,
+                code: 200,
+                message: "Galería actualizada correctamente",
+                body: nuevasFotos,
+            });
+
+        } catch (error) {
+            await transaction.rollback();
+
+            // Limpiar archivos si hubo error
+            if (req.files) {
+                req.files.forEach(file => {
+                    if (fs.existsSync(file.path)) {
+                        fs.unlinkSync(file.path);
+                    }
+                });
+            }
+
+            return endpointError({
+                res,
+                code: error.code || 500,
+                message: error.message || "Error al actualizar la galería",
+                errors: error.errors || [error.message]
+            });
+        }
+    },
+
+        delete: async (req, res) => {
         try {
             const { id } = req.params;
 
@@ -133,5 +213,5 @@ module.exports = {
                 errors: error.errors || [error.message]
             });
         }
-    }
+    },
 }

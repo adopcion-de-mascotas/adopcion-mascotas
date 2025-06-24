@@ -275,6 +275,7 @@ export function useMascotaFormEdit(id) {
       await editarComportamiento(formData.comportamientoId, dataToSend.comportamiento);
       await updateSalud(formData.saludId, dataToSend.salud)
 
+      console.log(dataToSend)
       await actualizarMascota(id, dataToSend);
       setMensaje("✅ Mascota actualizada exitosamente");
     } catch (error) {

@@ -9,6 +9,8 @@ router.get('/:id', galeriaController.getByMascota);
 // Agregar foto a galería
 router.post('/:id', multiUpload, handleMulterErrors, galeriaController.create);
 
+router.put('/:id', multiUpload, handleMulterErrors, galeriaController.update);
+
 // Eliminar foto
 router.delete('/:id', galeriaController.delete);
 

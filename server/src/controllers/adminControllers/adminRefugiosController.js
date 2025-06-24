@@ -80,58 +80,69 @@ module.exports = {
     create: async (req, res) => {
         const transaction = await sequelize.transaction();
         try {
-            const { nombre, descripcion, info, imagen, direccion } = req.body;
+            const { nombre, descripcion, info, direccion } = req.body;
 
-            // 1. Validaciones básicas del refugio
-            if (!nombre || !descripcion) {
-                throw new CustomError('Nombre y descripción son campos obligatorios', 400);
+            // Validación básica
+            if (!nombre || !descripcion || !direccion) {
+                throw new CustomError("Nombre, descripción y dirección son obligatorios", 400);
             }
 
-            // 2. Crear la dirección primero
+            // 1. Crear dirección
             const nuevaDireccion = await Direcciones.create({
                 calle: direccion.calle,
                 barrio: direccion.barrio,
                 localidad: direccion.localidad,
                 provincia: direccion.provincia,
-                pais: direccion.pais || 'Argentina',
+                pais: direccion.pais || "Argentina",
                 codigo_postal: direccion.codigo_postal,
-                descripcion: direccion.descripcion || null
+                descripcion: direccion.descripcion || null,
             }, { transaction });
 
-            // 3. Crear el refugio con la dirección
+            // 2. Procesar imagen (si existe)
+            let urlImagen = null;
+            if (req.file) {
+                const filename = req.file.filename;
+                urlImagen = `${req.protocol}://${req.get("host")}/images/refugios/${filename}`;
+            }
+
+            // 3. Crear refugio
             const nuevoRefugio = await Refugio.create({
                 nombre,
                 descripcion,
                 info: info || null,
-                imagen: imagen || null,
+                imagen: urlImagen,
                 direccion_id: nuevaDireccion.id
             }, { transaction });
 
             await transaction.commit();
 
-            // 4. Obtener el refugio creado con relaciones
+            // 4. Obtener refugio con relaciones
             const refugioCompleto = await Refugio.findByPk(nuevoRefugio.id, {
-                include: [
-                    {
-                        association: 'direccion',
-                        attributes: ['id', 'calle', 'localidad', 'provincia']
-                    }
-                ]
+                include: [{
+                    association: "direccion",
+                    attributes: ["id", "calle", "localidad", "provincia"]
+                }]
             });
 
             endpointResponse({
                 res,
                 code: 201,
-                message: 'Refugio creado exitosamente con su dirección',
+                message: "Refugio creado exitosamente con su dirección",
                 body: refugioCompleto
             });
 
         } catch (error) {
             await transaction.rollback();
+
+            // Eliminar imagen subida si ocurrió un error
+            if (req.file && fs.existsSync(req.file.path)) {
+                fs.unlinkSync(req.file.path);
+            }
+
             endpointError({
                 res,
                 code: error.code || 500,
-                message: error.message || 'Error al crear el refugio',
+                message: error.message || "Error al crear el refugio",
                 errors: error.errors || [error.message]
             });
         }
