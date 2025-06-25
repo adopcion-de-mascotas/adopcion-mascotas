@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { obtenerDirecciones } from "../../services/direccionesService";
+import { editarDireccion, obtenerDirecciones } from "../../services/direccionesService";
 import {
   actualizarRefugio,
   obtenerRefugioPorId,
 } from "../../services/refugioService";
+import { updateContacto } from "../../services/contactoService";
 
 export default function useRefugioFormEdit() {
   const { id: idRefugio } = useParams();
@@ -16,6 +17,7 @@ export default function useRefugioFormEdit() {
     imagen: null,
     imagenPreview: null,
     direccion: {
+      id: "",
       calle: "",
       barrio: "",
       localidad: "",
@@ -24,10 +26,12 @@ export default function useRefugioFormEdit() {
       codigo_postal: "",
     },
     contacto: {
+      id: "",
       nombre: "",
       telefono: "",
       email: "",
       web: "",
+      refugio_id: ""
     },
   });
 
@@ -40,7 +44,6 @@ export default function useRefugioFormEdit() {
     async function cargarRefugioExistente() {
       try {
         const data = await obtenerRefugioPorId(idRefugio);
-
         const contacto = data.contacto || {};
         const direccion = data.direccion || {};
 
@@ -51,6 +54,7 @@ export default function useRefugioFormEdit() {
           imagen: null,
           imagenPreview: data.imagen || null,
           direccion: {
+            id: direccion.id || "",
             calle: direccion.calle || "",
             barrio: direccion.barrio || "",
             localidad: direccion.localidad || "",
@@ -59,10 +63,12 @@ export default function useRefugioFormEdit() {
             codigo_postal: direccion.codigo_postal || "",
           },
           contacto: {
+            id: contacto.id || "",
             nombre: contacto.nombre || "",
             telefono: contacto.telefono || "",
             email: contacto.email || "",
             web: contacto.web || "",
+            refugio_id: data.id
           },
         });
       } catch (error) {
@@ -166,6 +172,7 @@ export default function useRefugioFormEdit() {
       telefono: formData.contacto.telefono || "",
       email: formData.contacto.email || "",
       web: formData.contacto.web || "",
+      refugio_id: formData.contacto.refugio_id || ""
     };
 
     if (!contacto.nombre.trim()) {
@@ -204,18 +211,21 @@ export default function useRefugioFormEdit() {
       formToSend.append("info", formData.info);
 
       if (formData.imagen) {
-        formToSend.append("imagen", formData.imagen);
+        formToSend.append("imagen_principal", formData.imagen);
       }
 
-      Object.entries(formData.direccion).forEach(([key, value]) => {
-        formToSend.append(key, value);
-      });
+      console.log(formData);
 
-      Object.entries(formData.contacto).forEach(([key, value]) => {
-        formToSend.append(`contacto_${key}`, value || ""); // <-- aseguro string
-      });
+      const response = await actualizarRefugio(idRefugio, formToSend);
+      console.log(response);
+      formData.contacto.id
 
-      await actualizarRefugio(idRefugio, formToSend);
+      const idDireccion = formData.direccion.id
+      const idContacto = formData.contacto.id
+
+      await editarDireccion(idDireccion, formData.direccion)
+      await updateContacto(idContacto, formData.contacto)
+
       setSubmitSuccess(true);
     } catch (error) {
       console.error("Error al actualizar refugio:", error);

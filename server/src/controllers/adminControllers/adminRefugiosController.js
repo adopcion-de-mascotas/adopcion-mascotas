@@ -1,7 +1,8 @@
 const { Refugio, Direcciones, Mascota, sequelize } = require("../../database/models");
 const { endpointError, CustomError } = require('../../utils/error');
 const { endpointResponse } = require('../../utils/success');
-const { Op } = require('sequelize');
+const path = require("path")
+const fs = require("fs")
 
 module.exports = {
 
@@ -150,49 +151,57 @@ module.exports = {
 
     // Actualizar refugio (dirección por separado)
     update: async (req, res) => {
+        const transaction = await sequelize.transaction();
+
+        console.log(req.body);
+
         try {
             const { id } = req.params;
-            const { nombre, descripcion, info, imagen } = req.body;
+            const { nombre, descripcion, info } = req.body;
 
-            // 1. Obtener refugio existente
+            // 1. Buscar el refugio
             const refugio = await Refugio.findByPk(id, {
                 include: [
-                    {
-                        association: 'direccion',
-                        attributes: ['id', 'calle', 'localidad']
-                    },
-                    {
-                        association: 'contacto',
-                        attributes: ['id', 'telefono', 'email']
-                    }
-                ]
+                    { association: 'direccion', attributes: ['id', 'calle', 'localidad', 'provincia', "pais"] },
+                    { association: 'contacto', attributes: ['id', "nombre", 'telefono', 'email', 'web'] }
+                ],
+                transaction
             });
 
             if (!refugio) {
                 throw new CustomError('Refugio no encontrado', 404);
             }
 
-            // 2. Actualizar solo campos básicos (dirección se actualiza aparte)
-            const camposActualizables = { nombre, descripcion, info, imagen };
-            Object.keys(camposActualizables).forEach(key => {
-                if (camposActualizables[key] !== undefined) {
-                    refugio[key] = camposActualizables[key];
+            // 2. Procesar imagen nueva (si hay)
+            let nuevaImagen = refugio.imagen;
+            if (req.file) {
+                // Eliminar imagen anterior si existía
+                if (refugio.imagen) {
+                    const pathAntiguo = path.join(__dirname, '../../public/images/refugios/', path.basename(refugio.imagen));
+                    if (fs.existsSync(pathAntiguo)) {
+                        fs.unlinkSync(pathAntiguo);
+                    }
                 }
-            });
 
-            await refugio.save();
+                const filename = req.file.filename;
+                nuevaImagen = `${req.protocol}://${req.get("host")}/images/refugios/${filename}`;
+            }
 
-            // 3. Obtener datos actualizados
+            // 3. Actualizar campos permitidos
+            refugio.nombre = nombre ?? refugio.nombre;
+            refugio.descripcion = descripcion ?? refugio.descripcion;
+            refugio.info = info ?? refugio.info;
+            refugio.imagen = nuevaImagen;
+
+            await refugio.save({ transaction });
+
+            await transaction.commit();
+
+            // 4. Traer los datos actualizados
             const refugioActualizado = await Refugio.findByPk(id, {
                 include: [
-                    {
-                        association: 'direccion',
-                        attributes: ['id', 'calle', 'localidad', 'provincia']
-                    },
-                    {
-                        association: 'contacto',
-                        attributes: ['id', 'telefono', 'email', 'web']
-                    }
+                    { association: 'direccion', attributes: ['id', 'calle', 'localidad', 'provincia'] },
+                    { association: 'contacto', attributes: ['id', 'telefono', 'email', 'web'] }
                 ]
             });
 
@@ -203,6 +212,13 @@ module.exports = {
             });
 
         } catch (error) {
+            await transaction.rollback();
+
+            // Eliminar imagen nueva si hubo error
+            if (req.file && fs.existsSync(req.file.path)) {
+                fs.unlinkSync(req.file.path);
+            }
+
             endpointError({
                 res,
                 code: error.code || 500,
@@ -232,33 +248,59 @@ module.exports = {
                 throw new CustomError('Refugio no encontrado', 404);
             }
 
-            // 2. Eliminar en cascada
-            if (refugio.contacto) {
+            console.log(refugio);
+            
+            // 2. Eliminar contacto si existe
+            if (refugio.contacto !== null) {
                 await refugio.contacto.destroy({ transaction });
             }
 
-            if (refugio.mascotas && refugio.mascotas.length > 0) {
+            // 3. Eliminar mascotas asociadas si existen
+            if (refugio.mascotas?.length > 0) {
                 await Mascota.destroy({
-                    where: { refugioId: id },
+                    where: { refugio_id: id },
                     transaction
                 });
             }
 
-            // 3. Eliminar refugio y dirección asociada
-            await refugio.destroy({ transaction });
+            console.log(refugio.imagen, "ASDASDASDASD");
+            
+            // 4. Eliminar imagen si existe
+            if (refugio.imagen && refugio.imagen !== "") {
+                console.log("NASDASDASDASd");
+                
+                const rutaImagen = path.join(__dirname, '../../public/images/refugios/', path.basename(refugio.imagen));
+                console.log(rutaImagen);
+                console.log();
+                
+                
+                if (fs.existsSync(rutaImagen)) {
+                    console.log("BORAAA");
+                    
+                    fs.unlinkSync(rutaImagen);
+                }
+            }
 
+            console.log("hasta aca llega");
+            // 5. Eliminar refugio
+            await refugio.destroy({ transaction });
+            console.log("hasta aca llega des");
+
+            // 6. Eliminar dirección si existe
             if (refugio.direccion) {
                 await Direcciones.destroy({
-                    where: { id: refugio.direccion_id },
+                    where: { id: refugio.direccion.id },
                     transaction
                 });
             }
+
+            
 
             await transaction.commit();
 
             endpointResponse({
                 res,
-                message: 'Refugio, dirección y relaciones eliminados exitosamente',
+                message: 'Refugio, dirección, contacto, mascotas e imagen eliminados exitosamente',
                 body: { id }
             });
 

@@ -1,5 +1,5 @@
 const BASE_URL = import.meta.env.VITE_API_URL;
-import { jwtDecode } from "jwt-decode";
+import { createContacto } from "./contactoService";
 
 
 export async function obtenerRefugios() {
@@ -42,11 +42,7 @@ export async function obtenerRefugioPorId(id) {
 export async function crearRefugio(formData) {
 
     const token = sessionStorage.getItem("token");
-    const decoded = jwtDecode(token);
-    const admin_id = decoded.id;
 
-    // Aseguramos que tenga admin_id
-    formData.append("admin_id", admin_id);
 
     try {
         const response = await fetch(`${BASE_URL}/admin/refugios`, {
@@ -64,44 +60,48 @@ export async function crearRefugio(formData) {
             throw new Error(data.message || "Error al crear el refugio");
         }
 
+        const dataFormContact = {
+            refugio_id: data?.data.id || "",
+            nombre: formData.get("contacto_nombre") || "",
+            email: formData.get("contacto_email") || "",
+            telefono: formData.get("contacto_telefono") || "",
+            web: formData.get("contacto_web") || ""
+        };
+
+        await createContacto(dataFormContact, token)
+
         return data;
     } catch (error) {
         console.error("Error en crearRefugio:", error);
         throw error;
     }
-} 
+}
 
 
 export async function actualizarRefugio(id, formData) {
-  const token = sessionStorage.getItem("token");
-  const decoded = jwtDecode(token);
-  const admin_id = decoded.id;
+    const token = sessionStorage.getItem("token");
 
-  // Agregar admin_id directamente
-  formData.append("admin_id", admin_id);
+    try {
+        const response = await fetch(`${BASE_URL}/admin/refugios/${id}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+        });
 
-  try {
-    const response = await fetch(`${BASE_URL}/admin/refugios/${id}`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        // No pongas 'Content-Type' con FormData
-      },
-      body: formData,
-    });
+        const data = await response.json();
 
-    const data = await response.json();
+        if (!response.ok) {
+            console.error("Error en respuesta del servidor:", data);
+            throw new Error(data.message || "Error al actualizar el refugio");
+        }
 
-    if (!response.ok) {
-      console.error("Error en respuesta del servidor:", data);
-      throw new Error(data.message || "Error al actualizar el refugio");
+        return data;
+    } catch (error) {
+        console.error("Error en actualizarRefugio:", error);
+        throw error;
     }
-
-    return data;
-  } catch (error) {
-    console.error("Error en actualizarRefugio:", error);
-    throw error;
-  }
 }
 
 
@@ -115,7 +115,7 @@ export async function eliminarRefugio(id) {
         const response = await fetch(`${BASE_URL}/admin/refugios/${id}`, {
             method: "DELETE",
             headers: {
-                "Authorization": `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
         });
 

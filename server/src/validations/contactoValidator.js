@@ -16,10 +16,6 @@ const contactoValidator = [
     check("refugio_id")
         .notEmpty().withMessage("El refugio es obligatorio")
         .isInt().withMessage("Debe ser un ID numérico válido"),
-
-    check("direccion_id")
-        .notEmpty().withMessage("La dirección es obligatoria")
-        .isInt().withMessage("Debe ser un ID numérico válido")
 ];
 
 module.exports = contactoValidator;
