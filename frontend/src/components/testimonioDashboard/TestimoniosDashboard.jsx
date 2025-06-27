@@ -15,7 +15,6 @@ export default function TestimonioDashboard() {
     totalPages,
     eliminar,
   } = useTestimonios();
-
   const renderEstrellas = (count) => {
     return Array.from({ length: 5 }, (_, i) => (
       <span key={i} className={i < count ? "text-yellow-400" : "text-gray-300"}>
@@ -101,9 +100,6 @@ export default function TestimonioDashboard() {
                     <td className="px-4 py-3 border space-x-2">
                       <Link
                         to={`/dashboard/testimonios/${testimonio.id}`}
-                        onClick={() =>
-                          alert(`Editar testimonio ID ${testimonio.id}`)
-                        }
                       className="inline-flex items-center justify-center bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                       >
                         Editar

@@ -1,4 +1,3 @@
-import React from "react";
 import { useRegisterForm } from "./useRegisterForm";
 
 export default function Register() {
@@ -99,23 +98,6 @@ export default function Register() {
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">{errors.password}</p>
               )}
-            </div>
-
-            {/* Recordar */}
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="remember"
-                checked={form.rememberMe}
-                onChange={(e) =>
-                  setForm({ ...form, rememberMe: e.target.checked })
-                }
-                className="mr-2"
-                data-test="remember-button"
-              />
-              <label htmlFor="remember" className="text-sm">
-                Recordar
-              </label>
             </div>
 
             {/* Botón */}

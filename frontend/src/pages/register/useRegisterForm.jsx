@@ -9,7 +9,6 @@ export function useRegisterForm() {
     apellido: "",
     email: "",
     password: "",
-    rememberMe: false,
   });
   const [errors, setErrors] = useState({});
 
@@ -22,7 +21,7 @@ export function useRegisterForm() {
     return newErrors;
   };
 
-    const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validation = validate();
     if (Object.keys(validation).length > 0) {
@@ -32,7 +31,11 @@ export function useRegisterForm() {
 
     try {
       const data = await registerUser(form);
-      sessionStorage.setItem("token", data.token);
+      console.log(data);
+
+      if (!data) {
+        throw new Error("No se pudo crear cuenta")
+      }
 
       // Usar SweetAlert para éxito
       await Swal.fire({
@@ -43,10 +46,15 @@ export function useRegisterForm() {
         showConfirmButton: false,
       });
 
-      window.location.href = "/dashboard/dashboardFirts";
+      setForm({
+        nombre: "",
+        apellido: "",
+        email: "",
+        password: "",
+      })
+
     } catch (err) {
       console.error(err);
-
       // Usar SweetAlert para error
       Swal.fire({
         icon: "error",
