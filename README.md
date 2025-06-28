@@ -2,6 +2,8 @@
 
 ## 📌 Descripción
 Plataforma web para facilitar la adopción responsable de mascotas, conectando con adoptantes potenciales.
+El proyecto consta de una arquitectura cliente-servidor. Para el lado del cliente se implementó React que
+consume una API Rest en el lado del servidor desarrollada con Node utilizando una base de datos relacional hecha con MySQL.
 
 ## 👥 Equipo
 **Mentor:** Wilson Ariza Zambrano  
