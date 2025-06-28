@@ -191,7 +191,7 @@ export function MascotaFormEdit() {
             )}
           </div>
 
-          <div>
+          {/*          <div>
             <label className="block font-semibold mb-1" htmlFor="ciudad">
               Ciudad
             </label>
@@ -206,7 +206,7 @@ export function MascotaFormEdit() {
             {errors?.ciudad && (
               <p className="text-red-600 text-sm">{errors.ciudad}</p>
             )}
-          </div>
+          </div> */}
 
           <div>
             <label className="block font-semibold mb-1" htmlFor="descripcion">

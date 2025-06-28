@@ -62,7 +62,7 @@ export default function Mascota_Id() {
           </div>
 
           <div className="p-6">
-{/*             <div className="flex justify-between items-start mb-4">
+            {/*             <div className="flex justify-between items-start mb-4">
               <div>
                 <h2 className="text-3xl font-bold text-gray-800">{mascota.nombre}</h2>
                 <div className="text-gray-600 mt-1 flex items-center">
@@ -76,8 +76,9 @@ export default function Mascota_Id() {
               </button>
             </div> */}
 
-            <div className="mb-6">
-              <span className="bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full">
+            <div className="mb-6 flex items-center justify-between flex-wrap gap-2">
+              <span className="text-lg font-semibold">{mascota.nombre}</span>
+              <span className="bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full flex items-center">
                 <i className="fas fa-home mr-1" /> {mascota.estado}
               </span>
             </div>
@@ -170,15 +171,29 @@ export default function Mascota_Id() {
                   <li>Tiempo y dedicación para la mascota</li>
                   <li>No dejar sola más de 6 horas</li>
                 </ul>
-                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+
+                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
                   <div className="flex">
-                    <i className="fas fa-info-circle text-yellow-400 mr-3" />
+                    <i className="fas fa-info-circle text-yellow-400 mr-3 mt-1" />
                     <p className="text-sm text-yellow-700">
-                      Todos los adoptantes deben firmar un contrato de adopción y permitir visitas de seguimiento para verificar el bienestar de {mascota.nombre}.
+                      Todos los adoptantes deben firmar un contrato de adopción y permitir visitas de seguimiento para verificar el bienestar de <span className="font-medium">{mascota.nombre}</span>.
                     </p>
                   </div>
                 </div>
+
+                <div className="bg-blue-50 border-l-4 border-blue-400 p-4">
+                  <div className="flex">
+                    <i className="fas fa-envelope text-blue-400 mr-3 mt-1" />
+                    <div className="text-sm text-blue-700">
+                      <h4 className="font-semibold mb-1">Contactarse con el refugio</h4>
+                      <p>
+                        Si estás interesado en adoptar a <span className="font-medium">{mascota.nombre}</span>, podés comunicarte con el refugio a través de su correo electrónico o redes sociales para obtener más información sobre el proceso de adopción.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
+
             )}
           </div>
         </div>

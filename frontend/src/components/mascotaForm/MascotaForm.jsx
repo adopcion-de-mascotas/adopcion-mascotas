@@ -69,6 +69,7 @@ export default function MascotaForm() {
               value={formData.edad}
               onChange={handleChange}
               className="w-full border rounded px-3 py-2"
+              placeholder="Ej. 2 años, 6 meses, etc.."
             />
           </div>
 
@@ -195,7 +196,7 @@ export default function MascotaForm() {
           </div>
 
           {/* Ciudad */}
-          <div>
+{/*           <div>
             <label
               className="block mb-1 font-semibold text-gray-700"
               htmlFor="ciudad"
@@ -210,7 +211,7 @@ export default function MascotaForm() {
               onChange={handleChange}
               className="w-full border rounded px-3 py-2"
             />
-          </div>
+          </div> */}
 
           {/* Descripción */}
           <div>
