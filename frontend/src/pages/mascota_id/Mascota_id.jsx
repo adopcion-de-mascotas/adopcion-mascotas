@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import CardMascota from "../../components/cardmascota/CardMascota";
 import { useMascota } from "./useMascota";
@@ -7,6 +7,25 @@ export default function Mascota_Id() {
   const { id } = useParams();
   const [tab, setTab] = useState("sobre");
   const { mascota, mascotas, error, loading } = useMascota(id);
+
+  const [imagenPrincipal, setImagenPrincipal] = useState("");
+  const [galeria, setGaleria] = useState([]);
+
+  useEffect(() => {
+    if (mascota) {
+      setImagenPrincipal(mascota.imagen_principal);
+      setGaleria(mascota.galeria || []);
+    }
+  }, [mascota]);
+
+  const intercambiarImagen = (index) => {
+    const nuevaGaleria = [...galeria];
+    const imagenSeleccionada = nuevaGaleria[index];
+
+    nuevaGaleria[index] = { foto: imagenPrincipal };
+    setImagenPrincipal(imagenSeleccionada.foto);
+    setGaleria(nuevaGaleria);
+  };
 
   if (loading)
     return <div className="text-center py-20 text-gray-600">Cargando mascota...</div>;
@@ -43,18 +62,19 @@ export default function Mascota_Id() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="p-4">
             <img
-              src={mascota.imagen_principal}
+              src={imagenPrincipal}
               alt={mascota.nombre}
               className="w-full h-96 object-cover rounded-xl shadow-md hover:scale-105 transition-transform duration-300 mb-4"
             />
-            {mascota.galeria?.length > 0 && (
+            {galeria.length > 0 && (
               <div className="grid grid-cols-3 gap-3">
-                {mascota.galeria.map((img, i) => (
+                {galeria.map((img, i) => (
                   <img
                     key={i}
                     src={img.foto}
                     alt={`extra-${i}`}
-                    className="w-full h-28 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300"
+                    onClick={() => intercambiarImagen(i)}
+                    className="w-full h-28 object-cover rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer"
                   />
                 ))}
               </div>
@@ -62,20 +82,6 @@ export default function Mascota_Id() {
           </div>
 
           <div className="p-6">
-            {/*             <div className="flex justify-between items-start mb-4">
-              <div>
-                <h2 className="text-3xl font-bold text-gray-800">{mascota.nombre}</h2>
-                <div className="text-gray-600 mt-1 flex items-center">
-                  <i className="fas fa-map-marker-alt mr-1" />
-                  {mascota.ciudad}
-                </div>
-              </div>
-              <button onClick={handleLike} className={`text-2xl transition ${mascota.liked ? "text-red-500" : "text-gray-400 hover:text-red-500"}`}>
-                <i className={mascota.liked ? "fas fa-heart" : "far fa-heart"} />
-                <span> {mascota.likes} </span>
-              </button>
-            </div> */}
-
             <div className="mb-6 flex items-center justify-between flex-wrap gap-2">
               <span className="text-lg font-semibold">{mascota.nombre}</span>
               <span className="bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full flex items-center">
@@ -85,18 +91,12 @@ export default function Mascota_Id() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
               {datos.map(({ label, value }, i) => (
-                label == "Peso" ? (
-                  <div key={i} className="bg-gray-50 p-3 rounded-lg">
-                    <div className="text-sm text-gray-500 mb-1 dark:text-black">{label}</div>
-                    <div className="font-medium dark:text-black">{value + " Kg"}</div>
+                <div key={i} className="bg-gray-50 p-3 rounded-lg">
+                  <div className="text-sm text-gray-500 mb-1 dark:text-black">{label}</div>
+                  <div className="font-medium dark:text-black">
+                    {label === "Peso" ? `${value} Kg` : value}
                   </div>
-                ) : (
-                  < div key={i} className="bg-gray-50 p-3 rounded-lg" >
-                    <div className="text-sm text-gray-500 mb-1 dark:text-black">{label}</div>
-                    <div className="font-medium dark:text-black">{value}</div>
-                  </div>
-
-                )
+                </div>
               ))}
             </div>
 
@@ -193,7 +193,6 @@ export default function Mascota_Id() {
                   </div>
                 </div>
               </div>
-
             )}
           </div>
         </div>
@@ -236,6 +235,6 @@ export default function Mascota_Id() {
           ))}
         </div>
       </div>
-    </main >
+    </main>
   );
 }
