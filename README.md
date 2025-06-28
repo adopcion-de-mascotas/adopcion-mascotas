@@ -8,13 +8,9 @@ Plataforma web para facilitar la adopción responsable de mascotas, conectando c
 **Desarrolladores:**
 - Ayelén Elisabet Cayuqueo
 - Luciano Melgar
-- Hernán Parma
 - Pedro Morgade
-- Paulo Giménez
 - Brian Flores
 - Nahuel Argandoña
-- Laura Yachelini
-- Andrés Corvalán
 
 ## 🗓️ Cronograma
 | Fecha           | Hito |
@@ -29,7 +25,8 @@ Plataforma web para facilitar la adopción responsable de mascotas, conectando c
 - HTML
 - CSS
 - Javascript
-- Plantillas EJS
+- React Js
+- Tailwind CSS
 
 ### Backend
 - Node.js
@@ -60,22 +57,34 @@ cd adopcion-mascotas
 ```
 
 2. **Instalar dependencias**
+- Entrar a las carpetas frontend y server e instalar las dependencias
 ```bash
 npm install
 ```
 
-3. **Clonar repositorio**
-- Copiar el archivo .env.example y crear el archivo .env
+3. **Configurar variables de entorno**
+- Copiar el archivo .env.example de la carpeta server y crear el archivo .env
 - Completar las variables segun corresponda:
 ```env
+PORT =
 DB_NAME=
 DB_USER=
 DB_PASSWORD=
 DB_HOST=
 DB_PORT=
+JWT_SECRET =
 ```
 
-4. **Clonar repositorio**
+- En la carpeta frontend copiar el archivo .env.example y crear el archivo .env
+- Completar las variables segun corresponda
+```env
+VITE_API_URL =
+```
+
+4. **Deploy base de datos**
+- Dentro de la carpeta server ejecutar los siguientes comandos
+- El gestor de MySQL debe estar corriendo previamente 
+
 ```bash
 npm run database    # Crear la base de datos
 npm run migrate    # Ejecutar migraciones
@@ -83,6 +92,11 @@ npm run seed       # Poblar datos iniciales (opcional)
 ```
 
 5. **Iniciar proyecto**
+- En la carpeta frontend ejecutar
+```bash
+npm run dev
+```
+- En la carpeta server ejecutar
 ```bash
 npm run dev
 ```
