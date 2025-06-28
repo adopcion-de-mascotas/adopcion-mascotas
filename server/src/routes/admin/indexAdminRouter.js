@@ -12,6 +12,7 @@ const adminSessionRouter = require("./adminSessionRouter")
 const adminVacunasRouter = require("./adminVacunasRouter")
 const adminRefugiosRouter = require("./adminRefugiosRouter")
 const adminPersonalidadRouter = require("./adminPersonalidadRouter")
+const adminSaludRouter = require("./adminSaludRouter")
 
 router.use("/session", adminSessionRouter)
 
@@ -27,5 +28,6 @@ router.use("/session", adminSessionRouter)
 router.use("/refugios", verificarToken, adminRefugiosRouter)
 router.use("/vacunas", verificarToken, adminVacunasRouter)
 router.use("/personalidades", verificarToken, adminPersonalidadRouter)
+router.use("/salud", verificarToken, adminSaludRouter)
 
 module.exports = router;

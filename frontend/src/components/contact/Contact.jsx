@@ -1,6 +1,37 @@
-import React from "react";
+import { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function Contact() {
+  const initialState = {
+    nombre: "",
+    email: "",
+    asunto: "",
+    mensaje: ""
+  }
+  const [formContacto, setFormContacto] = useState(initialState)
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    Swal.fire({
+      icon: "success",
+      title: "Mensaje enviado",
+      text: `Te responderemos a la brevedad: ${formContacto.nombre}`,
+      timer: 1000,
+      showConfirmButton: false,
+    });
+
+    setFormContacto(initialState)
+  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormContacto((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+
   return (
     <>
       <section id="contact" className="py-16 bg-gray-50">
@@ -24,21 +55,23 @@ export default function Contact() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   <div>
                     <label
-                    
-                      htmlFor="name"
+                      htmlFor="nombre"
                       className="block text-gray-700 font-medium mb-2"
                     >
                       Nombre
                     </label>
                     <input
                       type="text"
-                      id="name"
+                      id="nombre"
+                      name="nombre"
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600"
+                      onChange={handleChange}
+                      value={formContacto.nombre}
                     />
                   </div>
                   <div>
                     <label
-                      
+
                       htmlFor="email"
                       className="block text-gray-700 font-medium mb-2"
                     >
@@ -47,41 +80,49 @@ export default function Contact() {
                     <input
                       type="email"
                       id="email"
+                      name="email"
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600"
+                      onChange={handleChange}
+                      value={formContacto.email}
                     />
                   </div>
                 </div>
                 <div className="mb-6">
                   <label
-                    
-                    htmlFor="subject"
+
+                    htmlFor="asunto"
                     className="block text-gray-700 font-medium mb-2"
                   >
                     Asunto
                   </label>
                   <input
                     type="text"
-                    id="subject"
+                    id="asunto"
+                    name="asunto"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600"
+                    onChange={handleChange}
+                    value={formContacto.asunto}
                   />
                 </div>
                 <div className="mb-6">
                   <label
-                    
-                    htmlFor="message"
+                    htmlFor="mensaje"
                     className="block text-gray-700 font-medium mb-2"
                   >
                     Mensaje
                   </label>
                   <textarea
-                    id="message"
+                    id="mensaje"
+                    name="mensaje"
                     rows="5"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600"
+                    onChange={handleChange}
+                    value={formContacto.mensaje}
                   ></textarea>
                 </div>
                 <button
-                  type="submit"
                   className="px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700"
+                  onClick={handleSubmit}
                 >
                   Enviar Mensaje
                 </button>

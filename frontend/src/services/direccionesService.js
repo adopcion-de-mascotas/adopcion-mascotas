@@ -16,13 +16,13 @@ export async function obtenerDirecciones() {
         const res = await fetch(`${BASE_URL}/admin/direcciones`, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
         });
 
         if (!res.ok) throw new Error("Error al obtener direcciones");
 
-         
+
         return res.json();
 
     } catch (error) {
@@ -42,7 +42,7 @@ export async function obtenerDireccionPorId(id) {
         const res = await fetch(`${BASE_URL}/admin/direcciones/${id}`, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
         });
 
@@ -93,7 +93,7 @@ export async function editarDireccion(id, direccion) {
 
     try {
         const response = await fetch(`${BASE_URL}/admin/direcciones/${id}`, {
-            method: "PUT", // o PATCH, según tu backend
+            method: "PUT",
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",

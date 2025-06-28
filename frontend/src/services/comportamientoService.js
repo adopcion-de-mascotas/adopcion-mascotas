@@ -47,7 +47,7 @@ export async function obtenerComportamientoPorId(id) {
   }
 }
 
-export async function crearComportamiento({ niños, perros, gatos, apartamento }) {
+export async function crearComportamiento(datos) {
   const token = sessionStorage.getItem("token");
   if (!token) throw new Error("No hay token de autenticación disponible");
 
@@ -58,7 +58,7 @@ export async function crearComportamiento({ niños, perros, gatos, apartamento }
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ niños, perros, gatos, apartamento }),
+      body: JSON.stringify(datos),
     });
 
     const data = await res.json();
@@ -75,7 +75,7 @@ export async function crearComportamiento({ niños, perros, gatos, apartamento }
   }
 }
 
-export async function editarComportamiento(id, { niños, perros, gatos, apartamento }) {
+export async function editarComportamiento(id, dataComportamientos) {
   const token = sessionStorage.getItem("token");
   if (!token) throw new Error("No hay token de autenticación disponible");
 
@@ -86,7 +86,7 @@ export async function editarComportamiento(id, { niños, perros, gatos, apartame
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ niños, perros, gatos, apartamento }),
+      body: JSON.stringify(dataComportamientos),
     });
 
     const data = await res.json();

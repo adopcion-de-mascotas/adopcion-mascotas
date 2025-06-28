@@ -69,6 +69,7 @@ export default function MascotaForm() {
               value={formData.edad}
               onChange={handleChange}
               className="w-full border rounded px-3 py-2"
+              placeholder="Ej. 2 años, 6 meses, etc.."
             />
           </div>
 
@@ -80,14 +81,17 @@ export default function MascotaForm() {
             >
               Tipo
             </label>
-            <input
-              type="text"
+            <select
               id="tipo"
               name="tipo"
               value={formData.tipo}
               onChange={handleChange}
               className="w-full border rounded px-3 py-2"
-            />
+            >
+              <option value="">Seleccionar</option>
+              <option value="Perro">Perro</option>
+              <option value="Gato">Gato</option>
+            </select>
           </div>
 
           {/* Raza */}
@@ -137,14 +141,19 @@ export default function MascotaForm() {
             >
               Tamaño
             </label>
-            <input
-              type="text"
-              id="tamanio"
+
+            <select
               name="tamanio"
-              value={formData.tamanio}
+              id="tamanio"
               onChange={handleChange}
+              value={formData.tamanio}
               className="w-full border rounded px-3 py-2"
-            />
+            >
+              <option value="">Selecciona el tamaño</option>
+              <option value={"Pequeño"}>Pequeño</option>
+              <option value={"Mediano"}>Mediano</option>
+              <option value={"Grande"}>Grande</option>
+            </select>
           </div>
 
           {/* Peso */}
@@ -173,18 +182,21 @@ export default function MascotaForm() {
             >
               Estado
             </label>
-            <input
-              type="text"
+            <select
               id="estado"
               name="estado"
               value={formData.estado}
               onChange={handleChange}
               className="w-full border rounded px-3 py-2"
-            />
+            >
+              <option value="">Seleccionar estado</option>
+              <option value="Disponible">Disponible</option>
+              <option value="Adoptado">Adoptado</option>
+            </select>
           </div>
 
           {/* Ciudad */}
-          <div>
+{/*           <div>
             <label
               className="block mb-1 font-semibold text-gray-700"
               htmlFor="ciudad"
@@ -199,7 +211,7 @@ export default function MascotaForm() {
               onChange={handleChange}
               className="w-full border rounded px-3 py-2"
             />
-          </div>
+          </div> */}
 
           {/* Descripción */}
           <div>
@@ -256,7 +268,7 @@ export default function MascotaForm() {
               Personalidad:
             </label>
             <div className="flex flex-wrap gap-4">
-              {personalidadesDisponibles.map((p) => (
+              {personalidadesDisponibles?.map((p) => (
                 <label key={p.id} className="flex items-center gap-2">
                   <input
                     type="checkbox"
@@ -281,9 +293,8 @@ export default function MascotaForm() {
               Imagen Principal <span className="text-red-500">*</span>
             </label>
             <div
-              className={`dropzone rounded-lg p-8 text-center cursor-pointer ${
-                errors?.foto ? "border-red-500 bg-red-50" : ""
-              }`}
+              className={`dropzone rounded-lg p-8 text-center cursor-pointer ${errors?.foto ? "border-red-500 bg-red-50" : ""
+                }`}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onClick={() => document.getElementById("fileInputFoto").click()}
@@ -338,10 +349,13 @@ export default function MascotaForm() {
               Galería de imágenes <span className="text-red-500">*</span>
             </label>
             <div
-              className={`dropzone rounded-lg p-8 text-center cursor-pointer ${
-                errors?.galeria ? "border-red-500 bg-red-50" : ""
-              }`}
-              onDrop={handleDropGaleria}
+              className={`dropzone rounded-lg p-8 text-center cursor-pointer ${errors?.galeria ? "border-red-500 bg-red-50" : ""
+                }`}
+              onDrop={(e) => {
+                e.preventDefault();
+                e.stopPropagation(); // detener propagación para que no active onChange
+                handleDropGaleria(e);
+              }}
               onDragOver={handleDragOverGaleria}
               onClick={() =>
                 document.getElementById("fileInputGaleria").click()
@@ -355,6 +369,7 @@ export default function MascotaForm() {
                 multiple
                 onChange={handleImageChangeGaleria}
                 name="fotos"
+                disabled={formData.galeria.length >= 3}
               />
               {galeriaPreviews?.length > 0 ? (
                 <div className="flex flex-wrap gap-2 justify-center">
@@ -561,7 +576,7 @@ export default function MascotaForm() {
               Vacunas:
             </label>
             <div className="flex flex-wrap gap-4">
-              {(vacunasDisponibles || []).map((v) => (
+              {vacunasDisponibles?.map((v) => (
                 <label key={v.id} className="flex items-center gap-2">
                   <input
                     type="checkbox"
@@ -584,9 +599,8 @@ export default function MascotaForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className={`bg-purple-600 text-white px-6 py-2 rounded-lg transition ${
-            isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-purple-700"
-          }`}
+          className={`bg-purple-600 text-white px-6 py-2 rounded-lg transition ${isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-purple-700"
+            }`}
         >
           {isLoading ? "Guardando..." : "Guardar Mascota"}
         </button>

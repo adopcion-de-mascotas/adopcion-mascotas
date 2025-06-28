@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { login } from "../../services/authService";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 export function useLoginForm() {
   const [form, setForm] = useState({
@@ -10,8 +11,9 @@ export function useLoginForm() {
   });
 
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate()
 
-  const validate = () => {
+  const validate = () => {    
     const newErrors = {};
     if (!form.email) newErrors.email = "El email es obligatorio";
     if (!form.password) newErrors.password = "La contraseña es obligatoria";
@@ -21,6 +23,7 @@ export function useLoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validation = validate();
+  
     if (Object.keys(validation).length > 0) {
       setErrors(validation);
       Swal.fire({
@@ -33,17 +36,20 @@ export function useLoginForm() {
 
     try {
       const data = await login(form);
+      
       sessionStorage.setItem("token", data.token);
 
       await Swal.fire({
         icon: "success",
         title: "¡Inicio exitoso!",
         text: "Bienvenido/a nuevamente.",
-        timer: 2000,
+        timer: 700,
         showConfirmButton: false,
       });
 
-      window.location.href = "/dashboard/dashboardFirts";
+
+
+      navigate("/dashboard/dashboardFirts")
     } catch (err) {
       console.error(err);
       Swal.fire({

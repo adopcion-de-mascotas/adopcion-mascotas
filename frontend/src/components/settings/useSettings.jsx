@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { editUser } from "../../services/authService";
-import {jwtDecode} from "jwt-decode";
+import { editUser, getCurrentUser } from "../../services/authService";
+
 
 export default function useSettings() {
   const [userId, setUserId] = useState(null);
@@ -11,14 +11,35 @@ export default function useSettings() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmacion, setConfirmacion] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    if (token) {
-      const decoded = jwtDecode(token);
-      setUserId(decoded.id);
-      // Si querés, podés precargar los datos del usuario aquí (nombre, apellido, email) desde la API
+
+    const getUser = async () => {
+      try {
+        const { data } = await getCurrentUser()
+
+        if (!data) {
+          setError(data.message)
+        }
+
+        const nombreAdmin = data.nombre
+        const apellidoAdmin = data.apellido
+        const emailAdmin = data.email
+        const id = data.id
+
+        setNombre(nombreAdmin)
+        setApellido(apellidoAdmin)
+        setEmail(emailAdmin)
+        setUserId(id)
+
+      } catch (error) {
+        throw new Error("Ocurrió un error:", error)
+      }
     }
+
+    getUser()
+
   }, []);
 
   const handleGuardarCambios = async (e) => {
@@ -30,7 +51,15 @@ export default function useSettings() {
         apellido,
         email,
       };
-      await editUser(dataToUpdate, userId);
+      const updatedUser = await editUser(dataToUpdate, userId);
+
+      console.log(updatedUser);
+
+
+      if (!updatedUser.status) {
+        setMensaje(updatedUser.message)
+      }
+
       setMensaje("Datos actualizados correctamente.");
     } catch (error) {
       setMensaje(error.message || "Error al actualizar los datos.");
@@ -47,10 +76,16 @@ export default function useSettings() {
 
     try {
       const dataToUpdate = {
+        nombre,
+        apellido,
+        email,
         password,     // contraseña actual
         newPassword,  // nueva contraseña
       };
-      await editUser(dataToUpdate, userId);
+      const updatedUser = await editUser(dataToUpdate, userId);
+      if (!updatedUser.status) {
+        setMensaje(updatedUser.message)
+      }
       setMensaje("Contraseña actualizada correctamente.");
       setPassword("");
       setNewPassword("");
@@ -88,5 +123,6 @@ export default function useSettings() {
     handleGuardarCambios,
     handleCambiarPassword,
     handleEliminarCuenta,
+    error,
   };
 }

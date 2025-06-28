@@ -81,14 +81,17 @@ export function MascotaFormEdit() {
             <label className="block font-semibold mb-1" htmlFor="tipo">
               Tipo
             </label>
-            <input
-              type="text"
+            <select
               id="tipo"
               name="tipo"
               value={formData.tipo}
               onChange={handleChange}
               className="w-full border rounded px-3 py-2"
-            />
+            >
+              <option value="">Seleccionar</option>
+              <option value="Perro">Perro</option>
+              <option value="Gato">Gato</option>
+            </select>
             {errors?.tipo && (
               <p className="text-red-600 text-sm">{errors.tipo}</p>
             )}
@@ -135,14 +138,18 @@ export function MascotaFormEdit() {
             <label className="block font-semibold mb-1" htmlFor="tamanio">
               Tamaño
             </label>
-            <input
-              type="text"
-              id="tamanio"
+            <select
               name="tamanio"
-              value={formData.tamanio}
+              id="tamanio"
               onChange={handleChange}
+              value={formData.tamanio}
               className="w-full border rounded px-3 py-2"
-            />
+            >
+              <option value="">Selecciona el tamaño</option>
+              <option value={"Pequeño"}>Pequeño</option>
+              <option value={"Mediano"}>Mediano</option>
+              <option value={"Grande"}>Grande</option>
+            </select>
             {errors?.tamanio && (
               <p className="text-red-600 text-sm">{errors.tamanio}</p>
             )}
@@ -164,25 +171,27 @@ export function MascotaFormEdit() {
               <p className="text-red-600 text-sm">{errors.peso}</p>
             )}
           </div>
-
           <div>
             <label className="block font-semibold mb-1" htmlFor="estado">
               Estado
             </label>
-            <input
-              type="text"
+            <select
               id="estado"
               name="estado"
               value={formData.estado}
               onChange={handleChange}
               className="w-full border rounded px-3 py-2"
-            />
+            >
+              <option value="">Seleccionar estado</option>
+              <option value="Disponible">Disponible</option>
+              <option value="Adoptado">Adoptado</option>
+            </select>
             {errors?.estado && (
               <p className="text-red-600 text-sm">{errors.estado}</p>
             )}
           </div>
 
-          <div>
+          {/*          <div>
             <label className="block font-semibold mb-1" htmlFor="ciudad">
               Ciudad
             </label>
@@ -197,7 +206,7 @@ export function MascotaFormEdit() {
             {errors?.ciudad && (
               <p className="text-red-600 text-sm">{errors.ciudad}</p>
             )}
-          </div>
+          </div> */}
 
           <div>
             <label className="block font-semibold mb-1" htmlFor="descripcion">
@@ -254,7 +263,7 @@ export function MascotaFormEdit() {
               Personalidad:
             </label>
             <div className="flex flex-wrap gap-4">
-              {personalidadesDisponibles.map((p) => (
+              {personalidadesDisponibles?.map((p) => (
                 <label key={p.id} className="flex items-center gap-2">
                   <input
                     type="checkbox"
@@ -279,9 +288,8 @@ export function MascotaFormEdit() {
               Imagen Principal <span className="text-red-500">*</span>
             </label>
             <div
-              className={`dropzone rounded-lg p-8 text-center cursor-pointer ${
-                errors?.foto ? "border-red-500 bg-red-50" : ""
-              }`}
+              className={`dropzone rounded-lg p-8 text-center cursor-pointer ${errors?.foto ? "border-red-500 bg-red-50" : ""
+                }`}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onClick={() => document.getElementById("fileInputFoto").click()}
@@ -335,9 +343,8 @@ export function MascotaFormEdit() {
               Galería de imágenes <span className="text-red-500">*</span>
             </label>
             <div
-              className={`dropzone rounded-lg p-8 text-center cursor-pointer ${
-                errors?.galeria ? "border-red-500 bg-red-50" : ""
-              }`}
+              className={`dropzone rounded-lg p-8 text-center cursor-pointer ${errors?.galeria ? "border-red-500 bg-red-50" : ""
+                }`}
               onDrop={handleDropGaleria}
               onDragOver={handleDragOverGaleria}
               onClick={() =>
@@ -590,7 +597,7 @@ export function MascotaFormEdit() {
           <div>
             <label className="block font-semibold mb-1">Vacunas</label>
             <div className="flex flex-wrap gap-4">
-              {(vacunasDisponibles ?? []).map((vacuna) => (
+              {vacunasDisponibles?.map((vacuna) => (
                 <label key={vacuna.id} className="flex items-center gap-2">
                   <input
                     type="checkbox"

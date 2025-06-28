@@ -1,4 +1,5 @@
-const { ContactoRefugio, Refugio, Direcciones } = require("../../database/models");
+const { validationResult } = require('express-validator');
+const { ContactoRefugio, Refugio } = require("../../database/models");
 const { endpointError, CustomError } = require('../../utils/error');
 const { endpointResponse } = require('../../utils/success');
 
@@ -12,14 +13,9 @@ module.exports = {
                         model: Refugio,
                         as: 'refugio',
                         attributes: ['id', 'nombre', 'imagen']
-                    },
-                    {
-                        model: Direcciones,
-                        as: 'direccion',
-                        attributes: ['id', 'calle', 'localidad', 'provincia']
                     }
                 ],
-                attributes: ['id', 'telefono', 'email', 'web']
+                attributes: ['id', "nombre", 'telefono', 'email', 'web']
             });
 
             endpointResponse({
@@ -47,11 +43,6 @@ module.exports = {
                         model: Refugio,
                         as: 'refugio',
                         attributes: ['id', 'nombre', 'descripcion', 'imagen']
-                    },
-                    {
-                        model: Direcciones,
-                        as: 'direccion',
-                        attributes: { exclude: ['createdAt', 'updatedAt'] }
                     }
                 ]
             });
@@ -83,7 +74,7 @@ module.exports = {
         if (errorsValidator.isEmpty()) {
 
             try {
-                const { telefono, email, web, refugio_id, direccion_id } = req.body;
+                const { nombre, telefono, email, web, refugio_id } = req.body;
 
                 // Validaciones básicas
                 if (!telefono || !email) {
@@ -96,12 +87,6 @@ module.exports = {
                     throw new CustomError('El refugio especificado no existe', 404);
                 }
 
-                // Verificar que la dirección existe
-                const direccion = await Direcciones.findByPk(direccion_id);
-                if (!direccion) {
-                    throw new CustomError('La dirección especificada no existe', 404);
-                }
-
                 // Verificar que el refugio no tenga ya un contacto
                 const contactoExistente = await ContactoRefugio.findOne({ where: { refugio_id } });
                 if (contactoExistente) {
@@ -109,26 +94,18 @@ module.exports = {
                 }
 
                 const nuevoContacto = await ContactoRefugio.create({
+                    nombre,
                     telefono,
                     email,
                     web,
                     refugio_id,
-                    direccion_id
-                });
-
-                // Obtener el contacto creado con sus relaciones
-                const contactoCreado = await ContactoRefugio.findByPk(nuevoContacto.id, {
-                    include: [
-                        { model: Refugio, as: 'refugio' },
-                        { model: Direcciones, as: 'direccion' }
-                    ]
                 });
 
                 endpointResponse({
                     res,
                     code: 201,
                     message: 'Contacto de refugio creado exitosamente',
-                    body: contactoCreado
+                    body: nuevoContacto
                 });
             } catch (error) {
                 endpointError({
@@ -150,9 +127,11 @@ module.exports = {
 
     // Actualizar un contacto existente
     update: async (req, res) => {
+        console.log(req.body);
+
         try {
             const { id } = req.params;
-            const { telefono, email, web, refugio_id, direccion_id } = req.body;
+            const { nombre, telefono, email, web, refugio_id } = req.body;
 
             const contacto = await ContactoRefugio.findByPk(id);
             if (!contacto) {
@@ -174,15 +153,8 @@ module.exports = {
                 }
             }
 
-            if (direccion_id && direccion_id !== contacto.direccion_id) {
-                const direccion = await Direcciones.findByPk(direccion_id);
-                if (!direccion) {
-                    throw new CustomError('La nueva dirección especificada no existe', 404);
-                }
-            }
-
             // Actualizar solo los campos proporcionados
-            const camposActualizables = { telefono, email, web, refugio_id, direccion_id };
+            const camposActualizables = { nombre, telefono, email, web, refugio_id, };
             Object.keys(camposActualizables).forEach(key => {
                 if (camposActualizables[key] !== undefined) {
                     contacto[key] = camposActualizables[key];
@@ -192,12 +164,7 @@ module.exports = {
             await contacto.save();
 
             // Obtener el contacto actualizado con relaciones
-            const contactoActualizado = await ContactoRefugio.findByPk(id, {
-                include: [
-                    { model: Refugio, as: 'refugio' },
-                    { model: Direcciones, as: 'direccion' }
-                ]
-            });
+            const contactoActualizado = await ContactoRefugio.findByPk(id);
 
             endpointResponse({
                 res,

@@ -89,7 +89,6 @@ export default function NoticiasDashboard() {
                     </td>
                     <td className="px-4 py-3 border space-x-2">
                       <Link
-                        onClick={() => alert(`Editar noticia ID ${noticia.id}`)}
                         to={`/dashboard/noticiaFormEdit/${noticia.id}`}
                       className="inline-flex items-center justify-center bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
                       >

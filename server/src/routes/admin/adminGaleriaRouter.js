@@ -4,10 +4,12 @@ const galeriaController = require('../../controllers/adminControllers/adminGaler
 const { multiUpload, handleMulterErrors } = require("../../middlewares/imageMiddleware");
 
 // Obtener galería de mascota
-router.get('/mascota/:mascotaId', galeriaController.getByMascota);
+router.get('/:id', galeriaController.getByMascota);
 
 // Agregar foto a galería
-router.post('/mascota/:mascotaId', multiUpload, handleMulterErrors, galeriaController.create);
+router.post('/:id', multiUpload, handleMulterErrors, galeriaController.create);
+
+router.put('/:id', multiUpload, handleMulterErrors, galeriaController.update);
 
 // Eliminar foto
 router.delete('/:id', galeriaController.delete);

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import "./Navbar.css";
 
@@ -41,56 +41,57 @@ export default function Navbar() {
   const loggedInLinks = (
     <>
       {showDashboardLink && (
-        <a
-          href="/dashboard/dashboardFirts"
+        <Link
+          to="/dashboard/dashboardFirts"
           className="text-gray-700 hover:text-indigo-600 font-medium"
         >
           Dashboard
-        </a>
+        </Link>
       )}
 
-      <a
-        href="/mascotas"
+      <Link
+        to="/mascotas"
         className="text-gray-700 hover:text-indigo-600 font-medium"
       >
         Mascotas
-      </a>
-      <a
-        href="/about"
+      </Link>
+      <Link
+        to="/about"
         className="text-gray-700 hover:text-indigo-600 font-medium"
       >
         Nosotros
-      </a>
-      <a
-        href="/noticias"
+      </Link>
+      <Link
+        to="/noticias"
         className="text-gray-700 hover:text-indigo-600 font-medium"
       >
         Noticias
-      </a>
+      </Link>
     </>
   );
 
   // Links a mostrar si NO está logueado
   const publicLinks = (
     <>
-      <a
-        href="/mascotas"
+
+      <Link
+        to={"/mascotas"}
         className="text-gray-700 hover:text-indigo-600 font-medium"
       >
         Mascotas
-      </a>
-      <a
-        href="/about"
+      </Link>
+      <Link
+        to={"/about"}
         className="text-gray-700 hover:text-indigo-600 font-medium"
       >
         Nosotros
-      </a>
-      <a
-        href="/noticias"
+      </Link>
+      <Link
+        to={"/noticias"}
         className="text-gray-700 hover:text-indigo-600 font-medium"
       >
         Noticias
-      </a>
+      </Link>
     </>
   );
 
@@ -100,9 +101,9 @@ export default function Navbar() {
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <div className="flex items-center">
             <i className="fas fa-paw text-3xl text-indigo-600 mr-2"></i>
-            <a href="/">
+            <Link to="/">
               <h1 className="text-2xl font-bold text-indigo-600">Happy Paws</h1>
-            </a>
+            </Link>
           </div>
           <nav className="hidden md:flex space-x-8">
             <label className="switch">
@@ -132,9 +133,8 @@ export default function Navbar() {
 
         {/* Menú móvil */}
         <div
-          className={`md:hidden bg-white dark:bg-gray-800 border-t dark:border-gray-700 ${
-            mobileMenuOpen ? "block" : "hidden"
-          }`}
+          className={`md:hidden bg-white dark:bg-gray-800 border-t dark:border-gray-700 ${mobileMenuOpen ? "block" : "hidden"
+            }`}
         >
           <div className="container mx-auto px-4 py-3 flex flex-col space-y-3">
             <label className="switch">
@@ -152,52 +152,52 @@ export default function Navbar() {
             {isLoggedIn ? (
               <>
                 {showDashboardLink && (
-                  <a
-                    href="/dashboard/dashboardFirts"
+                  <Link
+                    to="/dashboard/dashboardFirts"
                     className="text-gray-700 hover:text-indigo-600 font-medium"
                   >
                     Dashboard
-                  </a>
+                  </Link>
                 )}
-                <a
-                  href="/mascotas"
+                <Link
+                  to="/mascotas"
                   className="text-gray-700 hover:text-indigo-600 font-medium py-2"
                 >
                   Mascotas
-                </a>
-                <a
-                  href="/about"
+                </Link>
+                <Link
+                  to="/about"
                   className="text-gray-700 hover:text-indigo-600 font-medium"
                 >
                   Nosotros
-                </a>
-                <a
-                  href="/noticias"
+                </Link>
+                <Link
+                  to="/noticias"
                   className="text-gray-700 hover:text-indigo-600 font-medium py-2"
                 >
                   Noticias
-                </a>
+                </Link>
               </>
             ) : (
               <>
-                <a
-                  href="/mascotas"
+                <Link
+                  to="/mascotas"
                   className="text-gray-700 hover:text-indigo-600 font-medium py-2"
                 >
                   Mascotas
-                </a>
-                <a
-                  href="/about"
+                </Link>
+                <Link
+                  to="/about"
                   className="text-gray-700 hover:text-indigo-600 font-medium py-2"
                 >
                   Nosotros
-                </a>
-                <a
-                  href="/noticias"
+                </Link>
+                <Link
+                  to="/noticias"
                   className="text-gray-700 hover:text-indigo-600 font-medium py-2"
                 >
                   Noticias
-                </a>
+                </Link>
               </>
             )}
           </div>

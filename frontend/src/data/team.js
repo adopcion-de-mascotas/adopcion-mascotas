@@ -47,14 +47,14 @@ export const teamMembers = [
     },
     {
         name: "Brian Flores",
-        role: "Desarrollador Backend",
-        image: "https://randomuser.me/api/portraits/men/75.jpg",
+        role: "Desarrollador fullstack",
+        image: "https://avatars.githubusercontent.com/u/98068205?s=400&u=7741a84594261371910adf42c4e5108867ac4875&v=4",
         color: "from-yellow-400 to-orange-500",
         textColor: "text-purple-600",
         bgColor: "bg-purple-600",
         hoverColor: "hover:bg-purple-700",
         description: "Con más de 10 años de experiencia en gestión de proyectos tecnológicos, Brian asegura que todo funcione sin problemas.",
-        portfolio: "#"
+        portfolio: "https://github.com/BrianFloresOk?tab=repositories"
     },
     {
         name: "Pedro Morgade",

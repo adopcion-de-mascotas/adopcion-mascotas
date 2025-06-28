@@ -7,7 +7,6 @@ const { validationResult } = require('express-validator')
 module.exports = {
     // Crear registro de salud
     create: async (req, res) => {
-
         const errorsValidator = validationResult(req);
         if (errorsValidator.isEmpty()) {
 
@@ -84,6 +83,8 @@ module.exports = {
     // Actualizar registro de salud
     update: async (req, res) => {
         const transaction = await sequelize.transaction();
+        console.log(req.body)
+
         try {
             const { id } = req.params;
             const { estado, tratamiento, info_veterinaria } = req.body;

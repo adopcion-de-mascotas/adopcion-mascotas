@@ -5,6 +5,9 @@ import {
 } from "../../services/mascotasService";
 import { obtenerRefugios } from "../../services/refugioService";
 import { obtenerPersonalidades } from "../../services/personalidadesService";
+import { getAllVacunas } from "../../services/vacunaService";
+import { editarComportamiento } from "../../services/comportamientoService";
+import { updateSalud } from "../../services/saludService";
 
 const initialFormData = {
   nombre: "",
@@ -35,6 +38,8 @@ const initialFormData = {
   },
   vacunas: [],
   refugioId: "",
+  comportamientoId: "",
+  saludId: ""
 };
 
 export function useMascotaFormEdit(id) {
@@ -46,9 +51,9 @@ export function useMascotaFormEdit(id) {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [personalidadesDisponibles, setPersonalidadesDisponibles] = useState(
-    []
-  );
+  const [personalidadesDisponibles, setPersonalidadesDisponibles] = useState([]);
+  const [vacunasDisponibles, setVacunasDisponibles] = useState([]);
+
 
   useEffect(() => {
     const cargarRefugios = async () => {
@@ -59,16 +64,27 @@ export function useMascotaFormEdit(id) {
         console.error("Error al cargar refugios:", error);
       }
     };
-    const cargarPersonalidades = async () => {
+
+    const personalidades = async () => {
       try {
-        const data = await obtenerPersonalidades();
-        setPersonalidadesDisponibles(data);
+        const data = await obtenerPersonalidades()
+        setPersonalidadesDisponibles(data)
       } catch (error) {
         console.error("Error al cargar personalidades:", error);
       }
-    };
+    }
+
+    const vacunas = async () => {
+      try {
+        const data = await getAllVacunas()
+        setVacunasDisponibles(data.data)
+      } catch (error) {
+        console.error("Error al cargar vacunas:", error);
+      }
+    }
     cargarRefugios();
-    cargarPersonalidades();
+    personalidades();
+    vacunas()
   }, []);
 
   useEffect(() => {
@@ -91,8 +107,8 @@ export function useMascotaFormEdit(id) {
           vacunas: Array.isArray(data.salud?.vacunas)
             ? data.salud.vacunas.map((v) => v.id)
             : [],
-          personalidad: Array.isArray(data.personalidad)
-            ? data.personalidad.map((p) => p.id)
+          personalidad: Array.isArray(data.personalidades)
+            ? data.personalidades.map((p) => p.id)
             : [],
 
           comportamiento: {
@@ -106,6 +122,8 @@ export function useMascotaFormEdit(id) {
             tratamiento: data.salud?.tratamiento || "",
             info_veterinaria: data.salud?.info_veterinaria || "",
           },
+          comportamientoId: data.comportamiento?.id || "",
+          saludId: data.salud?.id
         };
         setFormData(formattedData);
         if (data.imagen_principal) setFotoPreview(data.imagen_principal);
@@ -254,6 +272,10 @@ export function useMascotaFormEdit(id) {
         vacunas: Array.isArray(formData.vacunas) ? formData.vacunas : [],
       };
 
+      await editarComportamiento(formData.comportamientoId, dataToSend.comportamiento);
+      await updateSalud(formData.saludId, dataToSend.salud)
+
+      console.log(dataToSend)
       await actualizarMascota(id, dataToSend);
       setMensaje("✅ Mascota actualizada exitosamente");
     } catch (error) {
@@ -340,12 +362,6 @@ export function useMascotaFormEdit(id) {
     setGaleriaPreviews(newPreviews);
     setFormData((prev) => ({ ...prev, galeria: newGaleria }));
   };
-
-  const vacunasDisponibles = [
-    { id: 1, nombre: "Parvovirus" },
-    { id: 2, nombre: "Rabia" },
-    { id: 3, nombre: "Moquillo" },
-  ];
 
   return {
     formData,

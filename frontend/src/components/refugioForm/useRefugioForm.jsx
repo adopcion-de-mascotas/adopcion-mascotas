@@ -153,7 +153,7 @@ export default function useRefugioForm() {
       formToSend.append("descripcion", formData.descripcion);
       formToSend.append("info", formData.info);
       if (formData.imagen) {
-        formToSend.append("imagen", formData.imagen);
+        formToSend.append("imagen_principal", formData.imagen);
       }
 
       if (formData.direccion && typeof formData.direccion === "object") {
@@ -167,7 +167,7 @@ export default function useRefugioForm() {
           formToSend.append(`contacto_${key}`, value);
         });
       }
-
+      
       for (let [key, value] of formToSend.entries()) {
         console.log(`${key}:`, value);
       }

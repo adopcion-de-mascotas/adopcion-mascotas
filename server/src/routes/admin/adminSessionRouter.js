@@ -17,4 +17,6 @@ router.post("/create", sessionValidator, adminLoginController.createAdmin)
 /* Editar Admin */
 router.put("/:id", sessionValidator, adminLoginController.editAdmin)
 
+router.get("/:id", sessionValidator, adminLoginController.getDataAdmin)
+
 module.exports = router;

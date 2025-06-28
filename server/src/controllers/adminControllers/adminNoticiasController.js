@@ -27,7 +27,7 @@ module.exports = {
             let fotoNombre = null;
             if (req.file) {
                 const baseUrl = `${req.protocol}://${req.get('host')}`;
-                fotoNombre = `${baseUrl}/images/mascotas/${req.file.filename}`;
+                fotoNombre = `${baseUrl}/images/noticias/${req.file.filename}`;
             }
 
             // Crear la noticia
@@ -87,7 +87,7 @@ module.exports = {
                 fotoAnterior = noticia.foto;
 
                 const baseUrl = `${req.protocol}://${req.get('host')}`;
-                noticia.foto = `${baseUrl}/images/mascotas/${req.file.filename}`;
+                noticia.foto = `${baseUrl}/images/noticias/${req.file.filename}`;
             }
 
             // Actualizar campos
