@@ -66,7 +66,7 @@ export default function Dashboard() {
 
           {/* Navegación */}
           <nav className="mt-6">
-            <div className="px-4 mt-2">
+            {/* <div className="px-4 mt-2">
               <Link
                 to="/dashboard/direcciones"
                 className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg dark:hover:bg-gray-500"
@@ -74,7 +74,7 @@ export default function Dashboard() {
                 <i className="fas fa-map mr-3"></i>
                 <span>Direcciones</span>
               </Link>
-            </div>
+            </div> */}
             <div className="px-4 mt-2">
               <Link
                 to="/dashboard/refugio"

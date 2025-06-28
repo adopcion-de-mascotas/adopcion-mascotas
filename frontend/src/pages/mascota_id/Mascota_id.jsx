@@ -8,7 +8,7 @@ export default function Mascota_Id() {
   const [tab, setTab] = useState("sobre");
   const { mascota, mascotas, error, loading } = useMascota(id);
 
-  const [imagenPrincipal, setImagenPrincipal] = useState("");
+  const [imagenPrincipal, setImagenPrincipal] = useState(null);
   const [galeria, setGaleria] = useState([]);
 
   useEffect(() => {
@@ -116,7 +116,10 @@ export default function Mascota_Id() {
 
             {tab === "sobre" && (
               <div>
-                <p className="text-gray-700 mb-4">{mascota.descripcion}</p>
+                <div className="flex flex-col overflow-hidden">
+
+                  <p className="text-gray-700 pb-4">{mascota.descripcion}</p>
+                </div>
 
                 <h3 className="font-bold text-gray-800 mb-2">Personalidad</h3>
                 <div className="flex flex-wrap gap-2 mb-4">

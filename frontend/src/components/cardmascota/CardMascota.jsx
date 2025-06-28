@@ -1,9 +1,12 @@
 // src/components/CardMascota.jsx
-import React from "react";
+import { React, useState } from "react";
 import { Link } from "react-router-dom";
-import './CardMascota.css'; 
+import './CardMascota.css';
 
 export default function CardMascota({ mascota }) {
+
+  const [mascotaGenero, setMascotaGenero] = useState(mascota.genero);
+
   return (
     <div className="bg-white rounded-xl shadow-sm overflow-hidde hover:shadow-md
     mb-4shadow-md hover:scale-105 transition-transform duration-300">
@@ -25,14 +28,15 @@ export default function CardMascota({ mascota }) {
         <div className="flex items-center text-gray-600 text-sm mb-3">
           <i className="fas fa-dog mr-1"></i>
           <span className="mr-3">{mascota.tipo}</span>
-          <i className="fas fa-venus-mars mr-1"></i>
+          {mascotaGenero === "Macho" ? (
+            <i className="fas fa-mars mr-1"></i>
+          ) : (
+            < i className="fas fa-venus mr-1"></i>
+          )}
           <span>{mascota.genero}</span>
         </div>
-        <p className="text-gray-600 text-sm mb-4">{mascota.descripcion}</p>
+        <p className="text-gray-600 text-sm mb-4 line-clamp-1">{mascota.descripcion}</p>
         <div className="flex justify-between items-center">
-          <span className="text-sm font-medium text-gray-700">
-            <i className="fas fa-map-marker-alt mr-1"></i> {mascota.ciudad}
-          </span>
           <Link
             to={`/mascotas/${mascota.id}`}
             className="bg-yellow-400 hover:bg-yellow-500 text-white text-sm font-medium py-2 px-4 rounded-lg transition duration-300"
@@ -41,6 +45,6 @@ export default function CardMascota({ mascota }) {
           </Link>
         </div>
       </div>
-    </div>
+    </div >
   );
 }

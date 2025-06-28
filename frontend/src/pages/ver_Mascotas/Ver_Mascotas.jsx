@@ -152,12 +152,12 @@ export default function Ver_Mascotas() {
             </div>
 
             {/* Botón aplicar */}
-            <button
+            {/* <button
               onClick={aplicarFiltros}
               className="self-end bg-yellow-400 hover:bg-yellow-500 text-white font-medium py-2 px-6 rounded-lg transition duration-300"
             >
               Aplicar filtros
-            </button>
+            </button> */}
           </div>
         </div>
 

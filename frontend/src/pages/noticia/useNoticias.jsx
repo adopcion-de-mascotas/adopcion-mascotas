@@ -13,7 +13,7 @@ export function useNoticias() {
     obtenerNoticias()
       .then((data) => {
         // Si necesitas duplicar los datos como antes
-        const noticiasDuplicadas = [...data, ...data, ...data];
+        const noticiasDuplicadas = [...data];
         setNoticias(noticiasDuplicadas);
       })
       .catch(setError);

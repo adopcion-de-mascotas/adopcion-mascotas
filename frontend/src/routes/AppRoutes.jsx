@@ -83,9 +83,9 @@ export default function AppRoutes() {
         <Route path="refugioForm" element={<RefugioForm />} />
         <Route path="refugioFormEdit/:id" element={<RefugioFormEdit />} />
 
-        <Route path="direcciones" element={<DireccionesDashboard />} />
+        {/* <Route path="direcciones" element={<DireccionesDashboard />} />
         <Route path="direccionForm" element={<DireccionForm />} />
-        <Route path="direccionFormEdit/:id" element={<DireccionFormEdit />} />
+        <Route path="direccionFormEdit/:id" element={<DireccionFormEdit />} /> */}
 
         <Route path="settings" element={<Settings />} />
       </Route>

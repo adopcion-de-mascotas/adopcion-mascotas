@@ -214,8 +214,6 @@ export default function useRefugioFormEdit() {
         formToSend.append("imagen_principal", formData.imagen);
       }
 
-      console.log(formData);
-
       const response = await actualizarRefugio(idRefugio, formToSend);
       console.log(response);
       formData.contacto.id

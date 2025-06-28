@@ -1,10 +1,11 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import useNoticiaPorId from "./useNoticiaPorId";
+import CardNoticia from "../../components/cardnoticia/CardNoticia";
 
 export default function Noticia_id() {
   const { id } = useParams();
-  const { noticia, loading, error } = useNoticiaPorId(id);
+  const { noticia, loading, error, noticias } = useNoticiaPorId(id);
 
   if (loading) {
     return (
@@ -30,13 +31,13 @@ export default function Noticia_id() {
       <article className="news-article max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
         {/* Header */}
         <div className="p-6 border-b border-gray-200">
-          <div className="flex justify-between items-start">
+          <div className="flex flex-wrap justify-between items-start">
             <div>
-              <div className="flex flex-wrap gap-2 mb-3">
+              {/* <div className="flex flex-wrap gap-2 mb-3">
                 <span className="tag bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded">Mascotas</span>
                 <span className="tag bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Salud</span>
                 <span className="tag bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">Cuidados</span>
-              </div>
+              </div> */}
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
                 {noticia.titulo}
               </h1>
@@ -81,8 +82,9 @@ export default function Noticia_id() {
         {/* Contenido */}
         <div className="p-6 md:p-8">
           <div className="prose max-w-none">
+            <h1 className="text-2x1 md:text-2xl font-bold text-gray-900 mb-2">Cuerpo de la noticia</h1>
             <p className="text-lg text-gray-700 mb-6">{noticia.texto}</p>
-            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 my-6">
+            {/* <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 my-6">
               <div className="flex">
                 <div className="flex-shrink-0 text-yellow-600 mt-1">
                   <i className="fas fa-exclamation-circle"></i>
@@ -97,11 +99,11 @@ export default function Noticia_id() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Footer */}
-          <div className="border-t border-gray-200 pt-6 mt-8">
+          {/* <div className="border-t border-gray-200 pt-6 mt-8">
             <div className="flex flex-wrap items-center justify-between">
               <div className="flex items-center space-x-4 mb-4 md:mb-0">
                 <img
@@ -117,17 +119,19 @@ export default function Noticia_id() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </article>
 
       {/* Más noticias (comentado por ahora) */}
-      <section className="max-w-4xl mx-auto mt-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          Más noticias sobre mascotas
-        </h2>
-        {/* Aquí podrías usar un componente como <CardNoticia /> en el futuro */}
-      </section>
+      <div className="mt-12">
+        <h3 className="text-xl font-bold text-gray-800 mb-6">Otras noticias que te pueden gustar</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {noticias?.filter((m) => m.id !== noticia.id).slice(0, 4).map((m) => (
+            <CardNoticia key={m.id} noticia={m} />
+          ))}
+        </div>
+      </div>
     </main>
   );
 }
