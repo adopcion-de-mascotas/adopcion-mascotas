@@ -8,7 +8,7 @@ export async function login({ email, password, rememberMe }) {
     body: JSON.stringify({ email, password, rememberMe }),
   });
 
-  const data = await res.json();
+  const data = await res.json();  
 
   if (!res.ok) {
     throw new Error(data.message || "Error al iniciar sesión");

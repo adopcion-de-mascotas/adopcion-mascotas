@@ -6,7 +6,7 @@ import { useMascota } from "./useMascota";
 export default function Mascota_Id() {
   const { id } = useParams();
   const [tab, setTab] = useState("sobre");
-  const { mascota, mascotas, error, loading, handleLike } = useMascota(id);
+  const { mascota, mascotas, error, loading } = useMascota(id);
 
   if (loading)
     return <div className="text-center py-20 text-gray-600">Cargando mascota...</div>;
@@ -62,7 +62,7 @@ export default function Mascota_Id() {
           </div>
 
           <div className="p-6">
-            <div className="flex justify-between items-start mb-4">
+{/*             <div className="flex justify-between items-start mb-4">
               <div>
                 <h2 className="text-3xl font-bold text-gray-800">{mascota.nombre}</h2>
                 <div className="text-gray-600 mt-1 flex items-center">
@@ -74,7 +74,7 @@ export default function Mascota_Id() {
                 <i className={mascota.liked ? "fas fa-heart" : "far fa-heart"} />
                 <span> {mascota.likes} </span>
               </button>
-            </div>
+            </div> */}
 
             <div className="mb-6">
               <span className="bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full">
@@ -84,10 +84,18 @@ export default function Mascota_Id() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
               {datos.map(({ label, value }, i) => (
-                <div key={i} className="bg-gray-50 p-3 rounded-lg">
-                  <div className="text-sm text-gray-500 mb-1 dark:text-black">{label}</div>
-                  <div className="font-medium dark:text-black">{value}</div>
-                </div>
+                label == "Peso" ? (
+                  <div key={i} className="bg-gray-50 p-3 rounded-lg">
+                    <div className="text-sm text-gray-500 mb-1 dark:text-black">{label}</div>
+                    <div className="font-medium dark:text-black">{value + " Kg"}</div>
+                  </div>
+                ) : (
+                  < div key={i} className="bg-gray-50 p-3 rounded-lg" >
+                    <div className="text-sm text-gray-500 mb-1 dark:text-black">{label}</div>
+                    <div className="font-medium dark:text-black">{value}</div>
+                  </div>
+
+                )
               ))}
             </div>
 
@@ -213,6 +221,6 @@ export default function Mascota_Id() {
           ))}
         </div>
       </div>
-    </main>
+    </main >
   );
 }

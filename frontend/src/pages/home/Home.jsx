@@ -45,12 +45,12 @@ export const Home = () => {
           </div>
 
           <div className="text-center mt-12">
-            <a
-              href="/mascotas"
+            <Link
+              to="/mascotas"
               className="px-6 py-3 bg-white border-2 border-indigo-600 text-indigo-600 rounded-lg font-medium hover:bg-indigo-50"
             >
               Ver más mascotas
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -93,10 +93,7 @@ export const Home = () => {
       </section>
 
       <Testimonio testimonials={testimonials} />
-
-      {/* Resto del JSX */}
-      {/* ... */}
-
+      
       <Contact />
     </>
   );

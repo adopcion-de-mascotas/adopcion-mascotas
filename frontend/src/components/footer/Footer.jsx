@@ -1,6 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function Footer() {
+
+  const initialState = {
+    email: "",
+  }
+  const [formContacto, setFormContacto] = useState(initialState)
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    if (formContacto.email == "") {
+      Swal.fire({
+        icon: "warning",
+        title: "Falta email",
+        text: `Ingreselo nuevamente`,
+        timer: 1000,
+        showConfirmButton: false,
+      });
+      return
+    }
+    Swal.fire({
+      icon: "success",
+      title: "Email registrado",
+      text: `Muchas gracias`,
+      timer: 1000,
+      showConfirmButton: false,
+    });
+
+    setFormContacto(initialState)
+  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormContacto((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
   return (
     <>
       {/* Footer Component */}
@@ -132,12 +170,15 @@ export default function Footer() {
               <form className="flex">
                 <input
                   type="email"
+                  name="email"
                   placeholder="Tu email"
                   className="px-4 py-2 rounded-l-lg focus:outline-none  text-gray-200 bg-gray-700 placeholder-gray-400 w-full transition-colors duration-200"
+                  onChange={handleChange}
+                  value={formContacto.email}
                 />
                 <button
-                  type="submit"
                   className="px-4 py-2 bg-indigo-600 dark:bg-indigo-500 text-white rounded-r-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition-colors duration-200"
+                  onClick={handleSubmit}
                 >
                   <i className="fas fa-paper-plane"></i>
                 </button>

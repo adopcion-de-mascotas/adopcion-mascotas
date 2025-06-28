@@ -24,33 +24,40 @@ module.exports = {
                     throw new CustomError("Ocurrió un error", 500)
                 }
 
-                if (admin && bcrypt.compareSync(password, admin.password)) {
-
-                    const tokenPayload = {
-                        id: admin.id,
-                        email: admin.email
-                    }
-                    const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: "1h" })
-
-                    // Guardamos al usuario logueado en req.user
-                    req.user = {
-                        id: admin.id,
-                        nombre: admin.nombre,
-                        apellido: admin.apellido,
-                        email: admin.email
-                    }
-
-                    // Si existe el admin y la contraseña es correcta, devolvemos el admin
-                    return res.status(200).json({
-                        ...req.user,
-                        token
+                if (admin && !bcrypt.compareSync(password, admin.password)) {
+                    endpointError({
+                        res,
+                        code: 400,
+                        message: "Credenciales inválidas",
+                        errors: error.errors
                     })
                 }
+
+                const tokenPayload = {
+                    id: admin.id,
+                    email: admin.email
+                }
+                const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: "1h" })
+
+                // Guardamos al usuario logueado en req.user
+                req.user = {
+                    id: admin.id,
+                    nombre: admin.nombre,
+                    apellido: admin.apellido,
+                    email: admin.email
+                }
+
+                // Si existe el admin y la contraseña es correcta, devolvemos el admin
+                return res.status(200).json({
+                    ...req.user,
+                    token
+                })
+
             } catch (error) {
                 endpointError({
                     res,
                     code: 400,
-                    message: "Ocurrio un error al iniciar sesión",
+                    message: "Credenciales inválidas",
                     errors: error.errors
                 })
             }

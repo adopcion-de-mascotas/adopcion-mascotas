@@ -80,14 +80,17 @@ export default function MascotaForm() {
             >
               Tipo
             </label>
-            <input
-              type="text"
+            <select
               id="tipo"
               name="tipo"
               value={formData.tipo}
               onChange={handleChange}
               className="w-full border rounded px-3 py-2"
-            />
+            >
+              <option value="">Seleccionar</option>
+              <option value="Perro">Perro</option>
+              <option value="Gato">Gato</option>
+            </select>
           </div>
 
           {/* Raza */}
@@ -137,14 +140,19 @@ export default function MascotaForm() {
             >
               Tamaño
             </label>
-            <input
-              type="text"
-              id="tamanio"
+
+            <select
               name="tamanio"
-              value={formData.tamanio}
+              id="tamanio"
               onChange={handleChange}
+              value={formData.tamanio}
               className="w-full border rounded px-3 py-2"
-            />
+            >
+              <option value="">Selecciona el tamaño</option>
+              <option value={"Pequeño"}>Pequeño</option>
+              <option value={"Mediano"}>Mediano</option>
+              <option value={"Grande"}>Grande</option>
+            </select>
           </div>
 
           {/* Peso */}
@@ -173,14 +181,17 @@ export default function MascotaForm() {
             >
               Estado
             </label>
-            <input
-              type="text"
+            <select
               id="estado"
               name="estado"
               value={formData.estado}
               onChange={handleChange}
               className="w-full border rounded px-3 py-2"
-            />
+            >
+              <option value="">Seleccionar estado</option>
+              <option value="Disponible">Disponible</option>
+              <option value="Adoptado">Adoptado</option>
+            </select>
           </div>
 
           {/* Ciudad */}
