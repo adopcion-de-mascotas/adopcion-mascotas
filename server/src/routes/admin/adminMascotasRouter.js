@@ -12,7 +12,7 @@ router.use("/galeria", adminGaleriaRouter)
 router.post("/", singleUpload, handleMulterErrors, create)
 
 /* Edita datos de mascota */
-router.put("/:id",singleUpload, handleMulterErrors, update)
+router.put("/:id", singleUpload, handleMulterErrors, update)
 
 /* Elimina datos de mascota */
 router.delete("/:id", remove)

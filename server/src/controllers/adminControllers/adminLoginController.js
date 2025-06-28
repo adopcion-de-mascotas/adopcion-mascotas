@@ -176,6 +176,26 @@ module.exports = {
                 errors: errorsValidator.mapped()
             })
         }
+    },
+
+    getAdmin: async (req, res) => {
+        // Buscamos el admin por id
+        const admin = await Admins.findByPk(req.params.id)
+
+        // Si no existe el admin, devolvemos un error
+        if (!admin) {
+            return res.status(401).json({
+                error: "El admin no existe"
+            })
+        }
+
+        // Si existe el admin, devolvemos el admin
+        return res.status(200).json({
+            id: admin.id,
+            nombre: admin.nombre,
+            apellido: admin.apellido,
+            email: admin.email
+        })
     }
 
 }
