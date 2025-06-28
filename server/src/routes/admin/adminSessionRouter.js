@@ -6,7 +6,7 @@ const loginValidator = require("../../validations/loginAdminValidator");
 /* Importar el controlador */
 const adminLoginController = require("../../controllers/adminControllers/adminLoginController");
 
-router.get("/:id", adminLoginController.getAdmin)
+router.get("/:id", adminLoginController.getDataAdmin)
 
 /* Iniciar sesión */
 router.post("/", loginValidator, adminLoginController.login)
