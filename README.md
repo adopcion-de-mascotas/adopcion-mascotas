@@ -57,7 +57,8 @@ cd adopcion-mascotas
 ```
 
 2. **Instalar dependencias**
-- Entrar a las carpetas frontend y server e instalar las dependencias
+- En la raíz de la carpeta adopción-mascotas
+- y dentro de las carpetas frontend y server e instalar las dependencias
 ```bash
 npm install
 ```
@@ -92,11 +93,7 @@ npm run seed       # Poblar datos iniciales (opcional)
 ```
 
 5. **Iniciar proyecto**
-- En la carpeta frontend ejecutar
-```bash
-npm run dev
-```
-- En la carpeta server ejecutar
+- En la carpeta raíz del proyecto ejecutar
 ```bash
 npm run dev
 ```
