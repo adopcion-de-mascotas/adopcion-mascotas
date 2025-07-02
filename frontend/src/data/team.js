@@ -37,7 +37,7 @@ export const teamMembers = [
     {
         name: "Nahuel Argandoña",
         role: "Desarrollador Frontend",
-        image: "https://randomuser.me/api/portraits/men/20.jpg",
+        image: "https://i.postimg.cc/Xqbg5FnP/nahuel.jpg",
         color: "from-blue-400 to-purple-500",
         textColor: "text-purple-600",
         bgColor: "bg-purple-600",
